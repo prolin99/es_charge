@@ -1,0 +1,51 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+<{if ($data.class_id )  }>  
+    <form class="form-horizontal" action="index.php"  method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+   </form>
+   
+<{if ($data.seletc_item )  }>  
+<div class="row-fluid" >
+    <form class="form-horizontal" action="index.php"  method='post'>
+    <legend><{$data.class_id}>班級學生繳費名單</legend>
+
+    <{foreach  key=key item=stud   from= $data.students }>
+    <{if ($data.selected[$stud.tn_id].selected) }>
+      <div class='span2'><label>■(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
+    <{else}>
+      
+      <div class='span2'><label><input type='checkbox' name='selected_stud[]' value='<{$stud.tn_id}>' id='stud_selected'>(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
+    <{/if}>
+     <{/foreach }>
+     </div>
+    <div class="form-actions">
+    <p>基本上全班學生都開列，除非該學生在這次的轉帳的各種項目費用都無關才不需開列。</p>
+     <span class='span2'><label><input type='checkbox' name='CheckAll'  id='CheckAll'>全選</label> </span>
+     <input type="hidden" name="class_id" value="<{$data.class_id}>" />	
+     <input type="hidden" name="item_id" value="<{$data.seletc_item}>" />	
+     <button type="submit" class="btn btn-success" name='act_add' value='act_add' >開列選擇的學生</button>
+      <button type="submit" class="btn btn-danger"  name='act_remove'  value="act_remove" onclick='return confirm("確定要移除"?\n\nPS.繳費紀錄亦會一併被刪除")' >清空本班級開列的名單</button>
+      
+
+    </form>
+     </div>
+<{/if}>
+<script>    
+	//全選
+	$(document).on("click", "#CheckAll", function(){
+                var chk = $(this).attr('checked');
+                if  (chk) 
+		$('div').find(':checkbox').attr('checked',  chk );
+		else 
+		$('div').find(':checkbox').removeAttr('checked');
+ 
+ 
+    })
+
+</script>
+
+<{else}>    
+  <h4>非級任身份，無法使用！</h4>
+ <{/if}>

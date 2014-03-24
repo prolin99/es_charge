@@ -1,0 +1,36 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+<{if ($data.class_id )  }>  
+    <form id ='frm' class="form-horizontal" action="sum.php"  method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+   </form>
+   
+<{if ($data.seletc_item ) }>  
+<style type="text/css">
+@media print {
+  a[href]:after {
+    content: none;
+  }
+   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm {
+      display: none;
+   }
+}
+</style >
+<div id='printableArea' class='printableArea'>
+<h3><{$data.class_id}> 班級細目統計<{$data.class_source_pay.man}>人</h3>
+ <table class="table table-bordered">
+ 	<tr><td>收費細目</td><td>細目額</td><td>班級金額</td><td>減免數</td><td>減免額</td><td>應收合計</td> </tr>
+   <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+ 	<tr><td><{$detail_val}></td><td><{$data.detail_dollar.pay[$detail_key]}></td><td><{$data.class_source_pay.detail[$detail_key]}></td><td><{$data.class_decrease.man[$detail_key]}></td><td><{$data.class_decrease.sum[$detail_key]}></td><td><{$data.class_source_pay.end_detail[$detail_key]}></td> </tr>
+   <{/foreach}>
+   <tr><td>總計</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><{$data.class_source_pay.end_sum}></td> </tr>
+ </table>
+ <p>導師簽章：</p>
+ 
+</div>
+<{/if}>
+
+<{else}>
+  <h4>非級任身份，無法使用！</h4>
+ <{/if}>

@@ -1,0 +1,23 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+<style type="text/css">
+@media print {
+  a[href]:after {
+    content: none;
+  }
+   #xo-logo-head ,  #xo_globalnav , #xo-nav-options , #buttontop_mod ,#buttonbar_mod , #xo-footer ,  .pad5 ,#frm , #frm_add {
+      display: none;
+   }
+}
+</style >
+
+<div id='frm' class="row-fluid"  >
+    <form class="form-horizontal"   action="sum.php" method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
+ 	<a class="btn btn-success"  href="sum_class.php?do=excel&item_id=<{$data.select_item}>">各班總額統計</a>
+      	<a class="btn btn-success"  href="sum_detail.php?do=excel&item_id=<{$data.select_item}>">各班細目統計</a>
+      	<a class="btn btn-success"  href="sum_class_detail.php?do=excel&item_id=<{$data.select_item}>">各年級細目統計</a>
+   </form>
+</div>   
+

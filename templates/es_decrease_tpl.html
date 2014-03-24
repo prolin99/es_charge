@@ -1,0 +1,283 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+<{if ($data.class_id )  }>  
+<div class="row-fluid"  >
+    <form id='frm' class="form-horizontal"   action="decrease.php" method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+   </form>
+</div>   
+<!--      減免列表                                   -->
+<{if ($data.seletc_item ) }>  
+<style type="text/css">
+@media print {
+  a[href]:after {
+    content: none;
+  }
+   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm , #frm_add {
+      display: none;
+   }
+}
+</style >
+
+<h3><{$data.class_id}>減免學生金額列表</h3>
+	<!--      表格標題                                   -->
+      <div class="row-fluid" >
+      <div class='span1'>座號</div>
+      <div class='span1'>姓名</div>
+ 
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        <div class='span1'><{$detail_val|truncate:9}><span class="label"><{$data.detail_dollar.pay[$detail_key]}></span></div>
+      <{/foreach}>
+      
+      <div class='span2'>減免原因</div>
+
+      </div>
+      <!--      表格內容                                   -->
+    <{foreach  key=key item=stud   from= $data.decase_list }>
+      <div class="row-fluid" id="div_<{$data.seletc_item}>_<{$key}>">
+      <div class='span1'  id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><span class="edit"><i class="icon-pencil"></i></span> <{$data.students[$key].class_sit_num}></div>
+      <div class='span1' id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></div>
+      
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        <!--      dollar_item_stud_sn_detail_id                金額  checked 補助                   -->
+        <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
+        <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
+        <{else}>
+        <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></div>
+        <{/if}>
+      <{/foreach}>
+      
+      <div class='span2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="icon-trash"></i></span><{$data.selected[$key].cause|truncate:18}></div>
+      </div>
+    <{/foreach }>
+
+	 <{if ($data.inTime ) }>  
+       <!-- 新增學生  -->    
+     <div  id= 'frm_add' class="row-fluid">
+     <div class="span8">
+       <form method='post' name='editForm' id='editForm_new' class="form-horizontal" > 
+ 		<fieldset>
+		<legend>新增減免學生</legend>
+     			<div class="control-group">
+     			<label class="control-label" for="stud" >學生：</label>
+     			<select name="stud" >
+			<option label="選擇學生" value="0">選擇學生</option>
+			 <{foreach  key=key item=stud   from= $data.students }>
+			  	<{if ($data.selected[$stud.tn_id].selected and  !$data.decase_list[$stud.tn_id]) }>
+				<option label="(<{$stud.class_sit_num}>)<{$stud.name}>" value="<{$stud.tn_id}>_<{$stud.class_sit_num}>"  >(<{$stud.class_sit_num}>)<{$stud.name}></option>
+    				<{/if}>
+     			<{/foreach }>				
+			</select>
+			</div>
+			
+			<div class="control-group">
+			<label class="control-label" for="cause_id"  >減免原因：</label>
+ 			<{html_options name='cause_id'  options=$decrease_cause  onchange="cause_check($(this));"  }>
+ 			</div>
+ 			
+ 			<!-- 各項費用  -->
+ 			<{foreach  key=key item=detail   from= $data.detail_list }>
+ 			<div class="control-group">
+ 			<span class="fill" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
+ 			<label class="control-label" for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>):</label>
+ 			 <i class="icon-forward"></i> </span>
+  			<input   class='span2'  name='dollars[<{$key}>]' type='text' id='dollars<{$key}>'  title='<{$detail}><{$data.detail_dollar.pay[$key]}>'  tabindex='<{$key}>'
+  			    placeholder='<{$data.detail_dollar.decease[$key]}>' onblur="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
+   			   
+  			<div class="input-append">
+ 			 <label title='不參加的情況，請不要勾選補助'><input type='checkbox' name='decrease_sel[<{$key}>]' value='1'  >申請補助</label>
+ 			 </div>
+ 			 </div>
+ 			<{/foreach }>
+ 			
+			<div class="form-actions">
+			<input name='item_id' type='hidden' value='<{$data.seletc_item}>' />
+			<input name='class_id' type='hidden' value='<{$data.class_id}>' />
+ 
+ 			<button class="btn btn-primary" type="submit" name='act_add' value='act_add' >新增</button>
+ 
+ 			</div>
+
+ 
+ 		</fieldset>
+		</form>
+		<{$data.spec_list}>
+	</div>
+	<div class="span4">
+		<p>&nbsp</p><p>&nbsp</p>
+	 	<div class="alert alert-success">
+		<h4>減免說明</h4>
+	 	<{$data.ps}>
+	 	</div>
+	</div>
+	</div>
+	<{else}>
+	<div class="alert alert-danger">已過填報時限！</div>
+	<{/if}>
+	
+<{/if}>
+
+ <{if ($data.inTime ) }>  
+<script>    
+
+ 
+        
+    //刪除----------------------------------------------------------------------------------
+  $(document).on("click", ".del", function(){
+
+    var div_id = $(this).parent().parent().attr("id")  ;
+    
+           ajax_del(  div_id) ;  // 刪除動作
+           //把這個 div 隱藏起來 
+           $(this).parent().parent().hide() ;    
+ });
+ 
+      var ajax_del=function( id ){
+      //alert(id) ;
+             var URLs="ajax_decrease_del.php?id=" + id ;
+    
+            $.ajax({
+                url: URLs,
+                type:"GET",
+                dataType:'text',
+
+                success: function(msg){
+                    //alert(msg);
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+           })
+        }
+
+//----------------------------------------------------------------------        
+    function check_input(obj_input , max_m){
+    	var g_val = $(obj_input).val() ;
+    	var input_name = $(obj_input).attr('title') ;
+    	 
+    	if ((g_val > max_m)|(g_val<0) )
+    	   alert (  input_name+ '減免金額有問題！') ;
+    }
+    
+    
+    
+    function cause_check(obj_sel) {
+	//身份補助選擇
+ 
+                var chk = $(obj_sel).val();
+ 		//alert(chk) ;
+ 
+                if  (chk!=0) {
+			$('label').find(':checkbox').prop('checked', true );
+		}else 
+			$('label').find(':checkbox').removeAttr('checked');
+ 
+ 	}
+
+    //修改----------------------------------------------------------------------------------
+  $(document).on("click", ".edit", function(){
+
+    var div_id = $(this).parent().parent().attr("id")  ;
+     
+ 
+    var splits = div_id.split('_') ;
+    var form_id =  'form_' +splits[1]+'_'+ splits[2]   ; 
+    //取座號、姓名
+    var name_str = $('#name_'+splits[1]+'_'+ splits[2]).attr("data")  ;
+     var sit_str = $('#sit_'+splits[1]+'_'+ splits[2]).attr("data")  ;
+     var cause_str = $('#cause_'+splits[1]+'_'+ splits[2]).attr("data")  ;
+   //各項費用取舊值 
+   <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>    
+    var dollar_<{$detail_key}> = $('#dollar_'+splits[1]+'_'+ splits[2] +'_<{$detail_key}>').attr("data")  ;
+    var check_<{$detail_key}> = $('#dollar_'+splits[1]+'_'+ splits[2] +'_<{$detail_key}>').attr("need")  ;
+
+    <{/foreach}>
+
+        //各項費用輸入
+        var form_str = 
+        		"<form  id='" + form_id + "'  class='form-actions'>"+
+        		"<div class='span1'>"+sit_str+"</div>"+ 
+      			"<div class='span1'>"+name_str+"</div>" + 
+      			
+      			<{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        		"<div class='span1'> "+
+                       "<input class='span10' name='dollars[<{$detail_key}>]' type='text' id='dollars[<{$detail_key}>]'  title='班級費'  tabindex='9<{$detail_key}>' value='"+ dollar_<{$detail_key}> +"'  onblur='check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);' />" +
+
+  			" <label ><input type='checkbox' name='decrease_sel[<{$detail_key}>]' value='1' "+ check_<{$detail_key}> +">補助</label>" + 
+ 			" </div>" +
+ 			<{/foreach}>
+ 			"<div class='span2'>" + 
+ 			cause_str +
+ 			"</div>" +
+ 			"<span class='save'>save</span>"+
+ 			"<input name='class_id' type='hidden' value='<{$data.class_id}>' />" +
+ 			"<input name='item_id' type='hidden' value='<{$data.seletc_item}>' />" +
+ 			"<input name='name' type='hidden' value='" + name_str+ "' />" +
+ 			"<input name='sit_str' type='hidden' value='" + sit_str+ "' />" +
+ 			"<input name='stud' type='hidden' value='" +splits[2] +"' />" +
+ 			"<input name='cause_str' type='hidden' value='" +cause_str +"' />" +
+ 			"</form>";
+ 	
+       //編修       
+	$('#' +div_id).html(form_str) ;
+	//新增區hide
+	$('#frm_add').hide() ;
+ }); 	
+ 
+   //按下 save  ----------------------------------------------------------------------------------
+   $(document).on('click', '.save', function(){
+    	var div_id = $(this).parent().parent().attr("id")  ;
+    	var form_id = $(this).parent().attr("id")  ;
+    	//alert(div_id +form_id ) ;
+    	ajax_save( div_id , form_id ) ;
+    	$('#frm_add').show() ;
+     }); 	
+     
+     //ajax 存檔後，修改 div 內容 ----------------------------
+      function ajax_save( div_id , form_id  ){
+ 	//alert ($('#'+form_id ).serialize()) ;
+            $.ajax({
+              	url: 'ajax_decrease_save.php',
+              	 type: 'POST',
+		dataType: 'html',
+		data: $('#'+form_id ).serialize() , 
+
+                success: function(data){
+                    //alert(msg);
+                    $('#'+div_id).html(data );
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+           })
+        }   
+ 
+        
+        
+        
+ 
+   //按下 >>   填入全額 ------------------------------------------------- 
+   $(document).on('click', '.fill', function(){
+   
+    	var div_id = $(this).attr("id")  ;
+ 
+    	
+    	var splits = div_id.split('_') ;
+    	//alert(splits[1]) ;
+    	if ($('#'+splits[1]).val() >0  ) 
+    		$('#'+splits[1]).val('') ;
+    	else 
+    	 	$('#'+splits[1]).val( splits[2]) ;
+ 
+     }); 	        
+</script>   
+<{/if}>
+
+<{else}>
+  <h4>非級任身份，無法使用！</h4>
+ <{/if}>

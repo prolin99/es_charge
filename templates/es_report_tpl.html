@@ -1,0 +1,114 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+<{if ($data.class_id )  }>  
+<style type="text/css">
+@media print {
+  a[href]:after {
+    content: none;
+  }
+   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm {
+      display: none;
+   }
+}
+
+</style >
+    <form  id='frm' class="form-horizontal" action="report.php"  method='post' >
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5'  onchange="submit();"}>
+
+   </form>
+   
+<{if ($data.seletc_item ) }>  
+
+ 	<!--            printableArea     開始              -->
+	<div id='printableArea' class='printableArea'>
+	<h3><{$data.class_id}>班上繳費細項列表</h3>
+	<table class="table table-bordered" >
+ 	<tr>
+      <td class='span2'>姓名</td>
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        <td  ><{$detail_val}></td>
+      <{/foreach}>
+      <td  >小計</td>
+    </tr>  
+    
+  <{foreach  key=key item=stud   from= $data.students }>
+    <{if ($data.selected[$stud.tn_id].selected) }>
+    <tr>
+ 
+     <{if ($data.selected[$stud.tn_id].in_bank) }>
+      <td ><span class="in_bank" id='icon_<{$stud.tn_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <{else}>
+      <td ><span class="in_bank"  id='icon_<{$stud.tn_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <{/if}>
+       		<!--            繳費金額(有申請減免                   -->
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+         <{if ($data.decase_list_array[$stud.tn_id].dollar[$detail_key]) }>
+         <td ><span class="label label-inverse"><{$data.pay_list[$stud.tn_id][$detail_key]}></span></td>
+         <{else}>
+        <td ><{$data.pay_list[$stud.tn_id][$detail_key]}></td>
+        <{/if}>
+      <{/foreach}>
+      <td><{$data.pay_list[$stud.tn_id].each}></td>
+     </tr>
+    <{/if}>
+  <{/foreach}>
+  </table>
+  </div>  <!--            printableArea     結束              -->
+  <!--            自行繳費                   -->
+ <{if ($data.self_pay ) }>  
+	<h3>上一期自行繳費名單提醒</h3>
+	<{foreach  key=key item=stud   from= $data.self_pay }>
+	<{$data.students[$stud].name}> ,	
+	<{/foreach}>
+<{/if}>
+
+<{/if}>
+
+
+ <{if ($data.inTime ) }>  
+<script>
+    //更改是否使用銀行扣款----------------------------------------------------------------------------------
+  $(document).on("click", ".in_bank", function(){
+    	var div_id = $(this).attr("id")  ;
+    	var in_bank = $(this).attr("data")  ;
+    	
+    	if (in_bank=='1') {
+    		
+    	 	$('#' + div_id).html( '<span class="label label-important"><i class=" icon-user" title="自行繳費"></span></i>') ;
+    	 	$('#' + div_id).attr("data","0") ;
+    	}else {
+    		$('#' + div_id).html( '<i class=" icon-shopping-cart" title="銀行扣款"></i>') ;
+    		$('#' + div_id).attr("data", "1") ;
+    	}
+    	in_bank_change(div_id) ;
+    	
+
+   });  
+
+      var in_bank_change=function( id ){
+      //alert(id) ;
+             var URLs="ajax_inbank_change.php?id=" + id ;
+    
+            $.ajax({
+                url: URLs,
+                type:"GET",
+                dataType:'text',
+
+                success: function(msg){
+                   // alert(msg);
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+           })
+        }   
+
+</script>
+
+<{/if}>
+<{else}>
+  <h4>非級任身份，無法使用！</h4>
+ <{/if}>

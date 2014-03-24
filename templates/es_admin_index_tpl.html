@@ -1,0 +1,280 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+<script language='javascript' type='text/javascript' src='<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js'></script>
+
+    <form action="index.php" method="post" >
+    <fieldset>
+    <legend>收費項目列表</legend>
+    <button type="submit" name='btn_add'  value='新增'  class="btn btn-primary">新增</button>
+
+    <table class="table table-hover">
+	 <{foreach  key=key item=list   from= $p_data.list }>
+	 <tr>
+	      <td><{$list.item_id}></td>
+	      <td><{$list.item_type}></td>
+	      <td><{$list.item}></td>
+	      <td><{$list.creater}></td>
+	      <td><{$list.start_date}> ~ <{$list.end_date}></td>
+	      <td><a href="?do=edit&item_id=<{$list.item_id}>">修改</a></td>
+
+	      
+	 </tr>
+	 <{/foreach }>
+     </table>      
+    </fieldset>     
+    </form>
+
+    
+<{ if  ($p_data.edit_fg) }>     
+<!--       編修畫面                --->
+<div class="row-fluid">
+<div class="span6">
+     <form  action="index.php" method="post" >
+    <fieldset>
+       <legend>收費單</legend>
+	<label>類別：</label><input type='text' name='item_type' class='span10' value="<{$p_data.edit_list.item_type}>">
+	<label>名稱：</label><input type='text' name='item' class='span10'  value="<{$p_data.edit_list.item}>">
+	<label>管理備註：</label><input type='text' name='comment' class='span10'  value="<{$p_data.edit_list.comment}>">
+	<label>收費日期：</label>
+	<input  type='text' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"   name='start_date' class='span4'  value="<{$p_data.edit_list.start_date}>">～
+	<input type='text'  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  name='end_date'  class='span4'   value="<{$p_data.edit_list.end_date}>"> <br/>
+	<input type='hidden' name='item_id' value="<{$p_data.edit_list.item_id}>"> 
+	<button type="submit" name='act_edit'  value='修改'  class="btn btn-primary" onclick='return confirm("確定要更改?")' >修改</button>
+	<button type="submit" name='act_del'  value='刪除'  class="btn btn-danger" onclick='return confirm("真的要刪除?\n\nPS.按[確定]會刪除項目細目及收費紀錄,且資料將不可回復")' >刪除此收費表</button>
+	<button type="submit" name='act_clear'  value='清除'  class="btn btn-danger" onclick='return confirm("會把各班已填的資料視會測試資料清除,用於第一次設定完成後！\n\n確定要清除嗎?")' >清除各班填報資料</button>
+    </fieldset>
+    </form>
+</div>    
+<div class="span6">
+         <h3>細項</h3>
+         <h5>在填報期間，如果細項有調整(代碼、金額)，需要清除填報資料，重新填報！</h5>
+        <{foreach  key=key item=list   from= $p_data.item_list }>
+    	<div class="row" id="div_<{$list.item_id}>_<{$list.detail_id}>">
+        
+	<div class="span1"><span class="badge badge-info"><{$list.detail_sort}></span></div>
+	<div class="span4"><span class="edit"><i class="icon-pencil"></i></span><{$list.detail}></div>
+	<div class="span6"><span class="del"><i class="icon-trash"></i> </span><{$list.dollars}> </div>
+
+	</div>
+       <{/foreach }>
+	<button onclick="add_form()" id="btn_add_form" class='btn btn-primary' >新增一欄</button>
+</div> 
+</div> 
+
+<script>
+function add_form() {
+        var div_id= Math.floor((Math.random()*10000)+1); 
+	var txt1="<div class='row'  id='div_<{$list.item_id}>_" + div_id +"'  >"
+      		+"<form method='post' name='editForm' id='editForm_"+ div_id + "'   action='ajax_detail_add'  > "
+     		+"<div class='span1'>"
+     		+"	<input class='span11' name='detail_sort' type='text' id='detail_sort'  />"
+     		+"</div>	"
+     		+"<div class='span4'>	"
+     		+"	<input class='span11' name='detail' type='text' id='detail'  />"
+		+"</div>"
+ 
+		+"<div class='span6'>"
+  		+"	<input class='span11' name='dollars' type='text' id='dollars' placeholder='以逗號(,)分隔各年級金額'  />"
+		+"</div>	"
+		+"<div class='span1'>"
+		+"	<input name='item_id' type='hidden' value='<{$list.item_id}>' />"
+		+"	<span class='insert'>save</span>"
+		+"</div>"
+		+"</form>"
+		 +"</div>" ;
+	//	  alert(txt1) ;
+            $("#btn_add_form").before(txt1);          // Insert new elements after img
+
+}
+
+
+
+ $(document).on("click", ".edit", function(){
+    //編修
+    var div_id = $(this).parent().parent().attr("id")  ;
+    //alert( div_id) ;
+    ajax_edit( div_id) ; 
+ });
+ 
+       var ajax_edit=function( id ){
+             var URLs="ajax_edit_detail.php?id=" + id ;
+    		//alert(URLs) ;
+            $.ajax({
+                url: URLs,
+                type:"GET",
+                dataType:'text',
+
+                success: function(msg){
+                  //  alert(msg);
+                  $('#' + id ).html( msg );
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+           })
+        }
+        
+
+function ajax_submit(form_id , div_id) {
+	$.ajax({
+		url: 'ajax_detail_submit.php',
+		type: 'POST',
+		dataType: 'html',
+		data: $('#'+form_id ).serialize() , 
+
+	})
+	.done(function(data) {
+		//alert(div_id + data) ;
+		console.log("success");
+		$('#'+div_id).html(data );
+	}) 
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});	 
+ 
+}        
+    
+
+    //刪除----------------------------------------------------------------------------------
+  $(document).on("click", ".del", function(){
+
+    var div_id = $(this).parent().parent().attr("id")  ;
+    //alert( div_id) ;
+           ajax_del(  div_id) ;  // 刪除動作
+           //把這個 div 隱藏起來 
+           $(this).parent().parent().hide() ;    
+ });
+ 
+      var ajax_del=function( id ){
+      //alert(id) ;
+             var URLs="ajax_del_detail.php?id=" + id ;
+    
+            $.ajax({
+                url: URLs,
+                type:"GET",
+                dataType:'text',
+
+                success: function(msg){
+                    //alert(msg);
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+           })
+        }
+        
+//更新        ----------------------------------------
+$(document).on("click", "span.ed" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          		var form_id = $(this).parent().parent().attr("id")  ;
+          		var div_id = $(this).parent().parent().parent().attr("id")  ;
+          		//$(this).parent().parent().parent().attr("id") 
+          		//alert(div_id + form_id);
+          		ajax_submit( form_id , div_id) ;  // 動作
+	}
+ );
+
+function ajax_submit(form_id , div_id) {
+
+	$.ajax({
+		url: 'ajax_detail_submit.php',
+		type: 'POST',
+		dataType: 'html',
+		data: $('#'+form_id ).serialize() , 
+
+	})
+	.done(function(data) {
+		//alert(div_id + data) ;
+		console.log("success");
+		$('#'+div_id).html(data );
+	}) 
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});	 
+ 
+}    
+
+//新增       --------------------------------------------- 
+$(document).on("click", "span.insert" ,  function(){
+		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
+          		var form_id = $(this).parent().parent().attr("id")  ;
+          		var div_id = $(this).parent().parent().parent().attr("id")  ;
+          		//$(this).parent().parent().parent().attr("id") 
+          		//alert ( $("#" + form_id ).serialize() ) ;
+          		ajax_add( form_id , div_id) ;  // 動作
+	}
+ );
+
+function ajax_add(form_id , div_id) {
+        //alert(div_id + form_id);
+        
+	$.ajax({
+		url: 'ajax_detail_add.php',
+		type: 'POST',
+		dataType: 'html',
+		data: $('#'+form_id ).serialize() , 
+
+ 
+	})
+	.done(function(data) {
+		//alert(div_id + form_id + data) ;
+		console.log("success");
+		//$('#'+div_id).html(data );
+		$('#'+div_id).before(data );
+		$('#'+div_id).hide() ;
+	}) 
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});	 
+ 
+}  
+ </script>
+ 
+
+</div> 
+<!--       編修畫面結束                --->
+<{/if}>
+
+<{if ($p_data.add_fg)}>     
+	<!--       新增畫面                 --->
+     <form  action="index.php" method="post">
+    <fieldset>
+        <legend>新增收費單</legend>
+	<label>類別：(例:註冊費、托育費、學習輔導、才藝研習)</label><input type='text' name='item_type' class='span4' >
+	<label>名稱：(例:開學註冊等費用)</label><input type='text' name='item' class='span4'  >
+	<label>管理備註：</label><input type='text' name='comment' class='span4'   >
+	<label>收費日期：</label>
+
+	<input   type='text' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  name='start_date'  class='span2'  value="" >～
+	<input type='text'  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name='end_date'  name='end_date'   class='span2'  value="" >
+	
+	<div class="row">
+	<div class="span6">
+	<label>快速新增細項：</label>
+	<textarea   name="formatted" rows="13" class="span6" placeholder="可以複製貼上右側常用項目，快速建立細項。(右方內容可在偏好設定中修改)" ></textarea>
+	</div>
+	<div class="span6">
+	<label>細項範例(序號_項目_各年級金額)：</label>
+	<pre><{$p_data.detail_def}></pre>	
+ 	</div>
+ 	</div>
+
+	<button type="submit" name='act_save'  value='新增'  class="btn btn-primary">新增</button>
+	
+  </fieldset>
+    </form>
+<{/if}>

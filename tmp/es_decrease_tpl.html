@@ -1,0 +1,163 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+<{if ($data.class_id )  }>  
+<div class="row-fluid"  >
+    <form class="form-horizontal"   action="decrease.php" method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item onchange="submit();"}>
+      	<{html_options name=detail_id options=$data.detail_list selected=$data.seletc_detail onchange="submit();"}>費用：<{$data.detail_dollar}>元
+   </form>
+</div>   
+
+<{if ($data.seletc_item ) }>  
+
+      <div class="row-fluid" >
+      <div class='span1'>座號</div>
+      <div class='span2'>姓名</div>
+      <div class='span2'>減免金額</div>
+      <div class='span2'>減免原因</div>
+      <div class='span2'>新增日期</div>
+      </div>
+    <{foreach  key=key item=stud   from= $data.decase_list }>
+      <div class="row-fluid" id="div_<{$stud.item_id}>_<{$stud.detail_id}>_<{$stud.decrease_id}>">
+      <div class='span1'><{$stud.class_sit_num}></div>
+      <div class='span2'><span class="del"><i class="icon-trash"></i> </span><{$stud.name}></div>
+      <div class='span2'><{$stud.decrease_dollar}></div>
+      <div class='span2'><{$stud.cause}></div>
+      <div class='span2'><{$stud.modify_time|truncate:10}></div>
+      </div>
+    <{/foreach }>
+
+       <form method='post' name='editForm' id='editForm_new'  class="form-actions" > 
+	<div  class="row-fluid"  >
+	       <div class='span1'>
+	       		增加
+	       </div>
+     		<div class='span3'>
+     			<select name="stud" >
+			<option label="選擇學生" value="0">選擇學生</option>
+			 <{foreach  key=key item=stud   from= $data.students }>
+			  	<{if ($data.selected[$stud.tn_id]) }>
+				<option label="(<{$stud.class_sit_num}>)<{$stud.name}>" value="<{$stud.tn_id}>_<{$stud.class_sit_num}>_<{$stud.name}>"  >(<{$stud.class_sit_num}>)<{$stud.name}></option>
+    				<{/if}>
+     			<{/foreach }>				
+			</select>
+      		</div>	
+     		<div class='span3'>	
+     			<input   name='dollars' type='text' id='dollars'  placeholder='減免<{$data.decease_dollar}>' />
+		</div>
+ 
+		<div class='span3'>
+  			<input  name='cause' type='text' id='cause' placeholder='減免原因'  />
+		</div>	
+		<div class='span2'>
+			<input name='item_id' type='hidden' value='<{$data.seletc_item}>' />
+			<input name='detail_id' type='hidden' value='<{$data.seletc_detail}>' />
+			<input name='class_id' type='hidden' value='<{$data.class_id}>' />
+			<span class='insert'>save</span>
+		</div>
+		
+		</div>
+		<div class="row-fluid"  >1.低收入戶</div>
+ 
+		<div class="row-fluid"  >2.中低收入戶</div>	
+		<div class="row-fluid"  >3.家境貧困及家庭突遭變故(導師家訪認定)</div>	
+ 
+		<div class="row-fluid"  >4.原住民</div>	
+		<div class="row-fluid"  >5.重度以上身心障礙學生或身心障礙人士之子女</div>	
+		<div class="row-fluid"  >6.中度以下身心障礙學生或身心障礙人士之子女</div>
+ 
+		</form>
+<{/if}>
+<script>    
+
+
+
+
+    //刪除----------------------------------------------------------------------------------
+  $(document).on("click", ".del", function(){
+
+    var div_id = $(this).parent().parent().attr("id")  ;
+    
+           ajax_del(  div_id) ;  // 刪除動作
+           //把這個 div 隱藏起來 
+           $(this).parent().parent().hide() ;    
+ });
+ 
+      var ajax_del=function( id ){
+      //alert(id) ;
+             var URLs="ajax_decrease_del.php?id=" + id ;
+    
+            $.ajax({
+                url: URLs,
+                type:"GET",
+                dataType:'text',
+
+                success: function(msg){
+                    //alert(msg);
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+           })
+        }
+
+
+
+
+
+
+//新增        
+$(document).on("click", "span.insert" ,  function(){
+          		//alert ( $("#editForm_new" ).serialize() ) ;
+          		var form_id= "editForm_new" ;
+          		var money =  $('#dollars').val() ;
+          		//alert (money) ;
+          		if      ((money  >  <{$data.detail_dollar}> ) || (money<=0))
+          		    alert  ('減免金額有問題！')  ;
+          		else 
+          		    ajax_add( form_id  ) ;  // 動作
+          		    
+	}
+ );
+
+function ajax_add(form_id) {
+        //alert( form_id);
+        
+	$.ajax({
+		url: 'ajax_decrease_add.php',
+		type: 'POST',
+		dataType: 'html',
+		data: $('#'+form_id ).serialize() , 
+
+ 
+	})
+	.done(function(data) {
+		//alert(div_id + form_id + data) ;
+		console.log("success");
+
+		//列出新增的一筆紀錄
+		if (data=='fail')
+		    alert ('名單重覆！')  ;
+		else  {
+		    $('#'+form_id).before(data );
+		    //清除表單內容
+		    //$('#'+form_id)[0].reset() ;
+		}    
+	}) 
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});	 
+ 
+}  
+</script>   
+
+
+<{else}>
+  <h4>非級任身份，無法使用！</h4>
+ <{/if}>

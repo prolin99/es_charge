@@ -1,0 +1,64 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+<style type="text/css">
+@media print {
+  a[href]:after {
+    content: none;
+  }
+   #xo-logo-head ,  #xo_globalnav , #xo-nav-options , #buttontop_mod ,#buttonbar_mod , #xo-footer ,  .pad5 ,#frm , #frm_add {
+      display: none;
+   }
+}
+</style >
+
+<div id='frm' class="row-fluid"  >
+    <form class="form-horizontal"   action="decrease.php" method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
+ 	<a class="btn btn-success"  href="decrease_list.php?do=excel&item_id=<{$data.select_item}>">依學生減免匯出(全)</a>
+ 	<a class="btn btn-primary"  href="decrease_list_only.php?do=excel&item_id=<{$data.select_item}>">依學生減免匯出(僅補助)</a>
+      	<a class="btn btn-success"  href="decrease_list2.php?do=excel&item_id=<{$data.select_item}>">依項目減免匯出(全)</a>
+ 	
+      	<a class="btn btn-primary"  href="decrease_list2_only.php?do=excel&item_id=<{$data.select_item}>">依項目減免匯出(僅補助)</a>      	
+   </form>
+</div>   
+<!--      減免列表                                   -->
+<{if ($data.select_item ) }>  
+<{ $i++ }>
+<h4>全校減免學生金額列表</h4>
+	<!--      表格標題                                   -->
+      <table class="table table-bordered" >
+      <tr>
+      <td >NO</td>
+      <td >班級</td>
+      <td>座號</td>
+      <td>姓名</td>
+       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        <td><{$detail_val|truncate:9}></td>
+      <{/foreach}>
+      
+      <td>減免原因</td>
+
+      </tr>
+      <!--      表格內容                                   -->
+    <{foreach  key=key item=stud   from= $data.decase_list }>
+      <tr  id="div_<{$data.seletc_item}>_<{$key}>">
+      <td><{ $i++ }></td>
+      <td ><{$stud.curr_class_num}></td>
+      <td ><{$stud.class_sit_num}></td>
+      <td ><{$stud.name}></td>
+      
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        <!--      dollar_item_stud_sn_detail_id                金額  checked 補助                   -->
+        <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
+        <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+        <{else}>
+        <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></td>
+        <{/if}>
+      <{/foreach}>
+      
+      <td><{$stud.cause|truncate:18}></td>
+      </tr>
+    <{/foreach }>
+</table>
+<{/if }>   <!--      減免列表 end                                  -->
