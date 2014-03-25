@@ -7,7 +7,7 @@
   a[href]:after {
     content: none;
   }
-   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm {
+   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm ,  .blockContent ,#xo-logger-output{
       display: none;
    }
 }
@@ -62,7 +62,9 @@
 	<{$data.students[$stud].name}> ,	
 	<{/foreach}>
 <{/if}>
-
+  <div class="alert alert-success"  id='frm'>
+  點選最左方圖示，切換是否自動扣款或自行繳費。
+  </div>
 <{/if}>
 
 
