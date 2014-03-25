@@ -12,7 +12,7 @@ CREATE TABLE `charge_item` (
   `creater` varchar(20) DEFAULT NULL,
   `cooperate` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`item_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM   ;
 
 
 CREATE TABLE `charge_detail` (
