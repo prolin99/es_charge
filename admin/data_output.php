@@ -35,30 +35,7 @@ $data['item_list']=get_item_list('all') ;
 	$item_id=$key[1] ;
  }	
  
-if  ($item_id) {
- 
-	//細項名稱
-	$data['detail_list']=get_item_detail_list_name($item_id) ;
 
-	$detail_id_array = array_keys($data['detail_list']) ; 
-
-	//取得全部細項的收費
-	$charge_array= get_detail_charge_dollars( $item_id) ;
-	
-	//取得班級
-	$class_id_list= get_class_id_list($item_id) ; 
-	
-	foreach ($class_id_list as $class_id =>$class_id_name) {
-	  	//各班級班級已填減免資料
-		$data['decase_list'][$class_id_list]= get_decrease_list_item_array( $class_id ,  $item_id ) ;
-	}	
-	//各班要繳費
-	
-	//銀行扣款
-	
-	//自付
- 
-}
  $data['select_item'] = $item_id  ;
 
 

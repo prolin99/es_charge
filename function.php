@@ -316,6 +316,8 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
  			$data[$stud['student_sn']]['sex'] =$stud['sex'] ;
  			$data[$stud['student_sn']]['cause'] =$decrease_cause[$stud['cause']] ;
  			$data[$stud['student_sn']]['cause_id'] =$stud['cause'] ;
+ 			$data[$stud['student_sn']]['modify_time'] = substr($stud['modify_time'],5,5) ;
+ 
  	}	
  
 	return $data ;
@@ -469,6 +471,18 @@ function count_class_stud_pay($class_id , $stud , $stud_sel  , $charge_array , $
 	
 }	
 
+Function get_class_teacher_list() {
+	//取得全部級任名冊
+	global  $xoopsDB ;
+	$sql =  "  SELECT  t.uid, t.class_id , u.name  FROM " . $xoopsDB->prefix("e_classteacher") .'  t  , ' .   $xoopsDB->prefix("users")  .'  u    ' .  
+	               " where t.uid= u.uid    " ;
+ 
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
+	while($data_row=$xoopsDB->fetchArray($result)){
+ 			$class_id[$data_row['class_id']] = $data_row['name'] ;
+	}	
+	return $class_id  ;
+}	
 
 function get_my_class_id($uid   ) {
 	//取得$uid 的任教班級

@@ -22,18 +22,20 @@ $item_id=empty($_REQUEST['item_id'])?"":$_REQUEST['item_id'];
 
 
 if  ($item_id) {
-
+	$show_mode= 'all' ;
+	if ($_GET['show']== 'only') 
+		$show_mode= 'only' ;
 
 	//細項名稱
 	$detail_list=get_item_detail_list_name($item_id) ;
 
-	$detail_id_array = array_keys($data['detail_list']) ; 
+	//$detail_id_array = array_keys($data['detail_list']) ; 
 
 	//取得全部細項的收費
 	$charge_array= get_detail_charge_dollars( $item_id) ;
 	
 	//全部已填的減免資料
-	$data['decase_list'] = get_all_decrease_list_item_kind_array( $item_id ) ;
+	$data['decase_list'] = get_all_decrease_list_item_kind_array( $item_id , $show_mode) ;
 
 	$objPHPExcel = new PHPExcel();
 	$objPHPExcel->setActiveSheetIndex(0);  //設定預設顯示的工作表
@@ -80,7 +82,7 @@ if  ($item_id) {
 	}
  
 	header('Content-Type: application/vnd.ms-excel');
-	header('Content-Disposition: attachment;filename=dec_kind'.date("mdHi").'.xls' );
+	header('Content-Disposition: attachment;filename=dec_kind_'.$show_mode.date("mdHi").'.xls' );
 	header('Cache-Control: max-age=0');
 
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

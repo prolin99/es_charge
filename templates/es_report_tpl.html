@@ -15,6 +15,7 @@
 </style >
     <form  id='frm' class="form-horizontal" action="report.php"  method='post' >
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5'  onchange="submit();"}>
+      	<a class="btn btn-success"  href="report_list.php?do=excel&show=all&item_id=<{$data.seletc_item}>">匯出 EXCEL</a>
 
    </form>
    

@@ -15,11 +15,11 @@
 <div id='frm' class="row-fluid"  >
     <form class="form-horizontal"   action="decrease.php" method='post'>
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
- 	<a class="btn btn-success"  href="decrease_list.php?do=excel&item_id=<{$data.select_item}>">依學生減免匯出(全)</a>
- 	<a class="btn btn-primary"  href="decrease_list_only.php?do=excel&item_id=<{$data.select_item}>">依學生減免匯出(僅補助)</a>
-      	<a class="btn btn-success"  href="decrease_list2.php?do=excel&item_id=<{$data.select_item}>">依項目減免匯出(全)</a>
- 	
-      	<a class="btn btn-primary"  href="decrease_list2_only.php?do=excel&item_id=<{$data.select_item}>">依項目減免匯出(僅補助)</a>      	
+      	<a class="btn btn-primary"  href="decrease_list_form.php?do=excel&item_id=<{$data.select_item}>">補助表</a>
+ 	<a class="btn btn-success"  href="decrease_list.php?do=excel&show=all&item_id=<{$data.select_item}>">依學生減免匯出(全)</a>
+ 	<a class="btn btn-primary"  href="decrease_list.php?do=excel&show=only&item_id=<{$data.select_item}>">依學生減免匯出(僅補助)</a>
+      	<a class="btn btn-success"  href="decrease_list2.php?do=excel&show=all&item_id=<{$data.select_item}>">依項目減免匯出(全)</a>
+      	<a class="btn btn-primary"  href="decrease_list2_only.php?do=excel&show=only&item_id=<{$data.select_item}>">依項目減免匯出(僅補助)</a>      	
    </form>
 </div>   
 <!--      減免列表                                   -->
@@ -38,6 +38,7 @@
       <{/foreach}>
       
       <td>減免原因</td>
+      <td>修改日期</td>
 
       </tr>
       <!--      表格內容                                   -->
@@ -58,6 +59,13 @@
       <{/foreach}>
       
       <td><{$stud.cause|truncate:18}></td>
+      <td>
+      <{if ($stud.modify_time>= $data.newsday) }>
+      <span class="label  label-info"><{$stud.modify_time}></span>
+      <{else}>
+       <{$stud.modify_time}>
+      <{/if}>
+      </td>
       </tr>
     <{/foreach }>
 </table>

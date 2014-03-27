@@ -27,13 +27,16 @@ if  ($item_id) {
 	//細項名稱
 	$data['detail_list']=get_item_detail_list_name($item_id) ;
 
-	$detail_id_array = array_keys($data['detail_list']) ; 
+	//$detail_id_array = array_keys($data['detail_list']) ; 
 
 	//取得全部細項的收費
-	$charge_array= get_detail_charge_dollars( $item_id) ;
+	//$charge_array= get_detail_charge_dollars( $item_id) ;
 	
 	//全部已填的減免資料
 	$data['decase_list'] = get_all_decrease_list_item_array( $item_id ,  'only') ;
+	
+	//取得導師名冊
+	$teacher_list = get_class_teacher_list() ;
  
 
 	$objPHPExcel = new PHPExcel();
@@ -43,11 +46,22 @@ if  ($item_id) {
       	$objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'NO.')
             ->setCellValue('B1', '班級')
-            ->setCellValue('C1', '座號')
-            ->setCellValue('D1', '性別')
-            ->setCellValue('E1', '學生姓名') ;
+            ->setCellValue('C1', '導師')
+            ->setCellValue('D1', '學生姓名')
+            ->setCellValue('E1', '性別') ;
             $col = 'E' ;
- 
+ 	//身份別
+ 	foreach   ( $decrease_cause as $d_id => $cause_str ) {
+		if ($d_id>0) {
+			$col++ ;
+			$col_str =$col . '1' ;
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , $cause_str ) ;
+			//echo $cause_str  ;
+		}
+
+	}	
+ 	
+ 	//項目名
 	foreach   (  $data['detail_list'] as $detail_id => $detail ) {
 		$col++ ;
 		$col_str =$col . '1' ;
@@ -55,26 +69,34 @@ if  ($item_id) {
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str, $detail."減免") ;
 
 	}	
+	/*
  	$col++ ;
 	$col_str = $col . '1' ;
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , '減免原因') ;
-
+	*/
  
  	$row=1 ;
         //資料區
         foreach ($data['decase_list'] as $stud_id => $stud )  {
         	$row++ ;
-        	//echo $col_str  ;
-        	//$stud['sex']=1 ;
-        	$y = ($stud['curr_class_num'] /100)-1 ; 
+ 
        	
        		$objPHPExcel->setActiveSheetIndex(0)
             		->setCellValue('A'.$row,$row-1)
             		->setCellValue('B'.$row , $stud['curr_class_num'])
-            		->setCellValue('C'.$row ,$stud['class_sit_num'])
-            		->setCellValue('D'.$row, $stud['sex'])
-            		->setCellValue('E'.$row, $stud['name']) ;
-         	$col = 'E' ;	
+            		->setCellValue('C'.$row ,$teacher_list[$stud['curr_class_num']])
+            		->setCellValue('D'.$row, $stud['name'])
+            		->setCellValue('E'.$row, $stud['sex']);
+            	
+            	//身份	
+            	//echo $stud['cause_id']   ;
+         	$col =chr(ord( 'E') + $stud['cause_id'] ) ;	
+         	$col_str = $col .$row ;
+         	//echo $col ;
+         	$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",  'v' ) ;
+         	
+         	//減免
+         	$col = 'K' ;	
 		foreach   (  $data['detail_list'] as $detail_id => $detail ) {
 			$col++ ;
 			$col_str = $col .$row ;
@@ -82,23 +104,24 @@ if  ($item_id) {
 			$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str", $stud['dollar'][ $detail_id]) ;
 	
 		}
+		/*
 		$col++ ;
 		$col_str = $col .$row ;
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , $stud['cause']) ;		
 		//echo  $stud['cause'] ;
- 
+ 		*/
 	}
  
 	$objPHPExcel->getActiveSheet()->setTitle('student_decrease_list');
  
-
+ 
 	header('Content-Type: application/vnd.ms-excel');
-	header('Content-Disposition: attachment;filename=decrease_o_'.date("mdHi").'.xls' );
+	header('Content-Disposition: attachment;filename=decrease_frm_'.date("mdHi").'.xls' );
 	header('Cache-Control: max-age=0');
  
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	$objWriter->save('php://output');
 	exit;		
-
+ 
 }

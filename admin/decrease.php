@@ -40,16 +40,20 @@ if  ($item_id) {
 	//細項名稱
 	$data['detail_list']=get_item_detail_list_name($item_id) ;
 
-	$detail_id_array = array_keys($data['detail_list']) ; 
+	//$detail_id_array = array_keys($data['detail_list']) ; 
 
 	//取得全部細項的收費
-	$charge_array= get_detail_charge_dollars( $item_id) ;
+	//$charge_array= get_detail_charge_dollars( $item_id) ;
 	
 	//全部已填的減免資料
 	$data['decase_list'] = get_all_decrease_list_item_array( $item_id ) ;
- 
+	
+    	//$today = date("m-d") ;
+    	$data['newsday'] =date("m-d", mktime(0, 0, 0, date("m")  , date("d")-2, date("Y"))  );
+	
+ 	$data['select_item'] = $item_id  ;
 }
- $data['select_item'] = $item_id  ;
+
 
 
 /*-----------秀出結果區--------------*/
