@@ -30,7 +30,12 @@ if  ($item_id) {
 	$objPHPExcel->setActiveSheetIndex(0);  //設定預設顯示的工作表
 	$objActSheet = $objPHPExcel->getActiveSheet(); //指定預設工作表為 $objActSheet
 	$objActSheet->setTitle("收據");  //設定標題	
- 
+  	//設定框線
+	$objBorder=$objActSheet->getDefaultStyle()->getBorders();
+	$objBorder->getBottom()
+          	->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN)
+          	->getColor()->setRGB('000000'); 
+	$objActSheet->getDefaultRowDimension()->setRowHeight(15);
 
 	
 	$row= 1 ;

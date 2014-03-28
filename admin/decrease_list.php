@@ -39,7 +39,10 @@ if  ($item_id) {
  
 
 	$objPHPExcel = new PHPExcel();
-
+	$objPHPExcel->setActiveSheetIndex(0);  //設定預設顯示的工作表
+	$objActSheet = $objPHPExcel->getActiveSheet(); //指定預設工作表為 $objActSheet
+	$objActSheet->setTitle("依學生列表");  //設定標題		
+	$objActSheet->getDefaultRowDimension()->setRowHeight(15);
  	
       //標題行
       	$objPHPExcel->setActiveSheetIndex(0)
