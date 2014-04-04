@@ -57,10 +57,67 @@ $my_class_id =  get_my_class_id($xoopsUser->uid() ) ;
  
 	}
 	
+	//開列全學年學生名單-----------------------------------------------------
+	if ($_POST['act_grade']) {
+	
+		if ($_POST['admin_class_id']  )
+		{
+			//取得費用小計
+			$pay_sum = get_class_need_pay_sum($_POST['item_id'] ,$_POST['class_id']) ;
+			
+			//取得全學年學生名單
+			$students = get_class_students($_POST['admin_class_id']  ,'grade') ;
+			//抓取選擇的班級學生
+			$batch_value="";
+			foreach($students as $key=>$stud){
+ 				$sn=$value;
+				$batch_value.="('','{$stud['tn_id']}','{$_POST['item_id']}'  ,'{$stud['class_id']}' ,'$pay_sum'   ),";
+			}
+			
+			$batch_value=substr($batch_value,0,-1);
+			$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , dollars )  values $batch_value ";
+
+			$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		}
+ 
+	}
+	
+  	//移除全學年繳費名單 ---------------------------------------------------
+	if ($_POST['act_grade_remove']) {
+		
+ 
+		if($_POST['item_id']<>'' AND $_POST['class_id']<>''  ) {
+			class_del_item_record($_POST['class_id'] ,$_POST['item_id'] , 'grade') ;
+  
+		}
+	}	
 //--------------------------------------------------------------------------------------------------------	
 	//取得目前可填收費表
 	$data['item_list']=get_item_list('action') ;
 
+
+
+		
+ 
+ 	
+	//管理者可以選取多班
+	if($isAdmin){
+	
+		$data['admin'] = true ;
+		//取得班級
+		if ($_POST['admin_class_id']) 
+			$class_id=$_POST['admin_class_id'] ;
+		elseif ( !$class_id)
+			$class_id= '101' ;
+
+		//班級名稱
+		$data['class_list']=get_class_list() ;
+	}	
+      	
+ 	//取得該班的資料
+	if  ( $class_id ) {
+		$data['students']= get_class_students($class_id ) ;
+	}
 	//如果有選擇項目，檢查班上學生是否已加入
 	if  ( $item_id ) {	
 		if  ($data['item_list'][$item_id]) 		//是否在報名時間內
@@ -68,16 +125,7 @@ $my_class_id =  get_my_class_id($xoopsUser->uid() ) ;
 		else 
  			$item_id='' ;
 		
-	}	
-
-//取得該班的資料
-	if  ( $class_id ) {
-		$data['students']= get_class_students($class_id ) ;
 	}		
- 
-
-      	
- 
 
 	
  $data['seletc_item'] = $item_id  ;

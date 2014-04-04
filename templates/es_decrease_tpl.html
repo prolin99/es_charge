@@ -53,13 +53,23 @@
     <{/foreach }>
 
 	 <{if ($data.inTime ) }>  
+	 <hr />
        <!-- 新增學生  -->    
      <div  id= 'frm_add' class="row-fluid">
      <div class="span8">
        <form method='post' name='editForm' id='editForm_new' class="form-horizontal" > 
  		<fieldset>
-		<legend>新增減免學生</legend>
+		
+    <{if ($data.admin) }>
+    	<!-- 管理者可處理全校學生    -->
+    	<legend>新增減免學生，繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='span2' onchange="submit();"}>
+    	<span class="alert alert-error" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
+    	</legend>
+	<{else}>    	
+    	<legend>新增減免學生</legend>
+    <{/if}>		
      			<div class="control-group">
+     			
      			<label class="control-label" for="stud" >學生：</label>
      			<select name="stud" >
 			<option label="選擇學生" value="0">選擇學生</option>
@@ -102,7 +112,10 @@
  
  		</fieldset>
 		</form>
+		<{if ($data.spec_list)}>
+		<h4>舊記錄中班上有減免身份</h4>
 		<{$data.spec_list}>
+		<{/if}>
 	</div>
 	<div class="span4">
 		<p>&nbsp</p><p>&nbsp</p>

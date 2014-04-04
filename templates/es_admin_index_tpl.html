@@ -10,7 +10,11 @@
 
     <table class="table table-hover">
 	 <{foreach  key=key item=list   from= $p_data.list }>
+	 <{if  ($list.end_date < $p_data.today) }>
+	 <tr class='error'>
+	 <{else}>
 	 <tr>
+	 <{/if}>
 	      <td><{$list.item_id}></td>
 	      <td><{$list.item_type}></td>
 	      <td><{$list.item}></td>

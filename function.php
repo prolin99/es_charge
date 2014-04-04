@@ -1,6 +1,6 @@
 <?php
 //  ------------------------------------------------------------------------ //
-// 本模組由 無名氏 製作
+// 本模組由 prolin 製作
 // 製作日期：2014-02-16
 // $Id:$
 // ------------------------------------------------------------------------- //
@@ -57,6 +57,65 @@ function is_safe_chk() {
 	
 }
 
+
+//=================================================================================================
+function get_class_list( ) {
+	//取得全校班級列表 
+	global  $xoopsDB ;
+ 
+		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("e_student") . "   group by class_id   " ;
+ 
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		while($row=$xoopsDB->fetchArray($result)){
+ 
+			$data[$row['class_id']]=$row['class_id'] ;
+	
+		}		
+	return $data ;		
+	
+}
+
+
+function get_class_students( $class_id , $mode='class') {
+	//取得該班的學生姓名資料   $mode =class ,grade (全學年) , all (全校)
+	global  $xoopsDB ;
+	if ($mode =='all')  
+		$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("e_student") . "     ORDER BY class_id,  `class_sit_num`  " ;
+	elseif ( $mode=='grade') {
+		$grade = substr($class_id,0,1) ;
+		$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("e_student") . "  where class_id like '$grade%'   ORDER BY class_id,  `class_sit_num`  " ;
+	}else 
+		$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("e_student") . "   where class_id='$class_id'   ORDER BY  `class_sit_num`  " ;
+ 
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		while($stud=$xoopsDB->fetchArray($result)){
+ 
+			$data[$stud['tn_id'] ]=$stud ;
+	
+		}		
+	return $data ;		
+	echo $sql ;
+	
+}
+
+
+
+function get_record_class_list( $item_id ) {
+	//取得全校班級列表 
+	global  $xoopsDB ;
+ 
+		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record") . "  where item_id='$item_id'  group by class_id   " ;
+ 
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		while($row=$xoopsDB->fetchArray($result)){
+ 
+			$data[$row['class_id']]=$row['class_id'] ;
+	
+		}		
+	return $data ;		
+	
+}
+
 function item_in_time($item_id){
 	//是否在期限內
 	global  $xoopsDB ;
@@ -75,18 +134,24 @@ function get_item_list($mode='action'){
 	//取得收費表 action 可填報、 all 取得最近六項
 
 	global  $xoopsDB ;
+	
 	if ($mode=='action') 
+		//可填報
 		$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " where ( start_date<= NOW()   and  end_date >= (NOW() - INTERVAL 1 DAY ) )order by item_id     " ;
 	else 	
 		$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 6   " ;
 	
  	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
- 
+ 	
+ 	$today = date('Y-m-d') ;
 	$data[0]='選擇繳費項目' ;
 	while($date_list=$xoopsDB->fetchArray($result)){
- 	 	$data[ $date_list['item_id']]= $date_list['item_type'] . '--' .  $date_list['item'] . '--' .  $date_list['start_date'] .' ~ ' . $date_list['end_date'] ;
-	}	
  
+		if ($date_list['end_date'] < $today) 
+			$data[ $date_list['item_id']]= $date_list['item_type'] . '--' .  $date_list['item'] . '--******已過期！';
+		else 	
+			$data[ $date_list['item_id']]= $date_list['item_type'] . '--' .  $date_list['item'] . '--' .  $date_list['start_date'] .' ~ ' . $date_list['end_date'] ;
+	}
 	return $data ;
 }
 
@@ -151,21 +216,7 @@ function get_detail_charge_dollars( $item_id) {
 
 
 //-------------------------------------------------------------------------------------------------------------------
-function get_class_students( $class_id ) {
-	//取得該班的學生姓名資料
-	global  $xoopsDB ;
- 
-		$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("e_student") . "   where class_id='$class_id'   ORDER BY  `class_sit_num`  " ;
- 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-		while($stud=$xoopsDB->fetchArray($result)){
- 
-			$data[$stud['tn_id'] ]=$stud ;
 	
-		}		
-	return $data ;		
-	
-}	
 
 function get_class_students_charge( $item_id , $class_id ) {
 	//取得該班的要繳費名單
@@ -186,11 +237,12 @@ function get_class_students_charge( $item_id , $class_id ) {
 function get_class_spec_old_item($item_id , $class_id ) {
 	//取得該班學生在舊表中有特殊身份的列表
 	global  $xoopsDB ,$decrease_cause ;
-	$sql =  "  SELECT  c.student_sn , c.cause , s.name   FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
-			"where   c.student_sn = s.tn_id and c.item_id <'$item_id'   order by  c.cause " ;
+	$sql =  "  SELECT  c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num  FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
+			"where   c.student_sn = s.tn_id and c.item_id <'$item_id'  and s.class_id='$class_id' and c.cause>0 order by  c.cause " ;
+			//echo $sql ;
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
- 			$data =$stud['cause'] . '--' . $decrease_cause[ $stud['cause'] ] ." <br>\n" ;
+ 			$data .=$stud['class_sit_num'] . $stud['name']  . '--減免身份：' . $decrease_cause[ $stud['cause'] ] ." <br>\n" ;
 		}		
 	return $data ;				
 	
@@ -272,18 +324,34 @@ function clear_item_test_data($item_id){
 
 
 
-function class_del_item_record($class_id , $item_id){
-	//班上刪除 全部填入的資料
+function class_del_item_record($class_id , $item_id ,$mode='class'){
+	//班上刪除 全部填入的資料 $mode =class 班級，grade 全學年
 	global  $xoopsDB ;
-	//減免記錄
-	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .  
+	if ($mode =='grade') {
+		//全學年
+		$grade = substr($class_id,0,1) ;
+		//減免記錄
+		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .  
+     	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num like '$grade%'  " ;
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+     	
+		//學生記錄
+		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .  
+     	   	   "  WHERE  `item_id` = '$item_id'  and  class_id like '$grade%'  " ;
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+	}else {
+		//班級
+		//減免記錄
+		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .  
      	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num='$class_id'  " ;
      	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
      	
-	//學生記錄
-	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .  
+		//學生記錄
+		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .  
      	   	   "  WHERE  `item_id` = '$item_id'  and  class_id='$class_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());			
+		
+	}	
     	
 
 }

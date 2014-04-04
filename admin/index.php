@@ -106,21 +106,15 @@ if ($_POST['btn_add'] )
  
 //取得所有收費表
  	$p_data['list'] =get_item_all_list() ;
- 
+ 	$p_data['today']= date("Y-m-d" ) ;
+
  //取出常用細項
 $p_data['detail_def']= $xoopsModuleConfig['es_charge_default_detail'] ;
 
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "p_data" , $p_data ) ; 
- 
-//$xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
-//$xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
-//$xoopsTpl->assign( "jquery" , get_jquery(true)) ;
 
-
-//include_once XOOPS_ROOT_PATH.'/footer.php';
-//module_admin_footer($main,0);
  
 include_once 'footer.php';
 ?>

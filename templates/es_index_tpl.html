@@ -3,13 +3,23 @@
 <{$toolbar}>
 <{if ($data.class_id )  }>  
     <form class="form-horizontal" action="index.php"  method='post'>
-      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+      	<span><label>繳費項目：</label></span><{html_options name='item_id' options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
    </form>
    
 <{if ($data.seletc_item )  }>  
 <div class="row-fluid" >
     <form class="form-horizontal" action="index.php"  method='post'>
-    <legend><{$data.class_id}>班級學生繳費名單</legend>
+    <{if ($data.admin) }>
+    	<!-- 管理者可處理全校學生    -->
+    	<legend><{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='span2' onchange="submit();"}> 班級學生繳費名單
+    	<span class="alert alert-error">管理員權限!!!!</span>
+    	<button type="submit" class="btn btn-primary" name='act_grade' value='act_grade' >開列全學年學生</button>
+    	<button type="submit" class="btn btn-danger"  name='act_grade_remove'  value="act_grade_remove" onclick='return confirm("確定要移除?\n\nPS.繳費紀錄亦會一併被刪除")' >清空全學年學生</button>
+ 
+    	</legend>
+    <{else}>
+    	<legend><{$data.class_id}>班級學生繳費名單</legend>
+    <{/if}>
 
     <{foreach  key=key item=stud   from= $data.students }>
     <{if ($data.selected[$stud.tn_id].selected) }>
@@ -26,7 +36,7 @@
      <input type="hidden" name="class_id" value="<{$data.class_id}>" />	
      <input type="hidden" name="item_id" value="<{$data.seletc_item}>" />	
      <button type="submit" class="btn btn-success" name='act_add' value='act_add' >開列選擇的學生</button>
-      <button type="submit" class="btn btn-danger"  name='act_remove'  value="act_remove" onclick='return confirm("確定要移除"?\n\nPS.繳費紀錄亦會一併被刪除")' >清空本班級開列的名單</button>
+     <button type="submit" class="btn btn-danger"  name='act_remove'  value="act_remove" onclick='return confirm("確定要移除?\n\nPS.繳費紀錄亦會一併被刪除")' >清空本班級開列的名單</button>
       
 
     </form>

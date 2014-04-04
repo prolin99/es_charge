@@ -53,10 +53,26 @@ if ($_POST['act_add'] and $_POST['stud'] ) {
 
 	//取得所在班級
 	$class_id =  get_my_class_id($xoopsUser->uid() ) ;
-if  ( $item_id ) {	
+
+	
+	if  ( $item_id ) {	
+		//管理者可以選取多班
+		if($isAdmin){
+		
+			$data['admin'] = true ;
+			//取得班級
+			if ($_POST['admin_class_id']) 
+				$class_id=$_POST['admin_class_id'] ;
+			elseif ( !$class_id)
+				$class_id= '101' ;
+
+			//有收費的班級名稱
+			$data['class_list']=get_record_class_list($item_id ) ;
+		}			
  
 		//取得該班的資料
 		if  ( $class_id ) {
+ 
 			//有繳費
 			$data['selected']=get_class_students_charge($item_id ,$class_id ) ;
 			//學生名冊
@@ -65,14 +81,17 @@ if  ( $item_id ) {
 			//取得舊項有特殊身份者
 			$data['spec_list'] = get_class_spec_old_item($item_id,$class_id ) ;			
 		}	
+		
 		//檢查是否在期限內
-	if  (item_in_time($item_id))  {		//是否在報名時間內	
-		$data['inTime'] = true ;
-	}
+		if  (item_in_time($item_id))  {		//是否在報名時間內	
+			$data['inTime'] = true ;
+		}
 
-	
+		if($isAdmin){
+			$data['inTime'] = true ;
+		}
  
-}	
+	}	
 
 
 
@@ -81,7 +100,7 @@ if  ( $item_id ) {
 $data['detail_list']=get_item_detail_list_name($item_id) ;
 
 $detail_id_array = array_keys($data['detail_list']) ; 
-//$detail_id=empty($_REQUEST['detail_id'])?$detail_id_array[0]:$_REQUEST['detail_id'];
+
  
 //取得全部細項的收費
 $charge_array= get_detail_charge_dollars( $item_id) ;

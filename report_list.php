@@ -18,7 +18,8 @@ require_once '../tadtools/PHPExcel/IOFactory.php';
 if  ($item_id) {
 	//取得所在班級
 	$class_id =get_my_class_id($xoopsUser->uid() ) ;
-
+	if ($_GET['class_id']  and $isAdmin ) 
+		$class_id = $_GET['class_id'] ;
 	//細項名稱
 	$detail_list=get_item_detail_list_name($item_id) ;
 
