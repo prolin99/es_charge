@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] ='學生收費管理';					//模組名稱
-$modversion['version']	= '1.0';						//模組版次
+$modversion['version']	= '1.1';						//模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='收費管理，需配合學生名單模組';	//模組說明
 $modversion['credits']	= 'prolin';						//模組授權者
