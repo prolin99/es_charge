@@ -1,12 +1,14 @@
 <{$bootstrap}>
 <{$jquery}>
 <{$toolbar}>
-<{if ($data.class_id )  }>  
+<{if ($data.class_id )  }>     
     <form id ='frm' class="form-horizontal" action="sum.php"  method='post'>
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+      	 <{if ($data.seletc_item ) }>  
       	<a class="btn btn-success"  href="sum_report.php?do=excel&show=all&item_id=<{$data.seletc_item}>">匯出 EXCEL</a>
+      	<{/if}>	
    </form>
-   
+
 <{if ($data.seletc_item ) }>  
 <style type="text/css">
 @media print {

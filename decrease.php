@@ -54,21 +54,24 @@ if ($_POST['act_add'] and $_POST['stud'] ) {
 	//取得所在班級
 	$class_id =  get_my_class_id($xoopsUser->uid() ) ;
 
-	
-	if  ( $item_id ) {	
 		//管理者可以選取多班
 		if($isAdmin){
-		
+		     
 			$data['admin'] = true ;
+
+			//有收費的班級名稱
+			$data['class_list']=get_record_class_list($item_id ) ;
+			
 			//取得班級
 			if ($_POST['admin_class_id']) 
 				$class_id=$_POST['admin_class_id'] ;
 			elseif ( !$class_id)
-				$class_id= '101' ;
-
-			//有收費的班級名稱
-			$data['class_list']=get_record_class_list($item_id ) ;
-		}			
+				$class_id=array_shift(array_keys($data['class_list'])  );
+			
+		}
+		
+	if  ( $item_id ) {	
+			
  
 		//取得該班的資料
 		if  ( $class_id ) {

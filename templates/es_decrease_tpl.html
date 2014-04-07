@@ -1,12 +1,13 @@
 <{$bootstrap}>
 <{$jquery}>
 <{$toolbar}>
-<{if ($data.class_id )  }>  
+
 <div class="row-fluid"  >
     <form id='frm' class="form-horizontal"   action="decrease.php" method='post'>
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
    </form>
 </div>   
+<{if ($data.class_id )  }>  
 <!--      減免列表                                   -->
 <{if ($data.seletc_item ) }>  
 <style type="text/css">
@@ -292,5 +293,5 @@
 <{/if}>
 
 <{else}>
-  <h4>非級任身份，無法使用！</h4>
+  <h4>未選擇繳費項目或非級任身份，無法使用！</h4>
  <{/if}>
