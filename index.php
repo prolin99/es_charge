@@ -6,11 +6,11 @@
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 
-
+$xoopsOption['template_main'] = "es_index_tpl.html";
 include_once "header.php";
 
 include_once XOOPS_ROOT_PATH."/header.php";
-$xoopsOption['template_main'] = "es_index_tpl.html";
+
 /*-----------function區--------------*/
 
 
