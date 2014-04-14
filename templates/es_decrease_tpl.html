@@ -141,10 +141,11 @@
   $(document).on("click", ".del", function(){
 
     var div_id = $(this).parent().parent().attr("id")  ;
-    
-           ajax_del(  div_id) ;  // 刪除動作
-           //把這個 div 隱藏起來 
-           $(this).parent().parent().hide() ;    
+    	   if(confirm('是否確定要刪除？')) {
+           	ajax_del(  div_id) ;  // 刪除動作
+           	//把這個 div 隱藏起來 
+           	$(this).parent().parent().hide() ;  
+           }
  });
  
       var ajax_del=function( id ){
