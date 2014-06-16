@@ -18,21 +18,7 @@ $decrease_cause = explode( "\r\n" , $xoopsModuleConfig['es_charge_decrease_cause
 
 
 /********************* 預設函數 *********************/
-//圓角文字框
-function div_3d($title="",$main="",$kind="raised",$style="",$other=""){
-	$main="<table style='width:auto;{$style}'><tr><td>
-	<div class='{$kind}'>
-	<h1>$title</h1>
-	$other
-	<b class='b1'></b><b class='b2'></b><b class='b3'></b><b class='b4'></b>
-	<div class='boxcontent'>
- 	$main
-	</div>
-	<b class='b4b'></b><b class='b3b'></b><b class='b2b'></b><b class='b1b'></b>
-	</div>
-	</td></tr></table>";
-	return $main;
-}
+
 
 //檢查群組權限是否訪客可以查看( true 代表權限設定是 ok，否則提醒) 
 function is_safe_chk() {
