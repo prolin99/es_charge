@@ -37,6 +37,6 @@ $module_menu=toolbar($interface_menu);
 $module_css="<link rel='stylesheet' type='text/css' media='screen' href='module.css' />";
 
 
- is_safe_chk()  ;	//檢查是否訪客有權限
+// is_safe_chk()  ;	//檢查是否訪客有權限
 
 ?>

@@ -30,7 +30,7 @@ function is_safe_chk() {
 	
 	//檢查訪客、註冊者有無讀取權限，如果有出現訊息提醒
 	$sql =  "  SELECT count(*) as cc  FROM " . $xoopsDB->prefix("group_permission") . 
-			" where   gperm_itemid =$mod_id and   ( gperm_groupid =". XOOPS_GROUP_ANONYMOUS  ."  or   gperm_groupid =" . XOOPS_GROUP_USERS .")  " ;
+			" where   gperm_itemid =$mod_id and gperm_name='module_read' and   ( gperm_groupid =". XOOPS_GROUP_ANONYMOUS  ."  or   gperm_groupid =" . XOOPS_GROUP_USERS .")  " ;
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 			
 	while($date_list=$xoopsDB->fetchArray($result)){
 		$cc = $date_list['cc'] ;

@@ -17,12 +17,15 @@ include_once XOOPS_ROOT_PATH."/header.php";
  
  
 /*-----------執行動作判斷區----------*/
-//$op=empty($_REQUEST['op'])?"":$_REQUEST['op'];
+ 
+ if (!$xoopsUser) 
+  	redirect_header(XOOPS_URL,3, "需要登入，才能使用！");
  
 //取得所在班級
 $my_class_id =  get_my_class_id($xoopsUser->uid() ) ;
  
-  	$class_id =$my_class_id ;
+$class_id =$my_class_id ;
+
 
   	//移除本班繳費名單 ---------------------------------------------------
 	if ($_POST['act_remove']) {
