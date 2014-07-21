@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] ='學生收費管理';					//模組名稱
-$modversion['version']	= '1.21';						//模組版次
+$modversion['version']	= '1.22';						//模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';		//模組作者
 $modversion['description'] ='收費管理，需配合學生名單模組';	//模組說明
 $modversion['credits']	= 'prolin';						//模組授權者
@@ -97,7 +97,7 @@ $modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE4';
 $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC4';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="無\n低收入戶\n中低收入戶\n家境貧困及家庭突遭變故(導師家訪認定)\n原住民\n重度以上身心障礙學生或身心障礙人士之子女\n中度以下身心障礙學生或身心障礙人士之子女" ;
+$modversion['config'][$i]['default'] ="無\r\n低收入戶\r\n中低收入戶\r\n家境貧困及家庭突遭變故(導師家訪認定)\r\n原住民\r\n重度以上身心障礙學生或身心障礙人士之子女\r\n中度以下身心障礙學生或身心障礙人士之子女" ;
 
 $i++ ;
 
@@ -106,12 +106,12 @@ $modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE2';
 $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC2';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="特殊身份者才能勾選[申請補助]\n<br /><br />無需繳費的減免(如家長費不用繳)，不要勾選[申請補助] \n<br /><br /> \n 各項減免需要附上當年度本市身份證明文書。 \n<br /><br /> \n 點選項目輸入金額或清空。 " ;
+$modversion['config'][$i]['default'] ="特殊身份者才能勾選[申請補助]\r\n<br /><br />無需繳費的減免(如家長費不用繳)，不要勾選[申請補助] \r\n<br /><br /> \r\n 各項減免需要附上當年度本市身份證明文書。 \r\n<br /><br /> \r\n 點選項目輸入金額或清空。 " ;
 $i++ ;
 $modversion['config'][$i]['name'] = 'es_charge_default_detail';
 $modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE3';
 $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC3';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="01_學生團體保險_158,158,158,158,158,158	\n02_教科書_476,462,524,512,532,444	\n03_家長會費_100,100,100,100,100,100	\n04_午餐費_550,550,550,550,550,550	\n05_合作社代辦費_270,230,170,230,260,220	\n06_校外教學&畢業旅行_450,0,0,0,0,2600        \n" ;
+$modversion['config'][$i]['default'] ="01_學生團體保險_158,158,158,158,158,158	\r\n02_教科書_476,462,524,512,532,444	\r\n03_家長會費_100,100,100,100,100,100	\r\n04_午餐費_550,550,550,550,550,550	\n05_合作社代辦費_270,230,170,230,260,220	\r\n06_校外教學&畢業旅行_450,0,0,0,0,2600        " ;
 ?>

@@ -13,7 +13,8 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php";
 /********************* 自訂函數 *********************/
 //取得身份別
 //echo $xoopsModuleConfig['es_charge_decrease_cause'] ;
-$decrease_cause = explode( "\r\n" , $xoopsModuleConfig['es_charge_decrease_cause'] ) ;
+//$decrease_cause = explode( "\n" , $xoopsModuleConfig['es_charge_decrease_cause'] ) ;
+$decrease_cause = preg_split('/\r\n/' ,$xoopsModuleConfig['es_charge_decrease_cause']) ;
 //$decrease_cause= array("無" , "低收入戶" ,"中低收入戶","家境貧困及家庭突遭變故(導師家訪認定)","原住民","重度以上身心障礙學生或身心障礙人士之子女" ,"中度以下身心障礙學生或身心障礙人士之子女") ;
 
 
