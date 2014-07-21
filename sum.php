@@ -12,6 +12,8 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
 
+ if (!$xoopsUser) 
+  	redirect_header(XOOPS_URL,3, "需要登入，才能使用！");
 
 /*-----------執行動作判斷區----------*/
 

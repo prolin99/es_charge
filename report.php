@@ -12,11 +12,16 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
 
+ if (!$xoopsUser) 
+  	redirect_header(XOOPS_URL,3, "需要登入，才能使用！");
 
 /*-----------執行動作判斷區----------*/
 
 //取得所在班級
 $class_id =get_my_class_id($xoopsUser->uid() ) ;
+if (($class_id =='') and  !$isAdmin)
+  	redirect_header(XOOPS_URL,3, "非級任，無法使用！");
+  	
 	//管理者可以選取多班
 	if($isAdmin){
 		
