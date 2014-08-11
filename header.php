@@ -13,7 +13,7 @@ $isAdmin=isAdmin();
 
 //ini_set('display_errors', 'On');
 
-$item_id=empty($_REQUEST['item_id'])?"":$_REQUEST['item_id'];
+$item_id=empty($_REQUEST['item_id'])?"":intval($_REQUEST['item_id']);
 $interface_menu['繳費系統']="index.php?item_id=$item_id";
 $interface_menu['減免名單']="decrease.php?item_id=$item_id";
 $interface_menu['收費報表']="report.php?item_id=$item_id";
