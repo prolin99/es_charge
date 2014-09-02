@@ -106,7 +106,7 @@ $modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE2';
 $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC2';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default'] ="特殊身份者才能勾選[申請補助]\r\n<br /><br />無需繳費的減免(如家長費不用繳)，不要勾選[申請補助] \r\n<br /><br /> \r\n 各項減免需要附上當年度本市身份證明文書。 \r\n<br /><br /> \r\n 點選項目輸入金額或清空。 " ;
+$modversion['config'][$i]['default'] ="特殊身份者才能勾選[申請補助]\r\n<br /><br />無需繳費的減免(如家長費不用繳)，不要勾選[申請補助] \r\n<br /><br /> \r\n 各項減免需要附上當年度本市身份證明文書。 \r\n<br /><br /> \r\n 點選項目輸入金額或清空。<br /><br /> \r\n 如果有多項身份別，請在該項補助後再指定其他減免身份  " ;
 $i++ ;
 $modversion['config'][$i]['name'] = 'es_charge_default_detail';
 $modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE3';

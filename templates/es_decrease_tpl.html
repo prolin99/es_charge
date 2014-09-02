@@ -43,7 +43,14 @@
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <!--      dollar_item_stud_sn_detail_id                金額  checked 補助                   -->
         <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
-        <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
+          <!-- cause_chk  -->
+          <{if ($data.decase_list[$key].other[$detail_key])}>
+            <!-- other cause_chk  -->
+            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
+          <{else}>
+            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>                
+          <{/if}>
+
         <{else}>
         <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></div>
         <{/if}>
@@ -83,10 +90,11 @@
 			</div>
 			
 			<div class="control-group">
-			<label class="control-label" for="cause_id"  >減免原因：</label>
+			<label class="control-label" for="cause_id"  >主減免原因：</label>
  			<{html_options name='cause_id'  options=$decrease_cause  onchange="cause_check($(this));"  }>
- 			</div>
- 			
+                    (多項身份,在該補助再指定)
+                   </div>
+         
  			<!-- 各項費用  -->
  			<{foreach  key=key item=detail   from= $data.detail_list }>
  			<div class="control-group">
@@ -99,9 +107,16 @@
   			<div class="input-append">
  			 <label title='不參加的情況，請不要勾選補助'><input type='checkbox' name='decrease_sel[<{$key}>]' value='1'  >申請補助</label>
  			 </div>
+                    <div class="input-append">
+                     <{ html_options name=other[$key]  options=$decrease_cause  title="其他減免身份"  style="background-color: #CCCCCC" }>
+                    </div>
  			 </div>
  			<{/foreach }>
- 			
+ 			<div class="control-group">
+                    <label class="control-label" for="cause_id"  >聯絡註記：</label>
+                    <input   class='span8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  /> 
+                    </div>
+
 			<div class="form-actions">
 			<input name='item_id' type='hidden' value='<{$data.seletc_item}>' />
 			<input name='class_id' type='hidden' value='<{$data.class_id}>' />
