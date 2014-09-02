@@ -52,7 +52,13 @@
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <!--      dollar_item_stud_sn_detail_id                金額  checked 補助                   -->
         <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
-        <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+          <!-- cause_chk  -->
+          <{if ($data.decase_list[$key].other[$detail_key])}>
+            <!-- other cause_chk  -->
+            <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+          <{else}>        
+            <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+          <{/if}>     
         <{else}>
         <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></td>
         <{/if}>

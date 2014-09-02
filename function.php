@@ -364,6 +364,7 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['dollar'][$stud['detail_id']] =$stud['decrease_dollar'] ;
  			$data[$stud['student_sn']]['cause_chk'][$stud['detail_id']] =$stud['cause_chk'] ;
+ 			$data[$stud['student_sn']]['other'][$stud['detail_id']] =$stud['cause_other'] ;
  			$data[$stud['student_sn']]['id'][$stud['detail_id']] =$stud['decrease_id'] ;
  			$data[$stud['student_sn']]['curr_class_num'] =$stud['curr_class_num'] ;
  			$data[$stud['student_sn']]['class_sit_num'] =$stud['class_sit_num'] ;
