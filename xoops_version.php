@@ -45,6 +45,9 @@ $modversion['adminmenu'] = "admin/menu.php";
 //---使用者主選單設定---//
 $modversion['hasMain'] = 1;
 
+//---安裝設定---//
+$modversion['onUpdate'] = "include/onUpdate.php";
+
 
 //---樣板設定---要有指定，才會編譯動作，//
 $modversion['templates'] = array();
