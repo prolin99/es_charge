@@ -398,6 +398,7 @@ function get_all_decrease_list_item_kind_array(  $item_id  , $getall= 'all'  ) {
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
 	while($stud=$xoopsDB->fetchArray($result)){
 		$stud['cause_str']=$decrease_cause[$stud['cause']] ;
+		
  		$data[] =$stud ;
  	}	
  

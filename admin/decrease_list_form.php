@@ -98,14 +98,22 @@ if  ($item_id) {
          	//echo $col ;
          	$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",  'v' ) ;
          	
-         	//減免
-         	$col = 'K' ;	
+         	//減免  
+         	//$col = 'K' ;	
+         	$col = chr(ord( 'E')  + count($decrease_cause) -1);
 		foreach   (  $data['detail_list'] as $detail_id => $detail ) {
 			$col++ ;
 			$col_str = $col .$row ;
 
 			$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str", $stud['dollar'][ $detail_id]) ;
-	
+			//如果另一個身份別代號
+			if ($stud['other'][ $detail_id]) {
+				$col =chr(ord( 'E') + $stud['other'][ $detail_id] ) ;	
+         				$col_str = $col .$row ;
+         				//echo $col ;
+         				$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",  'v' ) ;
+			}
+
 		}
 		/*
 		$col++ ;

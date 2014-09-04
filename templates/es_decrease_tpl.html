@@ -92,7 +92,7 @@
 			<div class="control-group">
 			<label class="control-label" for="cause_id"  >主減免原因：</label>
  			<{html_options name='cause_id'  options=$decrease_cause  onchange="cause_check($(this));"  }>
-                    (多項身份,在該補助再指定)
+                    (多身份,點補助後圖示指定)
                    </div>
          
  			<!-- 各項費用  -->
@@ -106,9 +106,13 @@
    			   
   			<div class="input-append">
  			 <label title='不參加的情況，請不要勾選補助'><input type='checkbox' name='decrease_sel[<{$key}>]' value='1'  >申請補助</label>
+
  			 </div>
+                      <div class="input-append">
+                        <i class="icon-comment show_other" title='其他身份別選擇' data_ref='other_<{$key}>''  ></i>
+                      </div>  
                     <div class="input-append">
-                     <{ html_options name=other[$key]  options=$decrease_cause  title="其他減免身份"  style="background-color: #CCCCCC" }>
+                     <{ html_options name=other[$key]  options=$decrease_cause id=other_$key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
                     </div>
  			 </div>
  			<{/foreach }>
@@ -305,6 +309,13 @@
     	 	$('#'+splits[1]).val( splits[2]) ;
  
      }); 	        
+
+  // other_show
+  $(document).on("click", ".show_other", function(){
+      var div_id = $(this).attr("data_ref")  ;
+      $('#'+div_id).show() ;
+    }) ;
+
 </script>   
 <{/if}>
 

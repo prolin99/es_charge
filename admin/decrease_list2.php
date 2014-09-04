@@ -66,20 +66,28 @@ if  ($item_id) {
  		//echo $row ;
         	$y = ($stud['curr_class_num'] /100)-1 ; 
        	
-       		$objActSheet->setCellValue('A'.$row,$row-1) ;
-       		$objActSheet->setCellValue('B'.$row, $detail_list[$stud['detail_id']]  ) ;
-		$objActSheet->setCellValue('C'.$row ,$stud['curr_class_num']) ;
-            	$objActSheet->setCellValue('D'.$row ,$stud['class_sit_num']);
-            	$objActSheet->setCellValue('E'.$row, $stud['sex']);
-            	$objActSheet->setCellValue('F'.$row, $stud['name']) ;
-            	$s_pay =$charge_array[$stud['detail_id']][$y] ; 
-            	$objActSheet->setCellValue('G'.$row, $s_pay) ;
-            	$objActSheet->setCellValue('H'.$row, $stud['decrease_dollar']+0) ;
-            	$pay = $s_pay-$stud['decrease_dollar'] ;
-            	$objActSheet->setCellValue('I'.$row, $pay) ;
- 		$objActSheet->setCellValue('J'.$row , $stud['cause_str']) ;		
- 
-	}
+       	$objActSheet->setCellValue('A'.$row,$row-1) ;
+       	$objActSheet->setCellValue('B'.$row, $detail_list[$stud['detail_id']]  ) ;
+	$objActSheet->setCellValue('C'.$row ,$stud['curr_class_num']) ;
+              $objActSheet->setCellValue('D'.$row ,$stud['class_sit_num']);
+              $objActSheet->setCellValue('E'.$row, $stud['sex']);
+              $objActSheet->setCellValue('F'.$row, $stud['name']) ;
+              $s_pay =$charge_array[$stud['detail_id']][$y] ; 
+              $objActSheet->setCellValue('G'.$row, $s_pay) ;
+              $objActSheet->setCellValue('H'.$row, $stud['decrease_dollar']+0) ;
+              $pay = $s_pay-$stud['decrease_dollar'] ;
+              $objActSheet->setCellValue('I'.$row, $pay) ;
+
+              if  ($stud['cause_other'])
+                $objActSheet->setCellValue('J'.$row , $decrease_cause[$stud['cause_other']] )    ;     
+              else   
+                if ($stud['cause_chk'])
+                    $objActSheet->setCellValue('J'.$row , $stud['cause_str']  ) ;        
+                else     
+                    
+     	      $objActSheet->setCellValue('J'.$row , '(不請補助)-' . $stud['cause_str']  ) ;		
+                
+        }
  
 	header('Content-Type: application/vnd.ms-excel');
 	header('Content-Disposition: attachment;filename=dec_kind_'.$show_mode.date("mdHi").'.xls' );
