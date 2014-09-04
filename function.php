@@ -364,7 +364,10 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['dollar'][$stud['detail_id']] =$stud['decrease_dollar'] ;
  			$data[$stud['student_sn']]['cause_chk'][$stud['detail_id']] =$stud['cause_chk'] ;
+
  			$data[$stud['student_sn']]['other'][$stud['detail_id']] =$stud['cause_other'] ;
+ 			$data[$stud['student_sn']]['other_cause_str'][$stud['detail_id']] =$decrease_cause[$stud['cause_other']] ;
+
  			$data[$stud['student_sn']]['id'][$stud['detail_id']] =$stud['decrease_id'] ;
  			$data[$stud['student_sn']]['curr_class_num'] =$stud['curr_class_num'] ;
  			$data[$stud['student_sn']]['class_sit_num'] =$stud['class_sit_num'] ;
@@ -398,7 +401,7 @@ function get_all_decrease_list_item_kind_array(  $item_id  , $getall= 'all'  ) {
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
 	while($stud=$xoopsDB->fetchArray($result)){
 		$stud['cause_str']=$decrease_cause[$stud['cause']] ;
-		
+
  		$data[] =$stud ;
  	}	
  
@@ -471,7 +474,7 @@ function get_decrease_list_item($class_id , $item_id   ) {
 function get_decrease_list_item_array($class_id , $item_id   ) {
 	//取得班上在某收費單全部細項有減免的資料
 	
-	global  $xoopsDB ;
+	global  $xoopsDB ,$decrease_cause ;
  
 	$sql =  "  SELECT  * , s.class_sit_num  FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s " . 
 	               " where  s.tn_id =  c.student_sn        and  curr_class_num='$class_id'   and  item_id='$item_id' 
@@ -480,7 +483,10 @@ function get_decrease_list_item_array($class_id , $item_id   ) {
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['dollar'][$stud['detail_id']] =$stud['decrease_dollar'] ;
  			$data[$stud['student_sn']]['cause_chk'][$stud['detail_id']] =$stud['cause_chk'] ;
+ 	 
  			$data[$stud['student_sn']]['other'][$stud['detail_id']] =$stud['cause_other'] ;
+ 			$data[$stud['student_sn']]['other_cause_str'][$stud['detail_id']] =$decrease_cause[$stud['cause_other']] ;
+
  			$data[$stud['student_sn']]['id'][$stud['detail_id']] =$stud['decrease_id'] ;
  	}	
  

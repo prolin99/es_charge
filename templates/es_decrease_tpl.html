@@ -46,7 +46,7 @@
           <!-- cause_chk  -->
           <{if ($data.decase_list[$key].other[$detail_key])}>
             <!-- other cause_chk  -->
-            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
+            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
           <{else}>
             <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>                
           <{/if}>
