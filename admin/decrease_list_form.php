@@ -72,11 +72,11 @@ if  ($item_id) {
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str, $detail."減免") ;
 
 	}	
-	/*
+ 
  	$col++ ;
 	$col_str = $col . '1' ;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , '減免原因') ;
-	*/
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , '連絡訊息') ;
+ 
  
  	$row=1 ;
         //資料區
@@ -108,13 +108,17 @@ if  ($item_id) {
 			$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str", $stud['dollar'][ $detail_id]) ;
 			//如果另一個身份別代號
 			if ($stud['other'][ $detail_id]) {
-				$col =chr(ord( 'E') + $stud['other'][ $detail_id] ) ;	
-         				$col_str = $col .$row ;
+				$col_o =chr(ord( 'E') + $stud['other'][ $detail_id] ) ;	
+         				$col_str = $col_o .$row ;
          				//echo $col ;
          				$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",  'v' ) ;
 			}
 
 		}
+		//ps
+		$col++ ;
+		$col_str = $col .$row ;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , $stud['ps']) ;		
 		/*
 		$col++ ;
 		$col_str = $col .$row ;

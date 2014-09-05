@@ -215,6 +215,7 @@ function get_class_students_charge( $item_id , $class_id ) {
  			$data[$stud['student_sn']]['selected']='1' ;
  			$data[$stud['student_sn']]['cause'] =$decrease_cause[ $stud['cause'] ] ;
 			$data[$stud['student_sn']]['in_bank'] = $stud['in_bank']  ;
+			$data[$stud['student_sn']]['ps'] = $stud['ps']  ;
 	
 		}		
 	return $data ;		
@@ -350,7 +351,7 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
 	global  $xoopsDB,$decrease_cause ;   
  
  
-	$sql =  "  SELECT  c.*  , s.class_sit_num ,s.name,s.sex  , r.cause   FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s ,  " .    $xoopsDB->prefix("charge_record") .  "  r  " . 
+	$sql =  "  SELECT  c.*  , s.class_sit_num ,s.name,s.sex  , r.cause , r.ps   FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s ,  " .    $xoopsDB->prefix("charge_record") .  "  r  " . 
 	               " where  s.tn_id =  c.student_sn    and r.student_sn =  c.student_sn   and   r.item_id =c.item_id  and  c.item_id='$item_id'  "  ;
 	               
 	//僅列出有申請補助               
@@ -375,6 +376,7 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
  			$data[$stud['student_sn']]['sex'] =$stud['sex'] ;
  			$data[$stud['student_sn']]['cause'] =$decrease_cause[$stud['cause']] ;
  			$data[$stud['student_sn']]['cause_id'] =$stud['cause'] ;
+ 			$data[$stud['student_sn']]['ps'] =$stud['ps'] ;
  			$data[$stud['student_sn']]['modify_time'] = substr($stud['modify_time'],5,5) ;
  
  	}	

@@ -56,7 +56,12 @@
         <{/if}>
       <{/foreach}>
       
-      <div class='span2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="icon-trash"></i></span><{$data.selected[$key].cause|truncate:18}></div>
+      <div class='span2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="icon-trash"></i></span><{$data.selected[$key].cause|truncate:18}>
+          <{if ($data.selected[$key].ps) }>
+            <i class="icon-info-sign" title="連絡內容：<{$data.selected[$key].ps}>"></i>
+          <{/if}>
+        </div>
+
       </div>
     <{/foreach }>
 

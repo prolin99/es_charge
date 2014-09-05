@@ -64,7 +64,12 @@
         <{/if}>
       <{/foreach}>
       
-      <td><{$stud.cause|truncate:18}></td>
+      <td><{$stud.cause|truncate:18}>
+          <{if ($stud.ps) }>
+            <br />
+            <span class="label label-info"><{$stud.ps}></span>
+          <{/if}>  
+      </td>
       <td>
       <{if ($stud.modify_time>= $data.newsday) }>
       <span class="label  label-info"><{$stud.modify_time}></span>

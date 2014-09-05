@@ -62,7 +62,11 @@ if  ($item_id) {
 	}	
  	$col++ ;
 	$col_str = $col . '1' ;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , '減免原因') ;
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , '減免原因') ;
+
+ 	$col++ ;
+	$col_str = $col . '1' ;
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , '連絡訊息') ;
 
  
  	$row=1 ;
@@ -91,6 +95,9 @@ if  ($item_id) {
 		$col_str = $col .$row ;
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , $stud['cause']) ;		
 		//echo  $stud['cause'] ;
+		$col++ ;
+		$col_str = $col .$row ;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str , $stud['ps']) ;				
  
 	}
  
