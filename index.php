@@ -75,7 +75,7 @@ $class_id =$my_class_id ;
 			$batch_value="";
 			foreach($students as $key=>$stud){
  				$sn=$value;
-				$batch_value.="('','{$stud['tn_id']}','{$_POST['item_id']}'  ,'{$stud['class_id']}' ,'$pay_sum'   ),";
+				$batch_value.="('','{$stud['stud_id']}','{$_POST['item_id']}'  ,'{$stud['class_id']}' ,'$pay_sum'   ),";
 			}
 			
 			$batch_value=substr($batch_value,0,-1);

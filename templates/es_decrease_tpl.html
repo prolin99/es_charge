@@ -67,7 +67,7 @@
 
 	 <{if ($data.inTime ) }>  
 	 <hr />
-       <!-- 新增學生  -->    
+       <!-- 新增學生        --------------------------------------------------------------------------------------                            -->    
      <div  id= 'frm_add' class="row-fluid">
      <div class="span8">
        <form method='post' name='editForm' id='editForm_new' class="form-horizontal" > 
@@ -87,8 +87,8 @@
      			<select name="stud" >
 			<option label="選擇學生" value="0">選擇學生</option>
 			 <{foreach  key=key item=stud   from= $data.students }>
-			  	<{if ($data.selected[$stud.tn_id].selected and  !$data.decase_list[$stud.tn_id]) }>
-				<option label="(<{$stud.class_sit_num}>)<{$stud.name}>" value="<{$stud.tn_id}>_<{$stud.class_sit_num}>"  >(<{$stud.class_sit_num}>)<{$stud.name}></option>
+			  	<{if ($data.selected[$stud.stud_id].selected and  !$data.decase_list[$stud.stud_id]) }>
+				<option label="(<{$stud.class_sit_num}>)<{$stud.name}>" value="<{$stud.stud_id}>_<{$stud.class_sit_num}>"  >(<{$stud.class_sit_num}>)<{$stud.name}></option>
     				<{/if}>
      			<{/foreach }>				
 			</select>
@@ -100,7 +100,7 @@
                     (多身份,點補助後圖示指定)
                    </div>
          
- 			<!-- 各項費用  -->
+ 			<!-- 各項費用  ---------------------  -->
  			<{foreach  key=key item=detail   from= $data.detail_list }>
  			<div class="control-group">
  			<span class="fill" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
@@ -110,17 +110,25 @@
   			    placeholder='<{$data.detail_dollar.decease[$key]}>' onblur="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
    			   
   			<div class="input-append">
+                      <{ if ($data.dent_support[$key]) }>
+                      <label title='可減免，但無法補助' class="label">(無補助)</label>
+                      <{else}>
  			 <label title='不參加的情況，請不要勾選補助'><input type='checkbox' name='decrease_sel[<{$key}>]' value='1'  >申請補助</label>
+                      <{/if}>
 
  			 </div>
                       <div class="input-append">
+                      <{ if !($data.dent_support[$key]) }>
                         <i class="icon-comment show_other" title='其他身份別選擇' data_ref='other_<{$key}>''  ></i>
+                        <{/if}>
                       </div>  
                     <div class="input-append">
                      <{ html_options name=other[$key]  options=$decrease_cause id=other_$key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
                     </div>
  			 </div>
  			<{/foreach }>
+
+                      <!-- 聯絡註記  ---------------------  -->
  			<div class="control-group">
                     <label class="control-label" for="cause_id"  >聯絡註記：</label>
                     <input   class='span8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  /> 
@@ -197,8 +205,10 @@
     	var g_val = $(obj_input).val() ;
     	var input_name = $(obj_input).attr('title') ;
     	 
-    	if ((g_val > max_m)|(g_val<0) )
+    	if ((g_val > max_m)|(g_val<0) ) {
     	   alert (  input_name+ '減免金額有問題！') ;
+          $(obj_input).val(0) ;
+       }  
     }
     
     

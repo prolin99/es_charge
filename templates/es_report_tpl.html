@@ -47,23 +47,23 @@
     </tr>  
     
   <{foreach  key=key item=stud   from= $data.students }>
-    <{if ($data.selected[$stud.tn_id].selected) }>
+    <{if ($data.selected[$stud.stud_id].selected) }>
     <tr>
  
-     <{if ($data.selected[$stud.tn_id].in_bank) }>
-      <td ><span class="in_bank" id='icon_<{$stud.tn_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+     <{if ($data.selected[$stud.stud_id].in_bank) }>
+      <td ><span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
       <{else}>
-      <td ><span class="in_bank"  id='icon_<{$stud.tn_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <td ><span class="in_bank"  id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
       <{/if}>
        		<!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-         <{if ($data.decase_list_array[$stud.tn_id].dollar[$detail_key]) }>
-         <td ><span class="label label-inverse"><{$data.pay_list[$stud.tn_id][$detail_key]}></span></td>
+         <{if ($data.decase_list_array[$stud.stud_id].dollar[$detail_key]) }>
+         <td ><span class="label label-inverse"><{$data.pay_list[$stud.stud_id][$detail_key]}></span></td>
          <{else}>
-        <td ><{$data.pay_list[$stud.tn_id][$detail_key]}></td>
+        <td ><{$data.pay_list[$stud.stud_id][$detail_key]}></td>
         <{/if}>
       <{/foreach}>
-      <td><{$data.pay_list[$stud.tn_id].each}></td>
+      <td><{$data.pay_list[$stud.stud_id].each}></td>
      </tr>
     <{/if}>
   <{/foreach}>

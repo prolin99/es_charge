@@ -53,6 +53,7 @@
 <div class="span6">
          <h3>細項</h3>
          <h5>在填報期間，如果細項有調整(代碼、金額)，需要清除填報資料，重新填報！</h5>
+         (項目名稱末字 x 表示無法申請補助)
         <{foreach  key=key item=list   from= $p_data.item_list }>
     	<div class="row" id="div_<{$list.item_id}>_<{$list.detail_id}>">
         
@@ -274,7 +275,7 @@ function ajax_add(form_id , div_id) {
 	<textarea   name="formatted" rows="13" class="span6" placeholder="可以複製貼上右側常用項目，快速建立細項。(右方內容可在偏好設定中修改)" ></textarea>
 	</div>
 	<div class="span6">
-	<label>細項範例(序號_項目_各年級金額)：</label>
+	<label>細項範例(序號_項目_各年級金額)：(項目名稱末字 x 表示無法申請補助)</label>
 	<pre><{$p_data.detail_def}></pre>	
  	</div>
  	</div>

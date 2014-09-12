@@ -113,7 +113,9 @@ if ($_POST['act_add'] and $_POST['stud'] ) {
 
 //細項名稱
 $data['detail_list']=get_item_detail_list_name($item_id) ;
-
+//是否可申請補助的檢查
+$data['dent_support'] = check_deny_support($data['detail_list']) ;
+ 
 $detail_id_array = array_keys($data['detail_list']) ; 
 
  

@@ -77,7 +77,7 @@ function get_class_students( $class_id , $mode='class') {
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
  
-			$data[$stud['tn_id'] ]=$stud ;
+			$data[$stud['stud_id'] ]=$stud ;
 	
 		}		
 	return $data ;		
@@ -185,6 +185,18 @@ function get_item_detail_list_name( $item_id) {
 	return $data ;
 }
 
+function check_deny_support($item_list) {
+ 
+	//檢查是否可以申請補助
+	foreach ($item_list as $k => $v ){
+		if ((substr(trim($v),-1)  =='X' ) or  (substr(trim($v),-1)  =='x' ) )
+			$data[$k] = 1 ;
+	}	
+	return $data ;
+ 
+}
+
+
 function get_detail_charge_dollars( $item_id) {
 	//取得收費表中的全部細目中各年段金額  傳回陣列：[detail_id][year-1]
 	global  $xoopsDB ;
@@ -226,7 +238,7 @@ function get_class_spec_old_item($item_id , $class_id ) {
 	//取得該班學生在舊表中有特殊身份的列表
 	global  $xoopsDB ,$decrease_cause ;
 	$sql =  "  SELECT  c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num  FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
-			"where   c.student_sn = s.tn_id and c.item_id <'$item_id'  and s.class_id='$class_id' and c.cause>0 order by  c.cause " ;
+			"where   c.student_sn = s.stud_id and c.item_id <'$item_id'  and s.class_id='$class_id' and c.cause>0 order by  c.cause " ;
 			//echo $sql ;
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
@@ -240,7 +252,7 @@ function get_class_pay_students(  $class_id , $item_id  ) {
 	//取得該班的要繳費名單
 	global  $xoopsDB ,$decrease_cause ;
  		$sql =  "  SELECT  c.*  , s.class_sit_num ,  s.name  FROM " . $xoopsDB->prefix("charge_record") . " c ,  " . $xoopsDB->prefix("e_student") . "  s  " .
- 		 	" where  c.student_sn  =s.tn_id  and    c.class_id='$class_id'   and  c.item_id='$item_id'   "   
+ 		 	" where  c.student_sn  =s.stud_id  and    c.class_id='$class_id'   and  c.item_id='$item_id'   "   
  		 	;
 
 		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
@@ -352,7 +364,7 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
  
  
 	$sql =  "  SELECT  c.*  , s.class_sit_num ,s.name,s.sex  , r.cause , r.ps   FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s ,  " .    $xoopsDB->prefix("charge_record") .  "  r  " . 
-	               " where  s.tn_id =  c.student_sn    and r.student_sn =  c.student_sn   and   r.item_id =c.item_id  and  c.item_id='$item_id'  "  ;
+	               " where  s.stud_id =  c.student_sn    and r.student_sn =  c.student_sn   and   r.item_id =c.item_id  and  c.item_id='$item_id'  "  ;
 	               
 	//僅列出有申請補助               
 	if  ($getall == 'only') {	               
@@ -391,7 +403,7 @@ function get_all_decrease_list_item_kind_array(  $item_id  , $getall= 'all'  ) {
  
  
 	$sql =  "  SELECT  * , s.class_sit_num ,s.name ,s.sex , r.cause   FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s ,  " .    $xoopsDB->prefix("charge_record") .  "  r  " . 
-	               " where  s.tn_id =  c.student_sn    and r.student_sn =  c.student_sn   and   r.item_id =c.item_id  and  c.item_id='$item_id'  " ;
+	               " where  s.stud_id =  c.student_sn    and r.student_sn =  c.student_sn   and   r.item_id =c.item_id  and  c.item_id='$item_id'  " ;
 	               
 	//僅列出有申請補助               
 	if  ($getall == 'only') {	               
@@ -447,7 +459,7 @@ function get_decrease_list($class_id , $item_id ,$detail_id ) {
 	//取得班上在某細項上有減免的人名
 	global  $xoopsDB ;
 	$sql =  "  SELECT  a.* , b.class_sit_num , b.name  FROM " . $xoopsDB->prefix("charge_decrease") . "  a , " . $xoopsDB->prefix("e_student") . "  b  
-	                where a.student_sn= b.tn_id  and  curr_class_num='$class_id'   and  item_id='$item_id' and  detail_id = '$detail_id' 
+	                where a.student_sn= b.stud_id  and  curr_class_num='$class_id'   and  item_id='$item_id' and  detail_id = '$detail_id' 
 	                ORDER BY  b.class_sit_num  " ;
 
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
@@ -479,7 +491,7 @@ function get_decrease_list_item_array($class_id , $item_id   ) {
 	global  $xoopsDB ,$decrease_cause ;
  
 	$sql =  "  SELECT  * , s.class_sit_num  FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s " . 
-	               " where  s.tn_id =  c.student_sn        and  curr_class_num='$class_id'   and  item_id='$item_id' 
+	               " where  s.stud_id =  c.student_sn        and  curr_class_num='$class_id'   and  item_id='$item_id' 
 	               ORDER BY class_sit_num ,   detail_id    " ; 
 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
 	while($stud=$xoopsDB->fetchArray($result)){
@@ -503,7 +515,7 @@ function count_class_stud_pay($class_id , $stud , $stud_sel  , $charge_array , $
  
 	//每一要付費的學生(預設值
 	foreach ($stud as $stud_key => $student ) {
-		$stud_id = $student['tn_id'] ;
+		$stud_id = $student['stud_id'] ;
  
 		//有付費者 
 		if ( $stud_sel[$stud_id] )  {

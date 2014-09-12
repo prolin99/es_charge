@@ -22,11 +22,11 @@
     <{/if}>
 
     <{foreach  key=key item=stud   from= $data.students }>
-    <{if ($data.selected[$stud.tn_id].selected) }>
+    <{if ($data.selected[$stud.stud_id].selected) }>
       <div class='span2'><label>■(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
     <{else}>
       
-      <div class='span2'><label><input type='checkbox' name='selected_stud[]' value='<{$stud.tn_id}>' id='stud_selected'>(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
+      <div class='span2'><label><input type='checkbox' name='selected_stud[]' value='<{$stud.stud_id}>' id='stud_selected'>(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
     <{/if}>
      <{/foreach }>
      </div>
