@@ -242,7 +242,7 @@ function get_class_spec_old_item($item_id , $class_id ) {
 			//echo $sql ;
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
- 			$data .=$stud['class_sit_num'] . $stud['name']  . '--減免身份：' . $decrease_cause[ $stud['cause'] ] ." <br>\n" ;
+ 			$data .= '<p>' .$stud['class_sit_num'] . $stud['name']  . ' -- ' . $decrease_cause[ $stud['cause'] ] ." </p>\n" ;
 		}		
 	return $data ;				
 	
