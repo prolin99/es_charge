@@ -8,7 +8,7 @@
    </form>
 </div>   
 <{if ($data.class_id )  }>  
-<!--      減免列表                                   -->
+<{*     減免列表            *}>
 <{if ($data.seletc_item ) }>  
 <style type="text/css">
 @media print {
@@ -41,11 +41,11 @@
       <div class='span1' id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></div>
       
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <!--      dollar_item_stud_sn_detail_id                金額  checked 補助                   -->
+        <{*    dollar_item_stud_sn_detail_id                金額  checked 補助                   *}>
         <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
-          <!-- cause_chk  -->
+          <{*  cause_chk   *}>
           <{if ($data.decase_list[$key].other[$detail_key])}>
-            <!-- other cause_chk  -->
+             <{*   other cause_chk   *}>
             <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
           <{else}>
             <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>                
@@ -67,7 +67,7 @@
 
 	 <{if ($data.inTime ) }>  
 	 <hr />
-       <!-- 新增學生        --------------------------------------------------------------------------------------                            -->    
+       <{* 新增學生        --------------------------------------------------------------------------------------                            *}>
      <div  id= 'frm_add' class="row-fluid">
      <div class="span8">
        <form method='post' name='editForm' id='editForm_new' class="form-horizontal" > 
@@ -100,7 +100,7 @@
                     (多身份,點補助後圖示指定)
                    </div>
          
- 			<!-- 各項費用  ---------------------  -->
+ 			<{*  各項費用  ---------------------   *}>
  			<{foreach  key=key item=detail   from= $data.detail_list }>
  			<div class="control-group">
  			<span class="fill" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
@@ -119,7 +119,7 @@
  			 </div>
                       <div class="input-append">
                       <{ if !($data.dent_support[$key]) }>
-                        <i class="icon-comment show_other" title='其他身份別選擇' data_ref='other_<{$key}>''  ></i>
+                        <i class="icon-comment show_other" title='其他身份別選擇' data_ref='other_<{$key}>'  ></i>
                         <{/if}>
                       </div>  
                     <div class="input-append">
@@ -128,7 +128,7 @@
  			 </div>
  			<{/foreach }>
 
-                      <!-- 聯絡註記  ---------------------  -->
+                      <{*    聯絡註記   *}>
  			<div class="control-group">
                     <label class="control-label" for="cause_id"  >聯絡註記：</label>
                     <input   class='span8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  /> 
@@ -201,14 +201,20 @@
         }
 
 //----------------------------------------------------------------------        
+function isInteger(value) {
+    return (value == parseInt(value));
+}
+
     function check_input(obj_input , max_m){
     	var g_val = $(obj_input).val() ;
+      g_val = g_val.trim() ;
     	var input_name = $(obj_input).attr('title') ;
-    	 
-    	if ((g_val > max_m)|(g_val<0) ) {
-    	   alert (  input_name+ '減免金額有問題！') ;
-          $(obj_input).val(0) ;
-       }  
+    	 if (g_val ) {
+    	   if (  (g_val > max_m) | (g_val<0)  | (! isInteger(g_val) ) ) {
+    	       alert (  input_name+ '減免金額有問題！') ;
+              $(obj_input).val(0) ;
+          }  
+        }
     }
     
     
@@ -253,9 +259,10 @@
       			
       			<{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         		"<div class='span1'> "+
-                       "<input class='span10' name='dollars[<{$detail_key}>]' type='text' id='dollars[<{$detail_key}>]'  title='班級費'  tabindex='9<{$detail_key}>' value='"+ dollar_<{$detail_key}> +"'  onblur='check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);' />" +
-
-  			" <label ><input type='checkbox' name='decrease_sel[<{$detail_key}>]' value='1' "+ check_<{$detail_key}> +">補助</label>" + 
+                       "<input class='span10' name='dollars[<{$detail_key}>]' type='text' id='dollars[<{$detail_key}>]'  title='<{$detail_val}>'  tabindex='9<{$detail_key}>' value='"+ dollar_<{$detail_key}> +"'  onblur='check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);' />" +
+                        <{if !($data.dent_support[$detail_key])}> <{*  可否請補助   *}>
+  			   " <label ><input type='checkbox' name='decrease_sel[<{$detail_key}>]' value='1' "+ check_<{$detail_key}> +" title='需有身份別才可勾選！'>補助</label>" + 
+                        <{/if}>
  			" </div>" +
  			<{/foreach}>
  			"<div class='span2'>" + 
