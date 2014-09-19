@@ -47,13 +47,16 @@ if  ($item_id) {
  	$min_grade = $grade_list[0] ;		//最低年級
 	$row= 0  ;
 
+	$all_sum_data= '' ;
 
 
 	foreach ($grade_list as $y=> $grade) {
- 
-		//分別輸出各班 部份	
+ 		//分別輸出各年級 部份	
  		class_output($y , $item_id) ;
 	}	
+
+	//全校總和
+	all_sum_output() ;
 	
  
  
@@ -71,7 +74,7 @@ if  ($item_id) {
  
 function class_output( $y , $item_id) {
  
-	global   $detail_list ,  $charge_array , $objPHPExcel , $row  , $min_grade;
+	global   $detail_list ,  $charge_array , $objPHPExcel , $row  , $min_grade , $all_sum_data  ;
 	
 
 	//本年級各項應付
@@ -92,7 +95,7 @@ function class_output( $y , $item_id) {
        //標題行(班級)
       	$objPHPExcel->setActiveSheetIndex(0) 
             ->setCellValue('A' . $row, $y .'年級'   . "( {$class_sum['man']} 人)"  )  ;
-	
+	$all_sum_data['man'] += $class_sum['man'] ;
  
             
  	$row++ ;
@@ -117,6 +120,7 @@ function class_output( $y , $item_id) {
 			->setCellValue('E' . $row,  $class_sum_decase['sum'][$detail_id]  )
 			->setCellValue('F' . $row,  $class_sum['detail'][$detail_id] - $class_sum_decase['sum'][$detail_id] )
 			; 	
+		$all_sum_data['detail'][$detail_id]   +=	$class_sum['detail'][$detail_id] - $class_sum_decase['sum'][$detail_id]  ;
 	}
 	//總計
 	$row++ ;
@@ -124,7 +128,55 @@ function class_output( $y , $item_id) {
 			->setCellValue('A' . $row, '總和')
 			->setCellValue('F' . $row, $class_sum['all']  - $class_sum_decase['all_sum']   )
 			;
+	$all_sum_data['all_sum'] += ( $class_sum['all']  - $class_sum_decase['all_sum'] )  ;
+
+	//加入分頁
+	$objPHPExcel->setActiveSheetIndex(0)->setBreak('A'.$row , PHPExcel_Worksheet::BREAK_ROW);
+			
+
+} 
+
+function all_sum_output( ) {
+ 
+	global   $detail_list ,  $charge_array , $objPHPExcel , $row  , $min_grade , $all_sum_data  ;
 	
+
+    
+ 	$col = ($y-$min_grade)*5+1 ;
+ 	$row++ ;
+       //標題行(班級)
+      	$objPHPExcel->setActiveSheetIndex(0) 
+            ->setCellValue('A' . $row,  '全校繳費 ('   . $all_sum_data['man'] . "人)"  )  ;
+	
+ 
+            
+ 	$row++ ;
+       //標題行
+      	$objPHPExcel->setActiveSheetIndex(0) 
+            ->setCellValue('A' . $row, '收費細目')
+            ->setCellValue('B' . $row, '項目金額')
+            ->setCellValue('C' . $row, '年級金額')
+            ->setCellValue('D' . $row, '減免人數')
+             ->setCellValue('E' . $row, '減免金額')
+              ->setCellValue('F' . $row, '應收金額') 
+              ;	 	
+
+ 	foreach   (  $detail_list   as $detail_id => $detail ) {
+		$row++ ;
+		//資料行
+		$objPHPExcel->setActiveSheetIndex(0) 
+			->setCellValue('A' . $row, $detail)
+ 			->setCellValue('F' . $row,  $all_sum_data['detail'][$detail_id]   )
+			; 	
+ 
+	}
+	//總計
+	$row++ ;
+  	$objPHPExcel->setActiveSheetIndex(0) 
+			->setCellValue('A' . $row, '總和')
+			->setCellValue('F' . $row, $all_sum_data['all_sum']  )
+			;
+ 
 
 	//加入分頁
 	$objPHPExcel->setActiveSheetIndex(0)->setBreak('A'.$row , PHPExcel_Worksheet::BREAK_ROW);
