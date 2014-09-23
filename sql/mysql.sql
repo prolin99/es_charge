@@ -33,6 +33,7 @@ CREATE TABLE `charge_record` (
   `in_bank` tinyint(4) NOT NULL DEFAULT '1',
   `class_id` varchar(6) NOT NULL,
   `cause` int(11) NOT NULL DEFAULT '0',
+  `ps` varchar(200) NOT NULL,
   PRIMARY KEY (`item_id`,`record_id`),
   KEY `item_id` (`student_sn`)
 ) ENGINE=MyISAM ;
@@ -48,6 +49,7 @@ CREATE TABLE `charge_decrease` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `item_id` int(11) NOT NULL,
   `sit_num` tinyint(4) NOT NULL,
+  `cause_other` int(11) NOT NULL,
   PRIMARY KEY (`detail_id`,`student_sn`,`curr_class_num`),
   UNIQUE KEY `decrease_id` (`decrease_id`)
 ) ENGINE=MyISAM ;
