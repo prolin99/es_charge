@@ -225,6 +225,7 @@ function get_class_students_charge( $item_id , $class_id ) {
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['selected']='1' ;
+ 			$data[$stud['student_sn']]['cause_id'] = $stud['cause']  ;
  			$data[$stud['student_sn']]['cause'] =$decrease_cause[ $stud['cause'] ] ;
 			$data[$stud['student_sn']]['in_bank'] = $stud['in_bank']  ;
 			$data[$stud['student_sn']]['ps'] = $stud['ps']  ;

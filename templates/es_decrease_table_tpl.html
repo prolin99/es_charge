@@ -12,12 +12,12 @@
 <{if ($data.seletc_item ) }>  
   <!--            printableArea     開始              -->
   <div id='printableArea' class='printableArea'>
-  <h3><{$data.class_id}>班上繳費細項列表</h3>
+  <h3><{$data.class_id}>班上減免總表模式</h3>
   
   <table class="table table-bordered table-hover" >
   <tr>
       <td class='span2'>姓名</td>
-      <td class='span2'>身份別</td>
+      <td class='span2'>主身份別</td>
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <td  ><{$detail_val}></td>
       <{/foreach}>
@@ -26,29 +26,53 @@
   <{foreach  key=key item=stud   from= $data.students }>
     <{if ($data.selected[$stud.stud_id].selected) }>
     <tr>
- 
+     <td >
+
      <{if ($data.selected[$stud.stud_id].in_bank) }>
-      <td ><span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+     <span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}>
       <{else}>
-      <td ><span class="in_bank"  id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <span class="in_bank"  id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}>
       <{/if}>
-       <td ><{html_options name='cause_id'  class='span11' options=$decrease_cause   id="st_$stud.stud_id_$data.seletc_item"  onchange="cause_check($(this));"  }></td>
+      
+      <{assign var="stud_id" value=$stud.stud_id}>
+      </td>
+       <td ><{html_options name='cause_id'  class='span11' options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }></td>
 
           <!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
  
         <td >
-       <span class="span7"><i class="icon-forward" set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"></i> 
-        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  title='<{$data.detail_dollar.pay[$detail_key]}>'     onblur="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
-        </span>
 
+       <div class="row-fluid" >
+        
+
+          <span class="span3">
+            <i class="icon-forward" set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  ></i> 
+          </span>  
+          <{*   -----  金額  ------------------     *}>
+        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onblur="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+
+
+        </div>
+
+          <{*   -----  補助  ------------------     *}>
                       <{ if !($data.dent_support[$detail_key]) }>
-                        <span class="span4">
-                        <label ><input type='checkbox' name='decrease_sel[<{$key}>]'  id="need_<{$stud.stud_id}>_<{$detail_key}>"  value='1' title="申請補助">補</label>
-                 </span>  
-                     <span class='span2'>
-                     <{ html_options name=other[$detail_key]  class="span4" options=$decrease_cause id=other_$stud.stud_id_$detail_key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
+                        <div class="row-fluid user_<{$stud_id}>" id = "need_<{$stud.stud_id}>_<{$detail_key}>" 
+                          <{if ($data.selected[$stud_id].cause_id ==0) }>
+                          style="display:none" 
+                           <{/if}> 
+                          >
+                        <span class='span4'>
+                        <label ><input type='checkbox' name='decrease_sel[<{$key}>]'  id="need_<{$stud.stud_id}>_<{$detail_key}>"  value='1' 
+                          <{if ($data.decase_list[$stud_id].cause_chk[$detail_key])}>checked <{/if}>  <{*  有申請補助  *}>
+                          title="申請補助">補</label>
+                        </span>  
+
+
+                     <span class='span8'>
+                     <{ html_options name=other[$stud_id.$detail_key]  class="span8" options=$decrease_cause id="other_$stud_id.$detail_key"  ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
                     </span>
+                    </div>
                    <{/if}> 
           </td>
  
@@ -59,18 +83,63 @@
   <{/foreach}>
   </table>
   </div>  
+
+
+
 <script type="text/javascript">
+
+
+
+function cause_check(obj_sel) {
+       //身份補助選擇
+       var chk = $(obj_sel).val();
+       var st_id = $(obj_sel).attr('id');
+       var splits = st_id.split('_') ;
+
+        $('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
+       //alert(chk) ;
+       if  (chk!=0) {
+          $('.user_' + splits[1] ) .show() ;
+        }else {
+           $('.user_' + splits[1] ) .hide() ;
+           //alert('.user_' + splits[1] ) ;
+        }   
+ 
+}
+
+
+//指定金額鍵
   $(document).on("click", ".icon-forward", function(){
-    //alert('aaa') ;
+ 
     var input_id = $(this).attr("set")  ;
     var money = $(this).attr("dollar")  ;
-    //alert(input_id + money ) ;
+    
+    //如果有特殊身份
+    var splits = input_id.split('_') ;
+    //alert($('#stu_' + splits[1] ) .val() ) ;
+    if ( $('#cause_' + splits[1] ) .val() > 0 )
+      $('#need_' + splits[1] +'_'+ splits[2] ) .show() ;
+    else 
+      $('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
+
+
     var old_data= $('#'+input_id).val() ;
-    if (old_data)
+    if (old_data) {
+      //clear
       $('#'+input_id).val('') ;
-    else   
+      //$('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
+    }else   {
+
       $('#'+input_id).val(money) ;
+
+    }  
   });    
+
+
+
+function isInteger(value) {
+    return (value == parseInt(value));
+}
 
 
       function check_input(obj_input , max_m){

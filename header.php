@@ -15,8 +15,8 @@ $isAdmin=isAdmin();
 
 $item_id=empty($_REQUEST['item_id'])?"":intval($_REQUEST['item_id']);
 $interface_menu['繳費系統']="index.php?item_id=$item_id";
-$interface_menu['減免大表']="decrease_table.php?item_id=$item_id";
-$interface_menu['減免名單']="decrease.php?item_id=$item_id";
+$interface_menu['總表模式減免']="decrease_table.php?item_id=$item_id";
+$interface_menu['單人模式減免']="decrease.php?item_id=$item_id";
 $interface_menu['收費報表']="report.php?item_id=$item_id";
 $interface_menu['細目統計']="sum.php?item_id=$item_id";
 
