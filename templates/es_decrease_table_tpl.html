@@ -1,0 +1,95 @@
+<{$bootstrap}>
+<{$jquery}>
+<{$toolbar}>
+
+<div class="row-fluid"  >
+    <form id='frm' class="form-horizontal"   action="decrease_table.php" method='post'>
+      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+   </form>
+</div>   
+<{if ($data.class_id )  }>  
+ 
+<{if ($data.seletc_item ) }>  
+  <!--            printableArea     開始              -->
+  <div id='printableArea' class='printableArea'>
+  <h3><{$data.class_id}>班上繳費細項列表</h3>
+  
+  <table class="table table-bordered table-hover" >
+  <tr>
+      <td class='span2'>姓名</td>
+      <td class='span2'>身份別</td>
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+        <td  ><{$detail_val}></td>
+      <{/foreach}>
+    </tr>  
+    
+  <{foreach  key=key item=stud   from= $data.students }>
+    <{if ($data.selected[$stud.stud_id].selected) }>
+    <tr>
+ 
+     <{if ($data.selected[$stud.stud_id].in_bank) }>
+      <td ><span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <{else}>
+      <td ><span class="in_bank"  id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <{/if}>
+       <td ><{html_options name='cause_id'  class='span11' options=$decrease_cause   id="st_$stud.stud_id_$data.seletc_item"  onchange="cause_check($(this));"  }></td>
+
+          <!--            繳費金額(有申請減免                   -->
+      <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
+ 
+        <td >
+       <span class="span7"><i class="icon-forward" set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"></i> 
+        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  title='<{$data.detail_dollar.pay[$detail_key]}>'     onblur="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+        </span>
+
+                      <{ if !($data.dent_support[$detail_key]) }>
+                        <span class="span4">
+                        <label ><input type='checkbox' name='decrease_sel[<{$key}>]'  id="need_<{$stud.stud_id}>_<{$detail_key}>"  value='1' title="申請補助">補</label>
+                 </span>  
+                     <span class='span2'>
+                     <{ html_options name=other[$detail_key]  class="span4" options=$decrease_cause id=other_$stud.stud_id_$detail_key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
+                    </span>
+                   <{/if}> 
+          </td>
+ 
+      <{/foreach}>
+
+     </tr>
+    <{/if}>
+  <{/foreach}>
+  </table>
+  </div>  
+<script type="text/javascript">
+  $(document).on("click", ".icon-forward", function(){
+    //alert('aaa') ;
+    var input_id = $(this).attr("set")  ;
+    var money = $(this).attr("dollar")  ;
+    //alert(input_id + money ) ;
+    var old_data= $('#'+input_id).val() ;
+    if (old_data)
+      $('#'+input_id).val('') ;
+    else   
+      $('#'+input_id).val(money) ;
+  });    
+
+
+      function check_input(obj_input , max_m){
+      var g_val = $(obj_input).val() ;
+      g_val = g_val.trim() ;
+      var input_name = $(obj_input).attr('title') ;
+       if (g_val ) {
+         if (  (g_val > max_m) | (g_val<0)  | (! isInteger(g_val) ) ) {
+             alert (  input_name+ '減免金額有問題！') ;
+              $(obj_input).val(0) ;
+          }  
+        }
+    }
+
+</script>
+
+
+  <{/if}>
+
+<{else}>
+  <h4>未選擇繳費項目或非級任身份，無法使用！</h4>
+ <{/if}>
