@@ -35,12 +35,13 @@
       <{/if}>
       
       <{assign var="stud_id" value=$stud.stud_id}>
+
       </td>
        <td ><{html_options name='cause_id'  class='span11' options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }></td>
 
           <!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
- 
+        <{assign var="detai_link" value=_$detail_key }>
         <td >
 
        <div class="row-fluid" >
@@ -50,7 +51,7 @@
             <i class="icon-forward" set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  ></i> 
           </span>  
           <{*   -----  金額  ------------------     *}>
-        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onblur="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onblur="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
 
 
         </div>
@@ -63,14 +64,14 @@
                            <{/if}> 
                           >
                         <span class='span4'>
-                        <label ><input type='checkbox' name='decrease_sel[<{$key}>]'  id="need_<{$stud.stud_id}>_<{$detail_key}>"  value='1' 
+                        <label ><input type='checkbox'   id="ineed_<{$stud.stud_id}>_<{$detail_key}>"  value='1' 
                           <{if ($data.decase_list[$stud_id].cause_chk[$detail_key])}>checked <{/if}>  <{*  有申請補助  *}>
                           title="申請補助">補</label>
                         </span>  
 
 
                      <span class='span8'>
-                     <{ html_options name=other[$stud_id.$detail_key]  class="span8" options=$decrease_cause id="other_$stud_id.$detail_key"  ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
+                     <{ html_options name=other[$stud_id.$detail_key]  class="span8" options=$decrease_cause id="other_$stud_id$detai_link"  ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
                     </span>
                     </div>
                    <{/if}> 
@@ -95,7 +96,7 @@ function cause_check(obj_sel) {
        var chk = $(obj_sel).val();
        var st_id = $(obj_sel).attr('id');
        var splits = st_id.split('_') ;
-
+       var stud_id = splits[1] ;
         $('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
        //alert(chk) ;
        if  (chk!=0) {
@@ -104,9 +105,26 @@ function cause_check(obj_sel) {
            $('.user_' + splits[1] ) .hide() ;
            //alert('.user_' + splits[1] ) ;
         }   
- 
-}
+        save_cause( <{$data.seletc_item }>, <{$data.class_id}> ,splits[1] ,  chk  ) ;
+ }
 
+     //ajax 存檔後
+function save_cause( item, class_id , stud_id ,cause  ){
+       $.ajax({
+              url: 'ajax_decrease_cause.php',
+              type: 'GET',
+              data: { item_id: item , class_id :class_id  , stud_id : stud_id , cause: cause },
+
+               success: function(data){
+ 
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+       })
+}   
 
 //指定金額鍵
   $(document).on("click", ".icon-forward", function(){
@@ -117,7 +135,11 @@ function cause_check(obj_sel) {
     //如果有特殊身份
     var splits = input_id.split('_') ;
     //alert($('#stu_' + splits[1] ) .val() ) ;
-    if ( $('#cause_' + splits[1] ) .val() > 0 )
+    var stud_id =  splits[1] ;
+    var detail_id = splits[2] ;
+
+    var cause_id = $('#cause_' + splits[1] ) .val()  ;
+    if ( cause_id  > 0 )    //有特別身份，出現補助等訊息
       $('#need_' + splits[1] +'_'+ splits[2] ) .show() ;
     else 
       $('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
@@ -129,11 +151,55 @@ function cause_check(obj_sel) {
       $('#'+input_id).val('') ;
       //$('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
     }else   {
-
       $('#'+input_id).val(money) ;
-
     }  
+
+    get_decrease_val( input_id ) ;
   });    
+
+//
+function get_decrease_val( input_id ){
+    var splits = input_id.split('_') ;
+
+    var stud_id =  splits[1] ;
+    var detail_id = splits[2] ;    
+
+    var cause_id = $('#cause_' + splits[1] ) .val()  ;
+    //var need = $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked') ;
+    
+    var need =1 ;
+    if ( $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked')==undefined )
+       need= 0 ;
+
+    var other = $('#other_' + stud_id  +'_' + detail_id).val() ;
+    var money = $('#'+input_id).val()  ;
+    if  (!isInteger(money) ) 
+      money= 0 ;
+    var sit_num = $('#'+input_id).attr('sit_num') ;
+
+    alert(<{$data.seletc_item }>+',' +<{$data.class_id}> +',' +detail_id+',' +stud_id +',' +sit_num + ',' +money+ ',' +cause_id + ',' +need +',' + other  ) ;
+    save_decrease( <{$data.seletc_item }>, <{$data.class_id}> , detail_id , stud_id ,  sit_num , money ,  cause_id , need , other  ) ;    
+}
+
+//減免金額等
+ function save_decrease( item_id, class_id , detail_id , stud_id ,  sit_num , money ,  cause_id , need , other  ) {
+       $.ajax({
+              url: 'ajax_decrease.php',
+              type: 'GET',
+              dataType: 'text',
+              data: { item_id: item_id , class_id :class_id  , detail_id:detail_id , stud_id : stud_id , sit_num:sit_num , money:money , cause: cause_id ,need:need , other:other },
+
+               success: function(data){
+ 
+                },
+
+                 error:function(xhr, ajaxOptions, thrownError){
+                    alert('error:' + xhr.status);
+                    alert(thrownError);
+                 }
+       })  
+
+ }
 
 
 
@@ -153,6 +219,9 @@ function isInteger(value) {
           }  
         }
     }
+
+
+
 
 </script>
 
