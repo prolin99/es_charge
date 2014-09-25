@@ -3,36 +3,45 @@
 <{$toolbar}>
 
 <div class="row-fluid"  >
+
+
     <form id='frm' class="form-horizontal"   action="decrease_table.php" method='post'>
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+    <{if ($data.admin) }>
+      <!-- 管理者可處理全校學生    -->
+      <legend>繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='span2' onchange="submit();"}>
+      <span class="alert alert-error" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
+      </legend>
+    <{/if}>          
    </form>
 </div>   
+
+
 <{if ($data.class_id )  }>  
- 
 <{if ($data.seletc_item ) }>  
+<{if ($data.inTime)}>
+
+
   <!--            printableArea     開始              -->
   <div id='printableArea' class='printableArea'>
   <h3><{$data.class_id}>班上減免總表模式</h3>
   
   <table class="table table-bordered table-hover" >
   <tr>
-      <td class='span2'>姓名</td>
-      <td class='span2'>主身份別</td>
+      <th class='span2'>姓名</th>
+      <th class='span2'>主身份別</th>
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <td  ><{$detail_val}></td>
+        <th  ><{$detail_val}></th>
       <{/foreach}>
+       <th class='span2'>備註</th>
     </tr>  
     
   <{foreach  key=key item=stud   from= $data.students }>
     <{if ($data.selected[$stud.stud_id].selected) }>
     <tr>
      <td >
-
-     <{if ($data.selected[$stud.stud_id].in_bank) }>
-     <span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><i class=" icon-shopping-cart" title="銀行扣款"></i></span>(<{$stud.class_sit_num}>)<{$stud.name}>
-      <{else}>
-      <span class="in_bank"  id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='0'><span class='label label-important'><i class=" icon-user" title="自行繳費"></i></span></span>(<{$stud.class_sit_num}>)<{$stud.name}>
-      <{/if}>
+      (<{$stud.class_sit_num}>)<{$stud.name}>
+ 
       
       <{assign var="stud_id" value=$stud.stud_id}>
 
@@ -51,7 +60,7 @@
             <i class="icon-forward" set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  ></i> 
           </span>  
           <{*   -----  金額  ------------------     *}>
-        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onblur="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onchange="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
 
 
         </div>
@@ -64,20 +73,23 @@
                            <{/if}> 
                           >
                         <span class='span4'>
-                        <label ><input type='checkbox'   id="ineed_<{$stud.stud_id}>_<{$detail_key}>"  value='1' 
+                        <label ><input type='checkbox'   id="ineed_<{$stud.stud_id}>_<{$detail_key}>"  value='1'   class='need_chk'
                           <{if ($data.decase_list[$stud_id].cause_chk[$detail_key])}>checked <{/if}>  <{*  有申請補助  *}>
                           title="申請補助">補</label>
                         </span>  
 
 
                      <span class='span8'>
-                     <{ html_options name=other[$stud_id.$detail_key]  class="span8" options=$decrease_cause id="other_$stud_id$detai_link"  ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
+                     <{ html_options name=other[$stud_id.$detail_key]  class="span8 other_sel" options=$decrease_cause id="other_$stud_id$detai_link"  ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
                     </span>
                     </div>
                    <{/if}> 
           </td>
  
       <{/foreach}>
+      <td>
+      <input   class='span11'  name='ps[<{$stud.stud_id}>]' type='text' id='ps_<{$stud.stud_id}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}>'  value='<{$data.selected[$stud_id].ps}>'   onchange="ps_save($(this));" />
+    </td>
 
      </tr>
     <{/if}>
@@ -86,13 +98,17 @@
   </div>  
 
 
+  <{else}>   <{*   intime *}>
+  <div class="alert alert-danger">已過填報時限！</div>
+  <{/if}>
 
+<{if ($data.inTime)}>
 <script type="text/javascript">
 
 
-
+//身份補助選擇
 function cause_check(obj_sel) {
-       //身份補助選擇
+       
        var chk = $(obj_sel).val();
        var st_id = $(obj_sel).attr('id');
        var splits = st_id.split('_') ;
@@ -105,18 +121,30 @@ function cause_check(obj_sel) {
            $('.user_' + splits[1] ) .hide() ;
            //alert('.user_' + splits[1] ) ;
         }   
-        save_cause( <{$data.seletc_item }>, <{$data.class_id}> ,splits[1] ,  chk  ) ;
+        save_cause( '0' , <{$data.seletc_item }>, <{$data.class_id}> ,splits[1] ,  chk  ) ;
  }
 
+// ps 
+   function ps_save(obj_input ){
+      var ps = $(obj_input).val() ;
+
+       var input_id = $(obj_input).attr("id")  ;
+       var splits = input_id.split('_') ;
+       //alert (ps) ;
+       save_cause( '99' , <{$data.seletc_item }>, <{$data.class_id}> ,splits[1] ,  ps  ) ;
+    }
+
+
+
      //ajax 存檔後
-function save_cause( item, class_id , stud_id ,cause  ){
+function save_cause( mode ,  item, class_id , stud_id ,cause  ){
        $.ajax({
               url: 'ajax_decrease_cause.php',
-              type: 'GET',
-              data: { item_id: item , class_id :class_id  , stud_id : stud_id , cause: cause },
+              type: 'POST',
+              data: { mode:mode , item_id: item , class_id :class_id  , stud_id : stud_id , cause: cause },
 
                success: function(data){
- 
+                    //  alert(data );
                 },
 
                  error:function(xhr, ajaxOptions, thrownError){
@@ -126,7 +154,7 @@ function save_cause( item, class_id , stud_id ,cause  ){
        })
 }   
 
-//指定金額鍵
+//指定金額鍵 -------------------------------------------------------------------------------------
   $(document).on("click", ".icon-forward", function(){
  
     var input_id = $(this).attr("set")  ;
@@ -147,9 +175,7 @@ function save_cause( item, class_id , stud_id ,cause  ){
 
     var old_data= $('#'+input_id).val() ;
     if (old_data) {
-      //clear
       $('#'+input_id).val('') ;
-      //$('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
     }else   {
       $('#'+input_id).val(money) ;
     }  
@@ -157,7 +183,7 @@ function save_cause( item, class_id , stud_id ,cause  ){
     get_decrease_val( input_id ) ;
   });    
 
-//
+//取值，寫入資料
 function get_decrease_val( input_id ){
     var splits = input_id.split('_') ;
 
@@ -172,13 +198,24 @@ function get_decrease_val( input_id ){
        need= 0 ;
 
     var other = $('#other_' + stud_id  +'_' + detail_id).val() ;
-    var money = $('#'+input_id).val()  ;
+    if  (other==undefined )
+        other= 0 ;
+
+    var money = $('#dollars_'+ stud_id  +'_' + detail_id).val()  ;
     if  (!isInteger(money) ) 
       money= 0 ;
-    var sit_num = $('#'+input_id).attr('sit_num') ;
+    var sit_num = $('#dollars_'+ stud_id  +'_' + detail_id).attr('sit_num') ;
 
-    alert(<{$data.seletc_item }>+',' +<{$data.class_id}> +',' +detail_id+',' +stud_id +',' +sit_num + ',' +money+ ',' +cause_id + ',' +need +',' + other  ) ;
-    save_decrease( <{$data.seletc_item }>, <{$data.class_id}> , detail_id , stud_id ,  sit_num , money ,  cause_id , need , other  ) ;    
+    // 修改金額，一定要存。如果無金額申請等略去。
+    var do_save = false ;
+    if  ( (splits[0] == 'dollars' ) ||  (money >0 )  ){
+        do_save = true ;
+    } 
+
+    if  (do_save) {
+        //alert(<{$data.seletc_item }>+',' +<{$data.class_id}> +',' +detail_id+',' +stud_id +',' +sit_num + ',' +money+ ',' +cause_id + ',' +need +',' + other  ) ;
+        save_decrease( <{$data.seletc_item }>, <{$data.class_id}> , detail_id , stud_id ,  sit_num , money ,  cause_id , need , other  ) ;    
+    }    
 }
 
 //減免金額等
@@ -186,11 +223,10 @@ function get_decrease_val( input_id ){
        $.ajax({
               url: 'ajax_decrease.php',
               type: 'GET',
-              dataType: 'text',
               data: { item_id: item_id , class_id :class_id  , detail_id:detail_id , stud_id : stud_id , sit_num:sit_num , money:money , cause: cause_id ,need:need , other:other },
 
                success: function(data){
- 
+                //  alert(data);
                 },
 
                  error:function(xhr, ajaxOptions, thrownError){
@@ -201,14 +237,25 @@ function get_decrease_val( input_id ){
 
  }
 
+//申請鍵
+  $(document).on("click", ".need_chk", function(){
+        var input_id = $(this).attr("id")  ;
+        get_decrease_val(input_id) ;
+    })    
+  
 
+  //other_sel
+  $(document).on("change", ".other_sel", function(){
+        var input_id = $(this).attr("id")  ;
+        get_decrease_val(input_id) ;
+  })   
 
 function isInteger(value) {
     return (value == parseInt(value));
 }
 
 
-      function check_input(obj_input , max_m){
+   function check_input(obj_input , max_m){
       var g_val = $(obj_input).val() ;
       g_val = g_val.trim() ;
       var input_name = $(obj_input).attr('title') ;
@@ -217,17 +264,16 @@ function isInteger(value) {
              alert (  input_name+ '減免金額有問題！') ;
               $(obj_input).val(0) ;
           }  
-        }
+       }
+       var input_id = $(obj_input).attr("id")  ;
+       get_decrease_val(input_id) ;
     }
 
-
-
-
 </script>
+<{/if}>  <{*  data.inTime *}>
 
+  <{/if}>          <{*  data.selected   *}>    
 
-  <{/if}>
-
-<{else}>
+<{else}>           <{*  data.class_id  *}>                   
   <h4>未選擇繳費項目或非級任身份，無法使用！</h4>
  <{/if}>

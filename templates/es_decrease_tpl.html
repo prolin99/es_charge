@@ -107,7 +107,7 @@
  			<label class="control-label" for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>):</label>
  			 <i class="icon-forward"></i> </span>
   			<input   class='span2'  name='dollars[<{$key}>]' type='text' id='dollars<{$key}>'  title='<{$detail}><{$data.detail_dollar.pay[$key]}>'  tabindex='<{$key}>'
-  			    placeholder='<{$data.detail_dollar.decease[$key]}>' onblur="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
+  			    placeholder='<{$data.detail_dollar.decease[$key]}>' onchange="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
    			   
   			<div class="input-append">
                       <{ if ($data.dent_support[$key]) }>
