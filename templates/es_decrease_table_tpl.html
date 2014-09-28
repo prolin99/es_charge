@@ -21,7 +21,10 @@
 <{if ($data.seletc_item ) }>  
 <{if ($data.inTime)}>
 
-
+    <div class="alert alert-success">
+    <h4>減免說明</h4>
+    <{$data.ps}>
+    </div>
   <!--            printableArea     開始              -->
   <div id='printableArea' class='printableArea'>
   <h3><{$data.class_id}>班上減免總表模式</h3>
@@ -53,37 +56,62 @@
         <{assign var="detai_link" value=_$detail_key }>
         <td >
 
-       <div class="row-fluid" >
+       <div class="row-fluid money_div"  id='box_<{$stud.stud_id}>_<{$detail_key}>'  >
         
+        <div class="row-fluid">
 
-          <span class="span3">
+          <span class="span2">
             <i class="icon-forward" set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  ></i> 
           </span>  
           <{*   -----  金額  ------------------     *}>
-        <input   class='span9'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onchange="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+          <span class="span6">
+            <input   class='span11 money'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onchange="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+          </span>
 
-
-        </div>
-
-          <{*   -----  補助  ------------------     *}>
+                      <{*   -----  補助  ------------------     *}>
                       <{ if !($data.dent_support[$detail_key]) }>
-                        <div class="row-fluid user_<{$stud_id}>" id = "need_<{$stud.stud_id}>_<{$detail_key}>" 
+                        <span  class="span4 user_<{$stud_id}>" id = "need_<{$stud.stud_id}>_<{$detail_key}>" 
                           <{if ($data.selected[$stud_id].cause_id ==0) }>
                           style="display:none" 
                            <{/if}> 
                           >
-                        <span class='span4'>
-                        <label ><input type='checkbox'   id="ineed_<{$stud.stud_id}>_<{$detail_key}>"  value='1'   class='need_chk'
+
+                        <span class='span6'>
+                        <input type='checkbox'   id="ineed_<{$stud.stud_id}>_<{$detail_key}>"  value='1'   class='need_chk'
                           <{if ($data.decase_list[$stud_id].cause_chk[$detail_key])}>checked <{/if}>  <{*  有申請補助  *}>
-                          title="申請補助">補</label>
+                          title="申請補助">
                         </span>  
+                        
+
+                        <span class='span6'> 
+
+                           <{ if ($data.decase_list[$stud_id].other[$detail_key] ) }>
+                           <i class="icon-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  style="background-color: green"     title="第二種身份--<{$data.decase_list[$stud_id].other_cause_str[$detail_key]}> ">
+                           <{else}>
+                            <i class="icon-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  title="設定第二種身份">
+                           <{/if}> 
+                         </i>
+                         </span>                        
+
+                      </span>
+                      <{/if}>   
+          
+            </div>
+                      
+                      <{ if !($data.dent_support[$detail_key]) }>
+                     <div class="row-fluid"  id="other_div_<{$stud.stud_id}>_<{$detail_key}>" style="display:none"  >
+ 
+                          <{ html_options name=other[$stud_id.$detail_key]  class="span8 other_sel" options=$decrease_cause id="other_$stud_id$detai_link"    selected=$data.decase_list[$stud_id].other[$detail_key]   ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
+                         </div>
+ 
+                      <{/if}>   
+
+        </div>
+
+          
 
 
-                     <span class='span8'>
-                     <{ html_options name=other[$stud_id.$detail_key]  class="span8 other_sel" options=$decrease_cause id="other_$stud_id$detai_link"  ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
-                    </span>
-                    </div>
-                   <{/if}> 
+
           </td>
  
       <{/foreach}>
@@ -206,7 +234,7 @@ function get_decrease_val( input_id ){
       money= 0 ;
     var sit_num = $('#dollars_'+ stud_id  +'_' + detail_id).attr('sit_num') ;
 
-    // 修改金額，一定要存。如果無金額申請等略去。
+    // 修改金額，一定要存。其他觸動如果無金額申請等略去。
     var do_save = false ;
     if  ( (splits[0] == 'dollars' ) ||  (money >0 )  ){
         do_save = true ;
@@ -244,12 +272,52 @@ function get_decrease_val( input_id ){
     })    
   
 
+//出現第二身份 (color change)
+$( ".icon-filter" ).click(function( event ) {
+  var input_id = $(this).attr("id")  ;
+  var splits = input_id.split('_') ;
+  
+  var money = $('#dollars_'+ splits[1]  +'_' + splits[2] ).val()  ;
+  if  (!isInteger(money) ) 
+      money= 0 ;
+
+  if ( ( $('#ineed_' + splits[1] +'_'+ splits[2] ).attr('checked') )   && (money>0)  ){
+      $('#other_div_' +splits[1] + '_' + splits[2]  ).toggle() ;
+      $('#other_' +splits[1] + '_' + splits[2]  ).focus() ;
+  }    
+
+   $(document).on("change", ".other_sel", function(){
+        var input_id = $(this).attr("id")  ;
+        //
+        var other = $(this).val() ;
+        var splits = input_id.split('_') ;
+        if (other == 0) {
+             $('#showOther_' +splits[1] + '_' + splits[2]  ).removeAttr("style");
+             $('#showOther_' +splits[1] + '_' + splits[2]  ).attr( 'style' , "background-color: white"  ) ;
+
+        }else  {    
+            $('#showOther_' +splits[1] + '_' + splits[2]  ).removeAttr("style");
+            $('#showOther_' +splits[1] + '_' + splits[2]  ).attr( 'style' , "background-color: green"  ) ;
+        }    
+
+ 
+        get_decrease_val(input_id) ;
+  })
+
+});
+/*
+$( ".money_div" ).mouseleave(function( event ) {
+  var input_id = $(this).attr("id")  ;
+  var splits = input_id.split('_') ;
+  $('#other_div_' +splits[1] + '_' + splits[2]  ).toggle() ; 
+});
+ 
   //other_sel
   $(document).on("change", ".other_sel", function(){
         var input_id = $(this).attr("id")  ;
         get_decrease_val(input_id) ;
   })   
-
+*/
 function isInteger(value) {
     return (value == parseInt(value));
 }
@@ -270,6 +338,9 @@ function isInteger(value) {
     }
 
 </script>
+
+
+
 <{/if}>  <{*  data.inTime *}>
 
   <{/if}>          <{*  data.selected   *}>    

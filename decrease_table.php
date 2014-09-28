@@ -18,41 +18,7 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------執行動作判斷區----------*/
 
-//新增一筆
-if ($_POST['act_add'] and $_POST['stud'] ) {
-	$arr = explode("_", $_POST['stud'] );
-	$stud_sn= intval($arr[0]) ;
-	$sit_num= intval($arr[1]) ;
-	//ps
-	$myts =& MyTextSanitizer::getInstance();
-	$ps =$myts->htmlspecialchars($myts->addSlashes ($_POST['ps'])  )  ;
-	//減免原因
-        $sql = " UPDATE  "  . $xoopsDB->prefix("charge_record") .   
-                    " SET  cause='{$_POST['cause_id']}'  , ps = '$ps'  WHERE student_sn = '$stud_sn'   " ;
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	
-	foreach ( $_POST['dollars'] as $detail_id => $dollar ) {
-		//各項減免
-		if  ($dollar >0 ) {
-		    if ($_POST['cause_id']>0 ) {	//有特殊身份，才能申請補助
-		       $cause=$_POST['decrease_sel'][$detail_id] ;
-		       $other=$_POST['other'][$detail_id] ;		//其他身份別
-		    }else {
-		       $cause =0 ;
-		       $other=0 ;
-		    }   
-		       
-		    $sql = " insert into   "  . $xoopsDB->prefix("charge_decrease") .  
-	     	   	" (`item_id`, `detail_id`, `student_sn`, `curr_class_num`, sit_num ,`decrease_dollar`, `cause_chk` ,cause_other  ) 
-	     	   	VALUES(   '{$_POST['item_id']}'  ,  '$detail_id'  ,  '$stud_sn'  ,  '{$_POST['class_id']}'  , '$sit_num' ,  '$dollar'  ,  '$cause'   ,'$other' )
-	     	   	" ; 
-     			$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-		}
-		
-	}
-	
-}	
 
 
 
