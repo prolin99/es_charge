@@ -45,11 +45,13 @@
 <script>    
 	//全選
 	$(document).on("click", "#CheckAll", function(){
-                var chk = $(this).attr('checked');
+                //var chk = $(this).attr('checked');
+                var chk = $(this).prop('checked');
+                alert(chk) ;
                 if  (chk) 
-		$('div').find(':checkbox').attr('checked',  chk );
-		else 
-		$('div').find(':checkbox').removeAttr('checked');
+		$('div').find(':checkbox').prop('checked',  true );
+	   else 
+		$('div').find(':checkbox').prop('checked' ,false);
  
  
     })

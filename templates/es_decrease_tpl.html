@@ -222,13 +222,13 @@ function isInteger(value) {
     function cause_check(obj_sel) {
 	//身份補助選擇
  
-                var chk = $(obj_sel).val();
+             var chk = $(obj_sel).val();
  		//alert(chk) ;
- 
-                if  (chk!=0) {
+              //有特殊身份，預設補助勾選
+             if  (chk!=0) {
 			$('label').find(':checkbox').prop('checked', true );
 		}else 
-			$('label').find(':checkbox').removeAttr('checked');
+			$('label').find(':checkbox').prop('checked' ,false);
  
  	}
 

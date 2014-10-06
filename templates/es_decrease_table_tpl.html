@@ -222,7 +222,9 @@ function get_decrease_val( input_id ){
     //var need = $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked') ;
     
     var need =1 ;
-    if ( $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked')==undefined )
+    //if ( $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked')==undefined )
+
+    if ( $('#ineed_' + stud_id +'_'+ detail_id ).prop('checked')==false )
        need= 0 ;
 
     var other = $('#other_' + stud_id  +'_' + detail_id).val() ;
@@ -281,7 +283,7 @@ $( ".icon-filter" ).click(function( event ) {
   if  (!isInteger(money) ) 
       money= 0 ;
 
-  if ( ( $('#ineed_' + splits[1] +'_'+ splits[2] ).attr('checked') )   && (money>0)  ){
+  if ( ( $('#ineed_' + splits[1] +'_'+ splits[2] ).prop('checked') )   && (money>0)  ){
       $('#other_div_' +splits[1] + '_' + splits[2]  ).toggle() ;
       $('#other_' +splits[1] + '_' + splits[2]  ).focus() ;
   }    
