@@ -14,6 +14,8 @@ include_once "header.php";
 include_once "../function.php";
  
 /*-----------function區--------------*/
+//取得中文班名
+$data['class_list_c'] = es_class_name_list_c('long')  ; 
 
 
 /*-----------執行動作判斷區----------*/

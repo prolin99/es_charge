@@ -10,10 +10,15 @@ if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php")){
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php";
 
+//需要單位名稱模組(e_stud_import)1.9
+if(!file_exists(XOOPS_ROOT_PATH."/modules/e_stud_import/es_comm_function.php")){
+ redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=33",3, '需要單位名稱模組(e_stud_import)1.9以上');
+}
+include_once XOOPS_ROOT_PATH."/modules/e_stud_import/es_comm_function.php";
+
+
 /********************* 自訂函數 *********************/
 //取得身份別
-//echo $xoopsModuleConfig['es_charge_decrease_cause'] ;
-//$decrease_cause = explode( "\n" , $xoopsModuleConfig['es_charge_decrease_cause'] ) ;
 $decrease_cause = preg_split('/\r\n/' ,$xoopsModuleConfig['es_charge_decrease_cause']) ;
 //$decrease_cause= array("無" , "低收入戶" ,"中低收入戶","家境貧困及家庭突遭變故(導師家訪認定)","原住民","重度以上身心障礙學生或身心障礙人士之子女" ,"中度以下身心障礙學生或身心障礙人士之子女") ;
 
@@ -90,13 +95,16 @@ function get_class_students( $class_id , $mode='class') {
 function get_record_class_list( $item_id ) {
 	//取得全校班級列表 
 	global  $xoopsDB ;
+
+	//取得中文班名
+	$class_list_c = es_class_name_list_c('long')  ; 
  
 		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record") . "  where item_id='$item_id'  group by class_id   " ;
  
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($row=$xoopsDB->fetchArray($result)){
  
-			$data[$row['class_id']]=$row['class_id'] ;
+			$data[$row['class_id']]=$class_list_c[$row['class_id']] ;
 	
 		}		
 	return $data ;		

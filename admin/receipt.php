@@ -15,7 +15,8 @@ include_once "../../tadtools/PHPExcel.php";
 require_once '../../tadtools/PHPExcel/IOFactory.php';    
  
 /*-----------function區--------------*/
- 
+//取得中文班名
+$class_list_c = es_class_name_list_c('long')  ;     
 
 /*-----------執行動作判斷區----------*/
 $item_id=empty($_REQUEST['item_id'])?"":$_REQUEST['item_id'];
@@ -80,7 +81,7 @@ if  ($item_id) {
  
 function class_output( $class_id , $item_id) {
  
-	global   $detail_list , $charge_array , $objPHPExcel , $row ;
+	global   $detail_list , $charge_array , $objPHPExcel , $row  ,$class_list_c;
 	
 	//取得班上要繳費的人員資料
 	$class_students= get_class_pay_students($class_id  , $item_id) ;
@@ -97,7 +98,7 @@ function class_output( $class_id , $item_id) {
        	
        		$objPHPExcel->setActiveSheetIndex(0)
             		->setCellValue('A'.$row,$row-1)
-            		->setCellValue('B'.$row , $stud['class_id'])
+            		->setCellValue('B'.$row , $class_list_c[$stud['class_id']])
             		->setCellValue('C'.$row ,$stud['class_sit_num'])
             		->setCellValue('D'.$row, $stud['name']) ;
          	$col = 'D' ;	

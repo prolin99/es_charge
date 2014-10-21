@@ -15,7 +15,7 @@ include_once "../../tadtools/PHPExcel.php";
 require_once '../../tadtools/PHPExcel/IOFactory.php';    
  
 /*-----------function區--------------*/
- 
+
 
 /*-----------執行動作判斷區----------*/
 $item_id=empty($_REQUEST['item_id'])?"":$_REQUEST['item_id'];

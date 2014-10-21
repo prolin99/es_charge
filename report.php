@@ -16,6 +16,9 @@ include_once XOOPS_ROOT_PATH."/header.php";
   	redirect_header(XOOPS_URL,3, "需要登入，才能使用！");
 
 /*-----------執行動作判斷區----------*/
+//取得中文班名
+$data['class_list_c'] = es_class_name_list_c('long')  ; 
+
 
 //取得所在班級
 $class_id =get_my_class_id($xoopsUser->uid() ) ;

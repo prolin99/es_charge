@@ -11,14 +11,14 @@
     <form class="form-horizontal" action="index.php"  method='post'>
     <{if ($data.admin) }>
     	<!-- 管理者可處理全校學生    -->
-    	<legend><{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='span2' onchange="submit();"}> 班級學生繳費名單
+    	<legend><{html_options name='admin_class_id' options=$data.class_list_c selected=$data.class_id class='span2' onchange="submit();"}> 班級學生繳費名單
     	<span class="alert alert-error">管理員權限!!!!</span>
     	<button type="submit" class="btn btn-primary" name='act_grade' value='act_grade' >開列全學年學生</button>
     	<button type="submit" class="btn btn-danger"  name='act_grade_remove'  value="act_grade_remove" onclick='return confirm("確定要移除?\n\nPS.繳費紀錄亦會一併被刪除")' >清空全學年學生</button>
  
     	</legend>
     <{else}>
-    	<legend><{$data.class_id}>班級學生繳費名單</legend>
+    	<legend><{$data.class_list_c[$data.class_id]}>班級學生繳費名單</legend>
     <{/if}>
 
     <{foreach  key=key item=stud   from= $data.students }>
@@ -47,7 +47,7 @@
 	$(document).on("click", "#CheckAll", function(){
                 //var chk = $(this).attr('checked');
                 var chk = $(this).prop('checked');
-                alert(chk) ;
+                //alert(chk) ;
                 if  (chk) 
 		$('div').find(':checkbox').prop('checked',  true );
 	   else 

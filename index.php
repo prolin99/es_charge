@@ -12,7 +12,8 @@ include_once "header.php";
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
-
+//取得中文班名
+$data['class_list_c'] = es_class_name_list_c('long')  ; 
 
  
  

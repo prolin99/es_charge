@@ -21,7 +21,7 @@
 }
 </style >
 <div id='printableArea' class='printableArea'>
-<h3><{$data.class_id}> 班級細目統計<{$data.class_source_pay.man}>人</h3>
+<h3><{$data.class_list_c[$data.class_id]}> 班級細目統計<{$data.class_source_pay.man}>人</h3>
  <table class="table table-bordered">
  	<tr><td>收費細目</td><td>細目額</td><td>班級金額</td><td>減免數</td><td>減免額</td><td>應收合計</td> </tr>
    <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>

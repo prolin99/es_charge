@@ -45,7 +45,7 @@
     <{foreach  key=key item=stud   from= $data.decase_list }>
       <tr  id="div_<{$data.seletc_item}>_<{$key}>">
       <td><{ $i++ }></td>
-      <td ><{$stud.curr_class_num}></td>
+      <td ><{$data.class_list_c[$stud.curr_class_num]}></td>
       <td ><{$stud.class_sit_num}></td>
       <td ><{$stud.name}></td>
       

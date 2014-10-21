@@ -12,7 +12,8 @@ include_once "header.php";
 include_once "../tadtools/PHPExcel.php";
 require_once '../tadtools/PHPExcel/IOFactory.php';    
 /*-----------function區--------------*/
- 
+//取得中文班名
+$class_list_c = es_class_name_list_c('long')  ;  
  
 
 /*-----------執行動作判斷區----------*/
@@ -65,7 +66,7 @@ if  ($item_id) {
  	$row++ ;
        //標題行(班級)
       	$objPHPExcel->setActiveSheetIndex(0) 
-            ->setCellValue('A' . $row, $class_id  . "( {$class_sum['man']} 人)" )  ;
+            ->setCellValue('A' . $row, $class_list_c[$class_id]  . "( {$class_sum['man']} 人)" )  ;
             
  	$row++ ;
        //標題行
