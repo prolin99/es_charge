@@ -86,7 +86,7 @@ function get_class_students( $class_id , $mode='class') {
 	
 		}		
 	return $data ;		
-	echo $sql ;
+ 
 	
 }
 
@@ -225,11 +225,16 @@ function get_detail_charge_dollars( $item_id) {
 //-------------------------------------------------------------------------------------------------------------------
 	
 
-function get_class_students_charge( $item_id , $class_id ) {
+function get_class_students_charge( $item_id , $class_id  , $mode='class' ) {
 	//取得該班的要繳費名單
 	global  $xoopsDB ,$decrease_cause ;
- 		$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("charge_record") . "   where class_id='$class_id'   and item_id='$item_id'   " ;
- 
+		if ($mode=='class')
+ 			$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("charge_record") . "   where class_id='$class_id'   and item_id='$item_id'   " ;
+ 		else {
+ 			$grade = substr($class_id,0,1) ;
+ 			$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("charge_record") . "   where class_id  like '$grade%'   and item_id='$item_id'  order by  class_id  " ;
+ 		}	
+ 		//echo $sql ;
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['selected']='1' ;
@@ -237,11 +242,16 @@ function get_class_students_charge( $item_id , $class_id ) {
  			$data[$stud['student_sn']]['cause'] =$decrease_cause[ $stud['cause'] ] ;
 			$data[$stud['student_sn']]['in_bank'] = $stud['in_bank']  ;
 			$data[$stud['student_sn']]['ps'] = $stud['ps']  ;
-	
+			$data[$stud['student_sn']]['rec_name'] = $stud['rec_name']  ;
+			$data[$stud['student_sn']]['class_id'] = $stud['class_id']  ;
+			$data[$stud['student_sn']]['record_id'] = $stud['record_id']  ;
+			$data[$stud['student_sn']]['item_id'] = $stud['item_id']  ;
 		}		
 	return $data ;		
-	
 }
+
+
+
 	
 function get_class_spec_old_item($item_id , $class_id ) {
 	//取得該班學生在舊表中有特殊身份的列表
@@ -342,28 +352,46 @@ function class_del_item_record($class_id , $item_id ,$mode='class'){
 		//減免記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .  
      	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num like '$grade%'  " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
      	
 		//學生記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .  
      	   	   "  WHERE  `item_id` = '$item_id'  and  class_id like '$grade%'  " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
 	}else {
 		//班級
 		//減免記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .  
      	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num='$class_id'  " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
      	
 		//學生記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .  
      	   	   "  WHERE  `item_id` = '$item_id'  and  class_id='$class_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());			
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());			
 		
 	}	
     	
 
 }
+
+function student_del_item_record($class_id , $item_id ,$stud_sn , $record_id  ){
+	// 刪除 某一位學生填入的資料  
+	global  $xoopsDB ;
+
+
+		//減免記錄
+		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .  
+     	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num='$class_id'  and student_sn='$stud_sn'  " ;
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());	
+     	
+		//學生記錄
+		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .  
+     	   	   "  WHERE  `item_id` = '$item_id'  and  class_id='$class_id' and student_sn='$stud_sn'   and record_id='$record_id'  " ;
+     	   	 
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());			
+}
+
 
 
 function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {

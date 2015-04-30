@@ -19,28 +19,35 @@
     	</legend>
     <{else}>
     	<legend><{$data.class_list_c[$data.class_id]}>班級學生繳費名單</legend>
-    <{/if}>
+    <{/if}>   
 
     <{foreach  key=key item=stud   from= $data.students }>
-    <{if ($data.selected[$stud.stud_id].selected) }>
-      <div class='span2'><label>■(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
-    <{else}>
-      
-      <div class='span2'><label><input type='checkbox' name='selected_stud[]' value='<{$stud.stud_id}>' id='stud_selected'>(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
-    <{/if}>
+
+        <{if ($data.selected[$stud.stud_id].selected) }>  <{* 有開列 *}>
+          <div class='span2'><label>■(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
+        <{else}>
+          <div class='span2'><label><input type='checkbox' name='selected_stud[]' value='<{$stud.stud_id}>' id='stud_selected'>(<{$stud.class_sit_num}>)<{$stud.name}></label></div>
+        <{/if}>
+
      <{/foreach }>
      </div>
     <div class="form-actions">
-    <p>基本上全班學生都開列，除非該學生在這次的轉帳的各種項目費用都無關才不需開列。</p>
-     <span class='span2'><label><input type='checkbox' name='CheckAll'  id='CheckAll'>全選</label> </span>
-     <input type="hidden" name="class_id" value="<{$data.class_id}>" />	
-     <input type="hidden" name="item_id" value="<{$data.seletc_item}>" />	
-     <button type="submit" class="btn btn-success" name='act_add' value='act_add' >開列選擇的學生</button>
-     <button type="submit" class="btn btn-danger"  name='act_remove'  value="act_remove" onclick='return confirm("確定要移除?\n\nPS.繳費紀錄亦會一併被刪除")' >清空本班級開列的名單</button>
-      
-
-    </form>
+        <p>基本上全班學生都開列，除非該學生在這次的轉帳的各種項目費用都無關才不需開列。</p>
+         <span class='span2'><label><input type='checkbox' name='CheckAll'  id='CheckAll'>全選</label> </span>
+         <input type="hidden" name="class_id" value="<{$data.class_id}>" />	
+         <input type="hidden" name="item_id" value="<{$data.seletc_item}>" />	
+         <button type="submit" class="btn btn-success" name='act_add' value='act_add' >開列選擇的學生</button>
+         <button type="submit" class="btn btn-danger"  name='act_remove'  value="act_remove" onclick='return confirm("確定要移除?\n\nPS.繳費紀錄亦會一併被刪除")' >清空本班級開列的名單</button>
+         </form>
      </div>
+     <div class="alert alert-error">
+        <{foreach  key=stud_sn item=s_stud   from= $data.selected }>
+            <{if (!$data.students[$stud_sn] ) }>
+               <p>繳費記錄中：<{$s_stud.class_id}> -- <{$stud_sn}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！<a class="btn btn-danger"  href="javascript:if(confirm('確定學生<{$s_stud.rec_name}>在這次收費記錄中已無需繳費?'))location='index.php?mode=del&class_id=<{$s_stud.class_id}>&item_id=<{$s_stud.item_id}>&id=<{$s_stud.record_id}>&sn=<{$stud_sn}>'">刪除</a></p>
+             <{/if}>  
+        <{/foreach}>
+     </div>   
+
 <{/if}>
 <script>    
 	//全選
