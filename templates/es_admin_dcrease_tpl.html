@@ -14,7 +14,7 @@
 
 <div id='frm' class="row-fluid"  >
     <form class="form-horizontal"   action="decrease.php" method='post'>
-      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
+      	<span><label>繳費項目：( 記錄有時效性，歷史資料會受學籍名冊影響！)</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
       	<a class="btn btn-primary"  href="decrease_list_form.php?do=excel&item_id=<{$data.select_item}>">補助表</a>
  	<a class="btn btn-success"  href="decrease_list.php?do=excel&show=all&item_id=<{$data.select_item}>">依學生減免匯出(全)</a>
  	<a class="btn btn-primary"  href="decrease_list.php?do=excel&show=only&item_id=<{$data.select_item}>">依學生減免匯出(僅補助)</a>
