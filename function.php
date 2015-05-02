@@ -111,6 +111,25 @@ function get_record_class_list( $item_id ) {
 	
 }
 
+function chk_student_out($item_id , $class_id , $mode= 'class' ) {
+	//是否有在作業期間轉出要刪除的學生
+	global  $xoopsDB ;
+	if ($mode=='class') 
+		$sql =  "  SELECT  *   FROM " . $xoopsDB->prefix("charge_record") .  " WHERE  item_id ='$item_id'  and class_id ='$class_id'  
+			and  student_sn NOT  IN (   SELECT stud_id  FROM " . $xoopsDB->prefix("e_student") .  " )  " ;
+	else 
+		$sql =  "  SELECT  *   FROM " . $xoopsDB->prefix("charge_record") .  " WHERE  item_id ='$item_id'  
+			and  student_sn NOT  IN (   SELECT stud_id  FROM " . $xoopsDB->prefix("e_student") .  " )  " ;	
+	//echo $sql ;
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
+	while($row=$xoopsDB->fetchArray($result)){
+ 		$data[]  = $row ;
+	}	
+ 
+	return $data ;
+ 
+}
+
 function item_in_time($item_id){
 	//是否在期限內
 	global  $xoopsDB ;
@@ -464,7 +483,7 @@ function get_all_decrease_list_item_kind_array(  $item_id  , $getall= 'all'  ) {
 function get_class_id_list( $item_id) {
 	//取得班級列表
 	global  $xoopsDB ;	
-	$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record")  . 
+	$sql =  "  SELECT  class_id   FROM " . $xoopsDB->prefix("charge_record")  . 
 			" where  item_id = '$item_id'     group by   class_id  " ;
  
 	

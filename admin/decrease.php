@@ -54,6 +54,9 @@ if  ($item_id) {
     	$data['newsday'] =date("m-d", mktime(0, 0, 0, date("m")  , date("d")-2, date("Y"))  );
 	
  	$data['select_item'] = $item_id  ;
+ 	
+ 	//是否有在作業期間轉出要刪除的學生
+	$data['out_student']= chk_student_out($item_id , $class_id , 'all' ) ;
 }
 
 

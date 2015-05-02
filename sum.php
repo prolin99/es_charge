@@ -36,12 +36,25 @@ $data['detail_list']=get_item_detail_list_name($item_id) ;
 //取得全部細項的收費
 $charge_array= get_detail_charge_dollars( $item_id) ;
 
+//檢查是否在期限內
+if  (item_in_time($item_id))  {		//是否在報名時間內	
+	$data['inTime'] = true ;
+}
+	
 
 
 $data['seletc_item'] = $item_id ;
 $data['class_id'] = $class_id  ;
 
-
+	//取得該班的資料
+if  ( $class_id  and $item_id) {
+	//有參加扣款
+	$data['selected']=get_class_students_charge($item_id ,$class_id ) ;
+	$data['selected_count']= count($data['selected']) ;
+	//全班名單
+	$data['students']= get_class_students($class_id ) ;
+	$data['students_count']=count($data['students']);
+}
 
 //取得本班級要繳的各項費用
 $y= ($data['class_id'] /100) -1 ;
@@ -51,6 +64,8 @@ foreach ($charge_array as $detail_id => $dollars) {
 $data['detail_dollar']= $my_class_charge_array;
 
 
+//是否有在作業期間轉出要刪除的學生
+$data['out_student']= chk_student_out($item_id , $class_id , 'class' ) ;
 
 //減免人數、金額小計
 $data['class_decrease'] = get_class_decrease_sum($item_id ,$class_id  ) ;

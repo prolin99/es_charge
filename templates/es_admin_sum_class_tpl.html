@@ -21,3 +21,44 @@
    </form>
 </div>   
 
+     <{if ($data.out_student)   }><{* 多餘繳費人記錄 *}> 
+     <div class="alert alert-error">
+        <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
+                <p>繳費記錄中： 班級:<{$s_stud.class_id}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？(id:<{$s_stud.record_id}>)</p>
+         <{/foreach}>
+     </div>   
+     <{/if}>
+<h3>各班收費總額統計</h3>     
+  <table class="table table-bordered" class='span8' >
+  <tr>
+       <td class='span1'>班級</td>
+      <td class='span1'>在籍人數</td>
+      <td class='span1'>項目金額</td>
+      <td class='span1'>收費人數</td>
+      <td class='span1'>項目總額</td>
+      <td class='span1'>減免總額</td>
+      <td class='span1'>應收總額</td>
+  </tr>    
+<{foreach  key=class_id item=class   from= $data.record }>
+  <tr>
+  <td><{$data.class_list_c[$class_id]}></td>
+  <td><{$data.students[$class_id]}></td>
+  <td><{$class.dollars}></td>
+  <td><{$class.st_count}></td>
+  <td><{$class.dollars_sum}></td>
+  <td><{$data.decrease_sum[$class_id]}></td>
+  <td><{ $class.dollars_pay  }></td>
+ </tr>
+<{/foreach}>
+  <tr>
+  <td>小計: <{$data.all_class_count}> 班 </td>
+  <td><{$data.all_st_num}></td>
+  <td> </td>
+  <td><{$data.all_pay_st_num}></td>
+  <td><{$data.all_pay_dollars_sum}></td>
+  <td><{$data.all_decrease}></td>
+  <td><{$data.all_pay}></td>
+ </tr>
+</table>
+
+

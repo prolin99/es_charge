@@ -48,8 +48,10 @@ if  ( $item_id ) {
 	if  ( $class_id ) {
 		//有參加扣款
 		$data['selected']=get_class_students_charge($item_id ,$class_id ) ;
+		$data['selected_count']= count($data['selected']) ;
 		//全班名單
 		$data['students']= get_class_students($class_id ) ;
+		$data['students_count']=count($data['students']);
 	}	
 	
 
@@ -92,7 +94,9 @@ if  ( $item_id ) {
 	$data['item_list']=get_item_list('all') ;
 	$data['seletc_item'] = $item_id ;
 	$data['class_id'] = $class_id  ;
-
+	
+//是否有在作業期間轉出要刪除的學生
+$data['out_student']= chk_student_out($item_id , $class_id , 'class' ) ;
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;

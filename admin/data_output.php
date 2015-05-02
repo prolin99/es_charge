@@ -38,6 +38,8 @@ $data['item_list']=get_item_list('all') ;
 
  $data['select_item'] = $item_id  ;
 
+//是否有在作業期間轉出要刪除的學生
+$data['out_student']= chk_student_out($item_id , $class_id , 'all' ) ;
 
 /*-----------秀出結果區--------------*/
 
