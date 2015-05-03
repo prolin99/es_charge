@@ -34,6 +34,7 @@ CREATE TABLE `charge_record` (
   `class_id` varchar(6) NOT NULL,
   `cause` int(11) NOT NULL DEFAULT '0',
   `ps` varchar(200) NOT NULL,
+  `rec_name` varchar(20) NOT NULL,
   PRIMARY KEY (`item_id`,`record_id`),
   KEY `item_id` (`student_sn`)
 ) ENGINE=MyISAM ;
