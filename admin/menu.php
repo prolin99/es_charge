@@ -17,6 +17,12 @@ $adminmenu[$i]['desc'] = '列出減免名單' ;
 $adminmenu[$i]['icon'] = 'images/admin/main.png' ;
 
 $i++ ;
+$adminmenu[$i]['title'] =  '扣款帳號管理';
+$adminmenu[$i]['link'] = "admin/poster_list.php";
+$adminmenu[$i]['desc'] = '學生扣款帳號管理' ;
+$adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
+
+$i++ ;
 $adminmenu[$i]['title'] =  '報表';
 $adminmenu[$i]['link'] = "admin/data_output.php";
 $adminmenu[$i]['desc'] = '收據、報表' ;
@@ -27,7 +33,7 @@ $adminmenu[$i]['title'] =  '統計';
 $adminmenu[$i]['link'] = "admin/sum.php";
  $adminmenu[$i]['desc'] = '各項統計' ;
 $adminmenu[$i]['icon'] = 'images/admin/log_48.png' ;
- 
+
 $i++ ;
 $adminmenu[$i]['title'] = "關於";
 $adminmenu[$i]['link'] = "admin/about.php";
