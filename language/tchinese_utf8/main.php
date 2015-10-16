@@ -31,7 +31,6 @@ define("_MD_INPUT_VALIDATOR_RANGE","範圍： %s ～ %s");
 define("_MD_INPUT_VALIDATOR_RANGE_MIN","最小： %s");
 define("_MD_INPUT_VALIDATOR_RANGE_MAX","最大： %s");
 
-define("_MD_MODULE_SMNAME1", "我的模組主頁");
-define("_MD_MODULE_SMNAME2", "aaa");
+
 
 ?>
