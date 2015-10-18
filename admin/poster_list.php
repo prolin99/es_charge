@@ -108,12 +108,15 @@ function import_excel($file_up,$ver=5) {
             }
 
             if ($stud_sn ) {
+				//---------------------有找到學生資料
                 $sql = " SELECT stud_sn From "  . $xoopsDB->prefix("charge_account") . " where stud_sn ='$stud_sn' ; " ;
 
                 $result = $xoopsDB->query($sql)   ;
                 while($stud=$xoopsDB->fetchArray($result)){
                     $get_stud_sn = $stud['stud_sn'] ;
                 }
+
+				//更新或新增
                 if ( $get_stud_sn==$stud_sn )
                     $sql=  " UPDATE  " . $xoopsDB->prefix("charge_account") . " SET  stud_name=  '{$v[3]}'  ,
                         `acc_name`= '{$v[7]}' , `acc_person_id`= '{$v[8]}' , `acc_mode`= '{$v[9]}' , `acc_b_id`= '{$v[10]}' , `acc_id`= '{$v[11]}' , `acc_g_id`= '{$v[12]}'
@@ -152,7 +155,7 @@ if ( $_POST['do_clear'] =='clear') {
 	$result = $xoopsDB->query($sql)  ;
 }
 
-//輸入
+//輸入 ------------------------------------------------
 if ($_POST['do']== 'input')  {
 	foreach ($_POST["acc_person_id"] as $sn =>$acc_person_id) {
 		$check1='no' ;
@@ -180,29 +183,46 @@ if ($_POST['do']== 'input')  {
 
 
 /*----------取得資料區--------------*/
-//無資料的學生筆數
-$sql = " SELECT count(*)  as ss FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
-		" as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
-$result = $xoopsDB->query($sql)   ;
-//echo $sql ;
-while($row=$xoopsDB->fetchArray($result)){
-	$no_account = $row['ss'] ;
-	$message.= "無扣款帳號學生數： $no_account  <br/>" ;
+//有使用郵局帳號才做
+if ($DEF['bank_account_use']) {
+	//目前已有扣款帳號
+	$sql = " SELECT count(*)  as ss FROM  ". $xoopsDB->prefix("e_student")     ;
+	$result = $xoopsDB->query($sql)   ;
+	//echo $sql ;
+	while($row=$xoopsDB->fetchArray($result)){
+		$stud_num = $row['ss'] ;
+
+	}
+
+	//無帳號資料的學生筆數
+	$sql = " SELECT count(*)  as ss FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
+			" as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
+	$result = $xoopsDB->query($sql)   ;
+	//echo $sql ;
+	while($row=$xoopsDB->fetchArray($result)){
+		$no_account = $row['ss'] ;
+		$infomessage.= "全校學生數總數： $stud_num  有款帳號學生數：" . ($stud_num-$no_account ) ."  無扣款帳號學生數： $no_account  <br/>" ;
+	}
+
+	//如果未匯入就視為不使用
+	$DEF['bank_account_use']=($stud_num-$no_account ) ;
+	if  ($DEF['bank_account_use']) {
+		//無帳號資料的學生
+		$sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
+				" as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
+		$result = $xoopsDB->query($sql)   ;
+
+		while($stud=$xoopsDB->fetchArray($result)){
+			$data[$stud['stud_id']] = $stud ;
+		}
+	}
 }
-
-//無資料的學生
-$sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
-		" as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
-$result = $xoopsDB->query($sql)   ;
-
-while($stud=$xoopsDB->fetchArray($result)){
-	$data[$stud['stud_id']] = $stud ;
-}
-
 /*-----------秀出結果區--------------*/
 
 $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "message" , $message ) ;
+$xoopsTpl->assign( "infomessage" , $infomessage ) ;
 $xoopsTpl->assign( "class_sit_message" , $class_sit_message ) ;
+$xoopsTpl->assign( "bank_account_use" , $DEF['bank_account_use'] ) ;
 
 include_once 'footer.php';

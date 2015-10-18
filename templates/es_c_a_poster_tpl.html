@@ -21,6 +21,10 @@
 
 </div>
 
+
+<{ if ($bank_account_use) }>
+<div class="alert alert-success"><{$infomessage}></div>
+
 <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
     <button type='submit'  name='do' value='input' class='btn btn-primary'>寫入</button>
     <span class="alert alert-info">可以多欄貼入(空白、逗號、換行，但欄位內容要有資料)</span>
@@ -33,34 +37,34 @@
     <span class="span1" ><{$stud.name}></span>
     <input name="st_name[<{$stud_sn}>]" value="<{$stud.name}>" type="hidden">
     <span class="span1" >
-        <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$tab_i}>'
+        <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$stud.stud_id}>1'
     placeholder='帳戶姓名'   />
-        <{assign var=tab_i value=$tab_i+1}>
+
     </span>
     <span class="span1" >
-        <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$tab_i}>'
+        <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$stud.stud_id}>2'
     placeholder='身份証號'   />
-    <{assign var=tab_i value=$tab_i+1}>
+
     </span>
     <span class="span1" >
-        <input   class='form-control'  name='acc_mode[<{$stud_sn}>]' type='text' id='acc_mode<{$stud_sn}>'  title='存款別(P/G)'  tabindex='<{$tab_i}>'
+        <input   class='form-control'  name='acc_mode[<{$stud_sn}>]' type='text' id='acc_mode<{$stud_sn}>'  title='存款別(P/G)'  tabindex='<{$stud.stud_id}>3'
     placeholder='存款別(P/G)'  value='P' />
-    <{assign var=tab_i value=$tab_i+1}>
+
     </span>
     <span class="span1" >
-        <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$tab_i}>'
+        <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$stud.stud_id}>4'
     placeholder='立帳局號'   />
-    <{assign var=tab_i value=$tab_i+1}>
+
     </span>
     <span class="span1" >
-        <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$tab_i}>'
+        <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$stud.stud_id}>5'
     placeholder='存簿帳號'   />
-    <{assign var=tab_i value=$tab_i+1}>
+
     </span>
     <span class="span1" >
-        <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$tab_i}>'
+        <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$stud.stud_id}>6'
     placeholder='劃撥帳號'   />
-    <{assign var=tab_i value=$tab_i+1}>
+
     </span>
 
     </div>
@@ -78,14 +82,10 @@
     <span class="alert alert-info">可以多欄貼入(空白、逗號、換行，但欄位內容要有資料)</span>
 </form>
 
-<{if $message}>
-     <div class="alert alert-error">
-         <{$message}>
-     </div>
-<{/if}>
-
 <script>
+//可支援 多欄位貼上，以空白、逗號、換行，但資料不能為空白值
 $('input').bind('paste', null, function(e){
+
     $this = $(this);
 
     setTimeout(function(){
@@ -105,3 +105,11 @@ $('input').bind('paste', null, function(e){
 });
 
 </script>
+<{/if}>
+
+
+<{if $message}>
+     <div class="alert alert-error">
+         <{$message}>
+     </div>
+<{/if}>
