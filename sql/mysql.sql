@@ -35,6 +35,8 @@ CREATE TABLE `charge_record` (
   `cause` int(11) NOT NULL DEFAULT '0',
   `ps` varchar(200) NOT NULL,
   `rec_name` varchar(20) NOT NULL,
+  `end_pay` int(11) NOT NULL,
+  `pay_ok` int(11) NOT NULL,
   PRIMARY KEY (`item_id`,`record_id`),
   KEY `item_id` (`student_sn`)
 ) ENGINE=MyISAM ;
@@ -54,3 +56,16 @@ CREATE TABLE `charge_decrease` (
   PRIMARY KEY (`detail_id`,`student_sn`,`curr_class_num`),
   UNIQUE KEY `decrease_id` (`decrease_id`)
 ) ENGINE=MyISAM ;
+
+
+CREATE TABLE   `charge_account` (
+  `stud_sn` bigint(20) NOT NULL,
+  `stud_name` varchar(30) NOT NULL,
+  `acc_name` varchar(30) NOT NULL,
+  `acc_person_id` varchar(12) NOT NULL,
+  `acc_mode` char(1) NOT NULL,
+  `acc_b_id` varchar(20) NOT NULL,
+  `acc_id` varchar(20) NOT NULL,
+  `acc_g_id` varchar(20) NOT NULL,
+  PRIMARY KEY (`stud_sn`)
+) ENGINE=MyISAM  COMMENT='郵局扣款帳號';

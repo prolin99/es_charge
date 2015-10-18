@@ -73,26 +73,46 @@ $i++ ;
 $modversion['templates'][$i]['file'] = 'es_admin_class_detail_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_admin_class_detail_tpl.html';
 
+$i++ ;
+$modversion['templates'][$i]['file'] = 'es_c_a_poster_tpl.html';
+$modversion['templates'][$i]['description'] = 'es_c_a_poster_tpl.html';
 
 $i++ ;
 $modversion['templates'][$i]['file'] = 'es_index_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_index_tpl.html';
 $i++ ;
+$modversion['templates'][$i]['file'] = 'es_index_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'es_index_tpl_b3.html';
+
+
+$i++ ;
 $modversion['templates'][$i]['file'] = 'es_decrease_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_decrease_tpl.html';
+$i++ ;
+$modversion['templates'][$i]['file'] = 'es_decrease_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'es_decrease_tpl_b3.html';
+
+
 $i++ ;
 $modversion['templates'][$i]['file'] = 'es_report_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_report_tpl.html';
 $i++ ;
-$modversion['templates'][$i]['file'] = 'es_report_html_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_report_html_tpl.html';
+$modversion['templates'][$i]['file'] = 'es_report_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'es_report_tpl_b3.html';
+
 $i++ ;
 $modversion['templates'][$i]['file'] = 'es_sum_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_sum_tpl.html';
+$i++ ;
+$modversion['templates'][$i]['file'] = 'es_sum_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'es_sum_tpl_b3.html';
 
 $i++ ;
 $modversion['templates'][$i]['file'] = 'es_decrease_table_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_decrease_table_tpl.html';
+$i++ ;
+$modversion['templates'][$i]['file'] = 'es_decrease_table_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'es_decrease_table_tpl_b3.html';
 
 $i=0 ;
 //偏好設定
@@ -121,6 +141,16 @@ $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC3';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="01_學生團體保險_158,158,158,158,158,158	\r\n02_教科書_476,462,524,512,532,444	\r\n03_家長會費x_100,100,100,100,100,100	\r\n04_午餐費_550,550,550,550,550,550	\n05_合作社代辦費x_270,230,170,230,260,220	\r\n06_校外教學&畢業旅行_450,0,0,0,0,2600        " ;
+
+
+$i++ ;
+$modversion['config'][$i]['name'] = 'es_c_bank_account';
+$modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE9';
+$modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC9';
+$modversion['config'][$i]['formtype']    = 'yesno';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default'] ="0" ;
+
 
 $i++ ;
 $modversion['config'][$i]['name'] = 'es_c_bank_pay';

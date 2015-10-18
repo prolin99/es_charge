@@ -17,11 +17,13 @@ $adminmenu[$i]['desc'] = '列出減免名單' ;
 $adminmenu[$i]['icon'] = 'images/admin/main.png' ;
 
 
-$i++ ;
-$adminmenu[$i]['title'] =  '扣款帳號管理';
-$adminmenu[$i]['link'] = "admin/poster_list.php";
-$adminmenu[$i]['desc'] = '學生扣款帳號管理' ;
-$adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
+    $i++ ;
+    $adminmenu[$i]['title'] =  '扣款帳號管理';
+    $adminmenu[$i]['link'] = "admin/poster_list.php";
+    $adminmenu[$i]['desc'] = '學生扣款帳號管理' ;
+    $adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
+
+
 
 $i++ ;
 $adminmenu[$i]['title'] =  '報表';

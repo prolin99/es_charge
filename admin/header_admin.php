@@ -7,4 +7,3 @@ include_once "../function.php";
 $module_menu=admin_toolbar();
 //引入模組樣式檔
 $module_css="<link rel='stylesheet' type='text/css' media='screen' href='../module.css' />";
-?>

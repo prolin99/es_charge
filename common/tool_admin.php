@@ -10,4 +10,3 @@ if(file_exists("../../../mainfile.php")){
     header("location:".XOOPS_URL."/index.php");
   }
 }
-?>
