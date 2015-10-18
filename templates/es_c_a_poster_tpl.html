@@ -1,0 +1,107 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+
+<div id='frm' class="row-fluid"  >
+    <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
+        <span class='span1'>郵局帳號檔：</span>
+        <input type=file name=userdata>
+    	<button type='submit'  name='do_key' value='add' class='btn btn-primary'>更新帳號資料(EXCEL)</button>
+        <span class="alert alert-error">檔案不可有密碼保護</span>
+        <button type='submit'  name='do_clear' value='clear' class='btn btn-danger' onclick='return confirm("確定要刪除?")' >清除資料</button>
+        <a class="btn btn-success"  href="export_account.php">匯出Excel</a>
+   </form>
+</div>
+<div class="alert alert-info">
+<strong>相關說明：</strong>
+<a href='../sample.xlsx' target='_blank' class='btn btn-primary'>EXCEL 範例檔</a><br/>
+<div>使用 EXCEL 格式匯入，請依範例檔欄位填放資料，不使用的欄位也要保留。</div>
+<div>比對以班級、座號、姓名和學生資料庫比對。</div>
+
+</div>
+
+<form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
+    <button type='submit'  name='do' value='input' class='btn btn-primary'>寫入</button>
+    <span class="alert alert-info">可以多欄貼入(空白、逗號、換行，但欄位內容要有資料)</span>
+    <{assign var='tab_i' value='1001'}>
+    <{foreach  key=stud_sn item=stud   from= $data }>
+
+    <div class="row-fluid" id= 'div_<{$stud.stud_id}>_<{$stud.name}>'>
+    <span class="span1" ><{$stud.class_id}>班</span>
+    <span class="span1" ><{$stud.class_sit_num}>號</span>
+    <span class="span1" ><{$stud.name}></span>
+    <input name="st_name[<{$stud_sn}>]" value="<{$stud.name}>" type="hidden">
+    <span class="span1" >
+        <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$tab_i}>'
+    placeholder='帳戶姓名'   />
+        <{assign var=tab_i value=$tab_i+1}>
+    </span>
+    <span class="span1" >
+        <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$tab_i}>'
+    placeholder='身份証號'   />
+    <{assign var=tab_i value=$tab_i+1}>
+    </span>
+    <span class="span1" >
+        <input   class='form-control'  name='acc_mode[<{$stud_sn}>]' type='text' id='acc_mode<{$stud_sn}>'  title='存款別(P/G)'  tabindex='<{$tab_i}>'
+    placeholder='存款別(P/G)'  value='P' />
+    <{assign var=tab_i value=$tab_i+1}>
+    </span>
+    <span class="span1" >
+        <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$tab_i}>'
+    placeholder='立帳局號'   />
+    <{assign var=tab_i value=$tab_i+1}>
+    </span>
+    <span class="span1" >
+        <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$tab_i}>'
+    placeholder='存簿帳號'   />
+    <{assign var=tab_i value=$tab_i+1}>
+    </span>
+    <span class="span1" >
+        <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$tab_i}>'
+    placeholder='劃撥帳號'   />
+    <{assign var=tab_i value=$tab_i+1}>
+    </span>
+
+    </div>
+    <{if  ($class_sit_message[$stud.class_id][$stud.class_sit_num]) }>
+    <div class="row-fluid">
+        ..............(姓名比對不到)：
+        <span class="alert alert-info">
+        <{ $class_sit_message[$stud.class_id][$stud.class_sit_num]}>
+    </span>
+    </div>
+    <{/if}>
+
+    <{/foreach}>
+    <button type='submit'  name='do' value='input' class='btn btn-primary'>寫入</button>
+    <span class="alert alert-info">可以多欄貼入(空白、逗號、換行，但欄位內容要有資料)</span>
+</form>
+
+<{if $message}>
+     <div class="alert alert-error">
+         <{$message}>
+     </div>
+<{/if}>
+
+<script>
+$('input').bind('paste', null, function(e){
+    $this = $(this);
+
+    setTimeout(function(){
+        var columns = $this.val().split(/[\s,\n]+/);
+        $this.val(' ');
+        var i;
+
+        for(i=0; i < columns.length; i++){
+            var focused = $(':focus');
+            var inputs = $(focused).closest('form').find(':input[type=text]');
+            inputs.eq(inputs.index(focused)).val(columns[i]);
+            inputs.eq(inputs.index(focused) + 1).focus();
+
+            //window.console.log( inputs.index(focused)  );
+         }
+    }, 0);
+});
+
+</script>
