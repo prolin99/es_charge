@@ -201,13 +201,14 @@ if ($DEF['bank_account_use']) {
 	//echo $sql ;
 	while($row=$xoopsDB->fetchArray($result)){
 		$no_account = $row['ss'] ;
-		$infomessage.= "全校學生數總數： $stud_num  有款帳號學生數：" . ($stud_num-$no_account ) ."  無扣款帳號學生數： $no_account  <br/>" ;
+		$infomessage.= "全校學生數總數： $stud_num   , 有扣款帳號學生數：" . ($stud_num-$no_account ) ."  , 無扣款帳號學生數： $no_account  <br/>" ;
 	}
 
 	//如果未匯入就視為不使用
 	$DEF['bank_account_use']=($stud_num-$no_account ) ;
+
+	//無帳號資料的學生
 	if  ($DEF['bank_account_use']) {
-		//無帳號資料的學生
 		$sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
 				" as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
 		$result = $xoopsDB->query($sql)   ;

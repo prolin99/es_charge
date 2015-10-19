@@ -21,11 +21,15 @@ include_once XOOPS_ROOT_PATH."/modules/e_stud_import/es_comm_function.php";
 //取得身份別
 $decrease_cause = preg_split('/\r\n/' ,$xoopsModuleConfig['es_charge_decrease_cause']) ;
 //$decrease_cause= array("無" , "低收入戶" ,"中低收入戶","家境貧困及家庭突遭變故(導師家訪認定)","原住民","重度以上身心障礙學生或身心障礙人士之子女" ,"中度以下身心障礙學生或身心障礙人士之子女") ;
-
+//有郵局扣款帳號
 $DEF['bank_account_use'] = $xoopsModuleConfig['es_c_bank_account'] ;
+//扣款手續費
 $DEF['fee'] = $xoopsModuleConfig['es_c_bank_pay'] ;
+//學校帳號 8 碼
 $DEF['school_accont'] = $xoopsModuleConfig['es_c_school_accont'] ;
+//學校代號 3 碼
 $DEF['school_id'] = $xoopsModuleConfig['es_c_school_id'] ;
+//郵局辦室區號
 $DEF['poster_block'] = $xoopsModuleConfig['es_c_poster_block'] ;
 
 
@@ -769,4 +773,21 @@ function  get_grade_source_pay_sum($item_id ,$class_id  , $my_class_charge_array
 		$class_sum['each']= $each_pay ;
 		return $class_sum ;
 
+}
+
+
+
+function get_class_no_account($class_id ='all') {
+    global  $xoopsDB ;
+    //班級無扣款帳號的資料，傳回學生 stud_id
+    $sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student")
+        . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account")
+        . " as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  and a.class_id = '$class_id'   "
+        . "  order by  a.class_id, a.class_sit_num  "  ;
+    $result = $xoopsDB->query($sql)   ;
+
+    while($stud=$xoopsDB->fetchArray($result)){
+        $data[$stud['stud_id']] = $stud['stud_id']  ;
+    }
+    return $data ;
 }

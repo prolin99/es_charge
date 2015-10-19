@@ -20,18 +20,17 @@
 	      <td><{$list.item}></td>
 	      <td><{$list.creater}></td>
 	      <td><{$list.start_date}> ~ <{$list.end_date}></td>
+          <td>扣款日：<{$list.bank_date}>
 	      <td><a href="?do=edit&item_id=<{$list.item_id}>">修改</a></td>
-
-	      
 	 </tr>
 	 <{/foreach }>
-     </table>      
-    </fieldset>     
+     </table>
+    </fieldset>
     </form>
 
-    
-<{ if  ($p_data.edit_fg) }>     
-<!--       編修畫面                --->
+
+<{ if  ($p_data.edit_fg) }>
+<!--       編修畫面                -->
 <div class="row-fluid">
 <div class="span6">
      <form  action="index.php" method="post" >
@@ -43,20 +42,22 @@
 	<label>收費日期：</label>
 	<input  type='text' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"   name='start_date' class='span4'  value="<{$p_data.edit_list.start_date}>">～
 	<input type='text'  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  name='end_date'  class='span4'   value="<{$p_data.edit_list.end_date}>"> <br/>
-	<input type='hidden' name='item_id' value="<{$p_data.edit_list.item_id}>"> 
+    <label>扣款日期：</label>
+    <input  type='text' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"   name='bank_date' class='span4'  value="<{$p_data.edit_list.bank_date}>"><br />
+	<input type='hidden' name='item_id' value="<{$p_data.edit_list.item_id}>">
 	<button type="submit" name='act_edit'  value='修改'  class="btn btn-primary" onclick='return confirm("確定要更改?")' >修改</button>
 	<button type="submit" name='act_del'  value='刪除'  class="btn btn-danger" onclick='return confirm("真的要刪除?\n\nPS.按[確定]會刪除項目細目及收費紀錄,且資料將不可回復")' >刪除此收費表</button>
 	<button type="submit" name='act_clear'  value='清除'  class="btn btn-danger" onclick='return confirm("會把各班已填的資料視會測試資料清除,用於第一次設定完成後！\n\n確定要清除嗎?")' >清除各班填報資料</button>
     </fieldset>
     </form>
-</div>    
+</div>
 <div class="span6">
          <h3>細項</h3>
          <h5>在填報期間，如果細項有調整(代碼、金額)，需要清除填報資料，重新填報！</h5>
          (項目名稱末字 x 表示無法申請補助)
         <{foreach  key=key item=list   from= $p_data.item_list }>
     	<div class="row" id="div_<{$list.item_id}>_<{$list.detail_id}>">
-        
+
 	<div class="span1"><span class="badge badge-info"><{$list.detail_sort}></span></div>
 	<div class="span4"><span class="edit"><i class="icon-pencil"></i></span><{$list.detail}></div>
 	<div class="span6"><span class="del"><i class="icon-trash"></i> </span><{$list.dollars}> </div>
@@ -64,12 +65,12 @@
 	</div>
        <{/foreach }>
 	<button onclick="add_form()" id="btn_add_form" class='btn btn-primary' >新增一欄</button>
-</div> 
-</div> 
+</div>
+</div>
 
 <script>
 function add_form() {
-        var div_id= Math.floor((Math.random()*10000)+1); 
+        var div_id= Math.floor((Math.random()*10000)+1);
 	var txt1="<div class='row'  id='div_<{$list.item_id}>_" + div_id +"'  >"
       		+"<form method='post' name='editForm' id='editForm_"+ div_id + "'   action='ajax_detail_add'  > "
      		+"<div class='span1'>"
@@ -78,7 +79,7 @@ function add_form() {
      		+"<div class='span4'>	"
      		+"	<input class='span11' name='detail' type='text' id='detail'  />"
 		+"</div>"
- 
+
 		+"<div class='span6'>"
   		+"	<input class='span11' name='dollars' type='text' id='dollars' placeholder='以逗號(,)分隔各年級金額'  />"
 		+"</div>	"
@@ -99,9 +100,9 @@ function add_form() {
     //編修
     var div_id = $(this).parent().parent().attr("id")  ;
     //alert( div_id) ;
-    ajax_edit( div_id) ; 
+    ajax_edit( div_id) ;
  });
- 
+
        var ajax_edit=function( id ){
              var URLs="ajax_edit_detail.php?id=" + id ;
     		//alert(URLs) ;
@@ -121,30 +122,30 @@ function add_form() {
                  }
            })
         }
-        
+
 
 function ajax_submit(form_id , div_id) {
 	$.ajax({
 		url: 'ajax_detail_submit.php',
 		type: 'POST',
 		dataType: 'html',
-		data: $('#'+form_id ).serialize() , 
+		data: $('#'+form_id ).serialize() ,
 
 	})
 	.done(function(data) {
 		//alert(div_id + data) ;
 		console.log("success");
 		$('#'+div_id).html(data );
-	}) 
+	})
 	.fail(function() {
 		console.log("error");
 	})
 	.always(function() {
 		console.log("complete");
-	});	 
- 
-}        
-    
+	});
+
+}
+
 
     //刪除----------------------------------------------------------------------------------
   $(document).on("click", ".del", function(){
@@ -153,15 +154,15 @@ function ajax_submit(form_id , div_id) {
     //alert( div_id) ;
      if(confirm('是否確定要刪除？')) {
            ajax_del(  div_id) ;  // 刪除動作
-           //把這個 div 隱藏起來 
-           $(this).parent().parent().hide() ;    
-     }           
+           //把這個 div 隱藏起來
+           $(this).parent().parent().hide() ;
+     }
  });
- 
+
       var ajax_del=function( id ){
       //alert(id) ;
              var URLs="ajax_del_detail.php?id=" + id ;
-    
+
             $.ajax({
                 url: URLs,
                 type:"GET",
@@ -177,13 +178,13 @@ function ajax_submit(form_id , div_id) {
                  }
            })
         }
-        
+
 //更新        ----------------------------------------
 $(document).on("click", "span.ed" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
           		var form_id = $(this).parent().parent().attr("id")  ;
           		var div_id = $(this).parent().parent().parent().attr("id")  ;
-          		//$(this).parent().parent().parent().attr("id") 
+          		//$(this).parent().parent().parent().attr("id")
           		//alert(div_id + form_id);
           		ajax_submit( form_id , div_id) ;  // 動作
 	}
@@ -195,29 +196,29 @@ function ajax_submit(form_id , div_id) {
 		url: 'ajax_detail_submit.php',
 		type: 'POST',
 		dataType: 'html',
-		data: $('#'+form_id ).serialize() , 
+		data: $('#'+form_id ).serialize() ,
 
 	})
 	.done(function(data) {
 		//alert(div_id + data) ;
 		console.log("success");
 		$('#'+div_id).html(data );
-	}) 
+	})
 	.fail(function() {
 		console.log("error");
 	})
 	.always(function() {
 		console.log("complete");
-	});	 
- 
-}    
+	});
 
-//新增       --------------------------------------------- 
+}
+
+//新增       ---------------------------------------------
 $(document).on("click", "span.insert" ,  function(){
 		//可以取得 該資料列的編號，就可以利用這編號傳給後端做處理(注意取得的階層)  editForm_
           		var form_id = $(this).parent().parent().attr("id")  ;
           		var div_id = $(this).parent().parent().parent().attr("id")  ;
-          		//$(this).parent().parent().parent().attr("id") 
+          		//$(this).parent().parent().parent().attr("id")
           		//alert ( $("#" + form_id ).serialize() ) ;
           		ajax_add( form_id , div_id) ;  // 動作
 	}
@@ -225,14 +226,14 @@ $(document).on("click", "span.insert" ,  function(){
 
 function ajax_add(form_id , div_id) {
         //alert(div_id + form_id);
-        
+
 	$.ajax({
 		url: 'ajax_detail_add.php',
 		type: 'POST',
 		dataType: 'html',
-		data: $('#'+form_id ).serialize() , 
+		data: $('#'+form_id ).serialize() ,
 
- 
+
 	})
 	.done(function(data) {
 		//alert(div_id + form_id + data) ;
@@ -240,24 +241,24 @@ function ajax_add(form_id , div_id) {
 		//$('#'+div_id).html(data );
 		$('#'+div_id).before(data );
 		$('#'+div_id).hide() ;
-	}) 
+	})
 	.fail(function() {
 		console.log("error");
 	})
 	.always(function() {
 		console.log("complete");
-	});	 
- 
-}  
- </script>
- 
+	});
 
-</div> 
-<!--       編修畫面結束                --->
+}
+ </script>
+
+
+</div>
+<!--       編修畫面結束                -->
 <{/if}>
 
-<{if ($p_data.add_fg)}>     
-	<!--       新增畫面                 --->
+<{if ($p_data.add_fg)}>
+	<!--       新增畫面                 -->
      <form  action="index.php" method="post">
     <fieldset>
         <legend>新增收費單</legend>
@@ -268,7 +269,10 @@ function ajax_add(form_id , div_id) {
 
 	<input   type='text' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  name='start_date'  class='span2'  value="" >～
 	<input type='text'  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name='end_date'  name='end_date'   class='span2'  value="" >
-	
+    <label>扣款日期：</label>
+    <input  type='text' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"   name='bank_date' class='span4'  value="<{$p_data.edit_list.bank_date}>"><br />
+
+
 	<div class="row">
 	<div class="span6">
 	<label>快速新增細項：</label>
@@ -276,12 +280,12 @@ function ajax_add(form_id , div_id) {
 	</div>
 	<div class="span6">
 	<label>細項範例(序號_項目_各年級金額)：(項目名稱末字 x 表示無法申請補助)</label>
-	<pre><{$p_data.detail_def}></pre>	
+	<pre><{$p_data.detail_def}></pre>
  	</div>
  	</div>
 
 	<button type="submit" name='act_save'  value='新增'  class="btn btn-primary">新增</button>
-	
+
   </fieldset>
     </form>
 <{/if}>

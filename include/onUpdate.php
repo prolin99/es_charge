@@ -5,20 +5,37 @@ function xoops_module_update_es_charge(&$module, $old_version) {
 
     if(!chk_add_cause()) go_update_add_cause();
     if(!chk_add_name()) go_update_add_name();
-
+    //郵局帳號資料表
     if(!chk_add_account()) go_update_add_account();
-
+    //個人繳費小計
     if(!chk_add_pay_sum()) go_update_add_pay_sum();
-
-
+    //扣款日
+    if(!chk_add_pay_date()) go_update_add_pay_date();
     return true;
 }
+
+//----- 增加  扣款日 ------------------------------
+function chk_add_pay_date(){
+  global $xoopsDB;
+  $sql=" select bank_date  from ".$xoopsDB->prefix("charge_item");
+  $result=$xoopsDB->query($sql);
+  if(empty($result)) return false;
+  return true;
+}
+
+function go_update_add_pay_date(){
+  global $xoopsDB;
+
+     $sql="  ALTER TABLE   ".$xoopsDB->prefix("charge_item") ."   ADD  `bank_date` date DEFAULT NULL " ;
+     $xoopsDB->queryF($sql)  ;
+}
+
 
 
 //----- 增加 charge_account 資料表 ------------------------------
 function chk_add_account(){
   global $xoopsDB;
-  $sql=" select cause_other  from ".$xoopsDB->prefix("charge_account");
+  $sql=" select acc_person_id  from ".$xoopsDB->prefix("charge_account");
   $result=$xoopsDB->query($sql);
   if(empty($result)) return false;
   return true;
