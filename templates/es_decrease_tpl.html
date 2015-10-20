@@ -1,15 +1,20 @@
-<{$bootstrap}>
-<{$jquery}>
+<{if  $no_bootstrap_v2}>
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<{else}>
+    <{$bootstrap}>
+    <{$jquery}>
+<{/if}>
 <{$toolbar}>
 
 <div class="row-fluid"  >
     <form id='frm' class="form-horizontal"   action="decrease.php" method='post'>
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
    </form>
-</div>   
-<{if ($data.class_id )  }>  
+</div>
+<{if ($data.class_id )  }>
 <{*     減免列表            *}>
-<{if ($data.seletc_item ) }>  
+<{if ($data.seletc_item ) }>
 <style type="text/css">
 @media print {
   a[href]:after {
@@ -28,11 +33,11 @@
       <div class="row-fluid" >
       <div class='span1'>座號</div>
       <div class='span1'>姓名</div>
- 
+
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <div class='span1'><{$detail_val|truncate:9}><span class="label"><{$data.detail_dollar.pay[$detail_key]}></span></div>
       <{/foreach}>
-      
+
       <div class='span2'>減免原因</div>
 
       </div>
@@ -41,7 +46,7 @@
       <div class="row-fluid" id="div_<{$data.seletc_item}>_<{$key}>">
       <div class='span1'  id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><span class="edit"><i class="icon-pencil"></i></span> <{$data.students[$key].class_sit_num}></div>
       <div class='span1' id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></div>
-      
+
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <{*    dollar_item_stud_sn_detail_id                金額  checked 補助                   *}>
         <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
@@ -50,14 +55,14 @@
              <{*   other cause_chk   *}>
             <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
           <{else}>
-            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>                
+            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
           <{/if}>
 
         <{else}>
         <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></div>
         <{/if}>
       <{/foreach}>
-      
+
       <div class='span2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="icon-trash"></i></span><{$data.selected[$key].cause|truncate:18}>
           <{if ($data.selected[$key].ps) }>
             <i class="icon-info-sign" title="連絡內容：<{$data.selected[$key].ps}>"></i>
@@ -67,34 +72,34 @@
       </div>
     <{/foreach }>
 
-	 <{if ($data.inTime ) }>  
-   
-     <{* 多餘繳費人記錄 *}> 
+	 <{if ($data.inTime ) }>
+
+     <{* 多餘繳費人記錄 *}>
      <{if ($data.out_student)   }>
      <div class="alert alert-error">
         <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
                 <p>繳費記錄中： <{$s_stud.student_sn}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？<a class="btn btn-danger"  href="javascript:if(confirm('確定學生<{$s_stud.rec_name}>已轉出，在這次收費記錄中已無需繳費?'))location='index.php?mode=del&class_id=<{$s_stud.class_id}>&item_id=<{$s_stud.item_id}>&id=<{$s_stud.record_id}>&sn=<{$s_stud.student_sn}>'">刪除</a></p>
          <{/foreach}>
-     </div>   
+     </div>
      <{/if}>
 
 	 <hr />
        <{* 新增學生        --------------------------------------------------------------------------------------                            *}>
      <div  id= 'frm_add' class="row-fluid">
      <div class="span8">
-       <form method='post' name='editForm' id='editForm_new' class="form-horizontal" > 
+       <form method='post' name='editForm' id='editForm_new' class="form-horizontal" >
  		<fieldset>
-		
+
     <{if ($data.admin) }>
     	<!-- 管理者可處理全校學生    -->
     	<legend>新增減免學生，繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='span2' onchange="submit();"}>
     	<span class="alert alert-error" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
     	</legend>
-	<{else}>    	
+	<{else}>
     	<legend>新增減免學生</legend>
-    <{/if}>		
+    <{/if}>
      			<div class="control-group">
-     			
+
      			<label class="control-label" for="stud" >學生：</label>
      			<select name="stud" >
 			<option label="選擇學生" value="0">選擇學生</option>
@@ -102,16 +107,16 @@
 			  	<{if ($data.selected[$stud.stud_id].selected and  !$data.decase_list[$stud.stud_id]) }>
 				<option label="(<{$stud.class_sit_num}>)<{$stud.name}>" value="<{$stud.stud_id}>_<{$stud.class_sit_num}>"  >(<{$stud.class_sit_num}>)<{$stud.name}></option>
     				<{/if}>
-     			<{/foreach }>				
+     			<{/foreach }>
 			</select>
 			</div>
-			
+
 			<div class="control-group">
 			<label class="control-label" for="cause_id"  >主減免原因：</label>
  			<{html_options name='cause_id'  options=$decrease_cause  onchange="cause_check($(this));"  }>
                     (多身份,點補助後圖示指定)
                    </div>
-         
+
  			<{*  各項費用  ---------------------   *}>
  			<{foreach  key=key item=detail   from= $data.detail_list }>
  			<div class="control-group">
@@ -120,7 +125,7 @@
  			 <i class="icon-forward"></i> </span>
   			<input   class='span2'  name='dollars[<{$key}>]' type='text' id='dollars<{$key}>'  title='<{$detail}><{$data.detail_dollar.pay[$key]}>'  tabindex='<{$key}>'
   			    placeholder='<{$data.detail_dollar.decease[$key]}>' onchange="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
-   			   
+
   			<div class="input-append">
                       <{ if ($data.dent_support[$key]) }>
                       <label title='可減免，但無法補助' class="label">(無補助)</label>
@@ -133,7 +138,7 @@
                       <{ if !($data.dent_support[$key]) }>
                         <i class="icon-filter show_other" title='其他身份別選擇' data_ref='other_<{$key}>'  ></i>
                         <{/if}>
-                      </div>  
+                      </div>
                     <div class="input-append">
                      <{ html_options name=other[$key]  options=$decrease_cause id=other_$key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
                     </div>
@@ -143,18 +148,18 @@
                       <{*    聯絡註記   *}>
  			<div class="control-group">
                     <label class="control-label" for="cause_id"  >聯絡註記：</label>
-                    <input   class='span8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  /> 
+                    <input   class='span8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  />
                     </div>
 
 			<div class="form-actions">
 			<input name='item_id' type='hidden' value='<{$data.seletc_item}>' />
 			<input name='class_id' type='hidden' value='<{$data.class_id}>' />
- 
+
  			<button class="btn btn-primary" type="submit" name='act_add' value='act_add' >新增</button>
- 
+
  			</div>
 
- 
+
  		</fieldset>
 		</form>
 		<{if ($data.spec_list)}>
@@ -173,29 +178,29 @@
 	<{else}>
 	<div class="alert alert-danger">已過填報時限！</div>
 	<{/if}>
-	
+
 <{/if}>
 
- <{if ($data.inTime ) }>  
-<script>    
+ <{if ($data.inTime ) }>
+<script>
 
- 
-        
+
+
     //刪除----------------------------------------------------------------------------------
   $(document).on("click", ".del", function(){
 
     var div_id = $(this).parent().parent().attr("id")  ;
     	   if(confirm('是否確定要刪除？')) {
            	ajax_del(  div_id) ;  // 刪除動作
-           	//把這個 div 隱藏起來 
-           	$(this).parent().parent().hide() ;  
+           	//把這個 div 隱藏起來
+           	$(this).parent().parent().hide() ;
            }
  });
- 
+
       var ajax_del=function( id ){
       //alert(id) ;
              var URLs="ajax_decrease_del.php?id=" + id ;
-    
+
             $.ajax({
                 url: URLs,
                 type:"GET",
@@ -212,7 +217,7 @@
            })
         }
 
-//----------------------------------------------------------------------        
+//----------------------------------------------------------------------
 function isInteger(value) {
     return (value == parseInt(value));
 }
@@ -225,59 +230,59 @@ function isInteger(value) {
     	   if (  (g_val > max_m) | (g_val<0)  | (! isInteger(g_val) ) ) {
     	       alert (  input_name+ '減免金額有問題！') ;
               $(obj_input).val(0) ;
-          }  
+          }
         }
     }
-    
-    
-    
+
+
+
     function cause_check(obj_sel) {
 	//身份補助選擇
- 
+
              var chk = $(obj_sel).val();
  		//alert(chk) ;
               //有特殊身份，預設補助勾選
              if  (chk!=0) {
 			$('label').find(':checkbox').prop('checked', true );
-		}else 
+		}else
 			$('label').find(':checkbox').prop('checked' ,false);
- 
+
  	}
 
     //修改----------------------------------------------------------------------------------
   $(document).on("click", ".edit", function(){
 
     var div_id = $(this).parent().parent().attr("id")  ;
-     
- 
+
+
     var splits = div_id.split('_') ;
-    var form_id =  'form_' +splits[1]+'_'+ splits[2]   ; 
+    var form_id =  'form_' +splits[1]+'_'+ splits[2]   ;
     //取座號、姓名
     var name_str = $('#name_'+splits[1]+'_'+ splits[2]).attr("data")  ;
      var sit_str = $('#sit_'+splits[1]+'_'+ splits[2]).attr("data")  ;
      var cause_str = $('#cause_'+splits[1]+'_'+ splits[2]).attr("data")  ;
-   //各項費用取舊值 
-   <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>    
+   //各項費用取舊值
+   <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
     var dollar_<{$detail_key}> = $('#dollar_'+splits[1]+'_'+ splits[2] +'_<{$detail_key}>').attr("data")  ;
     var check_<{$detail_key}> = $('#dollar_'+splits[1]+'_'+ splits[2] +'_<{$detail_key}>').attr("need")  ;
 
     <{/foreach}>
 
         //各項費用輸入
-        var form_str = 
+        var form_str =
         		"<form  id='" + form_id + "'  class='form-actions'>"+
-        		"<div class='span1'>"+sit_str+"</div>"+ 
-      			"<div class='span1'>"+name_str+"</div>" + 
-      			
+        		"<div class='span1'>"+sit_str+"</div>"+
+      			"<div class='span1'>"+name_str+"</div>" +
+
       			<{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         		"<div class='span1'> "+
                        "<input class='span10' name='dollars[<{$detail_key}>]' type='text' id='dollars[<{$detail_key}>]'  title='<{$detail_val}>'  tabindex='9<{$detail_key}>' value='"+ dollar_<{$detail_key}> +"'  onblur='check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);' />" +
                         <{if !($data.dent_support[$detail_key])}> <{*  可否請補助   *}>
-  			   " <label ><input type='checkbox' name='decrease_sel[<{$detail_key}>]' value='1' "+ check_<{$detail_key}> +" title='需有身份別才可勾選！'>補助</label>" + 
+  			   " <label ><input type='checkbox' name='decrease_sel[<{$detail_key}>]' value='1' "+ check_<{$detail_key}> +" title='需有身份別才可勾選！'>補助</label>" +
                         <{/if}>
  			" </div>" +
  			<{/foreach}>
- 			"<div class='span2'>" + 
+ 			"<div class='span2'>" +
  			cause_str +
  			"</div>" +
  			"<span class='save'>save</span>"+
@@ -288,13 +293,13 @@ function isInteger(value) {
  			"<input name='stud' type='hidden' value='" +splits[2] +"' />" +
  			"<input name='cause_str' type='hidden' value='" +cause_str +"' />" +
  			"</form>";
- 	
-       //編修       
+
+       //編修
 	$('#' +div_id).html(form_str) ;
 	//新增區hide
 	$('#frm_add').hide() ;
- }); 	
- 
+ });
+
    //按下 save  ----------------------------------------------------------------------------------
    $(document).on('click', '.save', function(){
     	var div_id = $(this).parent().parent().attr("id")  ;
@@ -302,8 +307,8 @@ function isInteger(value) {
     	//alert(div_id +form_id ) ;
     	ajax_save( div_id , form_id ) ;
     	$('#frm_add').show() ;
-     }); 	
-     
+     });
+
      //ajax 存檔後，修改 div 內容 ----------------------------
       function ajax_save( div_id , form_id  ){
  	//alert ($('#'+form_id ).serialize()) ;
@@ -311,7 +316,7 @@ function isInteger(value) {
               	url: 'ajax_decrease_save.php',
               	 type: 'POST',
 		dataType: 'html',
-		data: $('#'+form_id ).serialize() , 
+		data: $('#'+form_id ).serialize() ,
 
                 success: function(data){
                     //alert(msg);
@@ -323,26 +328,26 @@ function isInteger(value) {
                     alert(thrownError);
                  }
            })
-        }   
- 
-        
-        
-        
- 
-   //按下 >>   填入全額 ------------------------------------------------- 
+        }
+
+
+
+
+
+   //按下 >>   填入全額 -------------------------------------------------
    $(document).on('click', '.fill', function(){
-   
+
     	var div_id = $(this).attr("id")  ;
- 
-    	
+
+
     	var splits = div_id.split('_') ;
     	//alert(splits[1]) ;
-    	if ($('#'+splits[1]).val() >0  ) 
+    	if ($('#'+splits[1]).val() >0  )
     		$('#'+splits[1]).val('') ;
-    	else 
+    	else
     	 	$('#'+splits[1]).val( splits[2]) ;
- 
-     }); 	        
+
+     });
 
   // other_show
   $(document).on("click", ".show_other", function(){
@@ -350,7 +355,7 @@ function isInteger(value) {
       $('#'+div_id).show() ;
     }) ;
 
-</script>   
+</script>
 <{/if}>
 
 <{else}>

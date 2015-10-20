@@ -20,8 +20,6 @@ $item_id=empty($_REQUEST['item_id'])?"":$_REQUEST['item_id'];
 
 if  ($item_id) {
 
-
-
 	//細項名稱
 	$detail_list=get_item_detail_list_name($item_id) ;
 
@@ -64,10 +62,15 @@ function get_bank_date_cht($item_id) {
 function export_data($item_id){
 	global   $xoopsDB ,$DEF;
 
-	//取得扣款日
+	//取得扣款日 YYYMMDD
 	$date_pay = get_bank_date_cht($item_id) ;
-
+	//扣款年月  YYYMM
 	$month_pay = substr($date_pay,0,5) ;
+	//區處站所代號 4 碼
+	if ($DEF['poster_block'] )
+		$poster_block= $DEF['poster_block']  ;
+	else
+		$poster_block = space_chr(4) ;
 
 	//各人扣款 ，要有帳號及允許扣款
 	$sql = " SELECT a.student_sn, a.end_pay , a.item_id  , b.* , c.class_id , c.class_sit_num  , count(*) as ccn ,sum(end_pay) as sum_pay    From "
@@ -95,23 +98,27 @@ function export_data($item_id){
 
 		if ($stud['acc_mode'] == 'P' )
 			//存戶
-			$data .= '1' .$stud['acc_mode'] . $DEF['school_id'] .'    '.$date_pay. '   '
+			$data .= '1' .$stud['acc_mode'] . $DEF['school_id'] . $poster_block .   $date_pay.  space_chr(3)
 				.  sprintf("%07d",$stud['acc_b_id']).sprintf("%07d",$stud['acc_id']).$stud['acc_person_id']
 				. sprintf("%09d",$pay).'00'.   sprintf("%03d",$stud['class_id'])     .  sprintf("%03d",$stud['class_sit_num'])
-				.$do_sum. '   ' . $stud_show_id   . '1 ' .  '   '  .'1' .'     ' . $month_pay .'     ' ."\n" ;
+				.$do_sum. space_chr(3)  . $stud_show_id   . '1 ' .  space_chr(3)  .'1' .  space_chr(5)   . $month_pay .  space_chr(5)  ."\n" ;
 		else
 			//劃撥戶
-			$data .= '1' .$stud['acc_mode'] . $DEF['school_id'] .'    '.$date_pay. '   '
+			$data .= '1' .$stud['acc_mode'] . $DEF['school_id']  .  $poster_block   .   $date_pay.  space_chr(3)
 				.  sprintf("%014d",$stud['acc_g_id']) . $stud['acc_person_id']
 				. sprintf("%09d",$pay).'00'.  sprintf("%03d",$stud['class_id'])  .  sprintf("%03d",$stud['class_sit_num'])
-				.$do_sum . '    ' . $stud_show_id . '1 ' .  '   '  .'1' .'     ' . $month_pay .'     ' ."\n" ;
+				.$do_sum . space_chr(3) . $stud_show_id . '1 ' .  space_chr(3)  .'1' .  space_chr(5)  . $month_pay . space_chr(5)  ."\n" ;
 
 		//筆數、總金額
 		$sum_rec++ ;
 		$sum_pay +=  $pay ;
 	}
 	//最後總合
-	$total_str = '2 ' . $DEF['school_id'] .'    '.$date_pay. '000' . sprintf("%07d" , $sum_rec) .  sprintf("%011d",$sum_pay).'00' . sprintf("%08d",$DEF['school_accont']).  sprintf("%08d",$DEF['school_accont']) .  sprintf("%020d",0);
+	$total_str = '2 ' . $DEF['school_id'] .  $poster_block .  $date_pay  . '000'
+		. sprintf("%07d" , $sum_rec) .  sprintf("%011d",$sum_pay).'00'
+		. sprintf("%08d",$DEF['school_accont']).  sprintf("%08d",$DEF['school_accont2'])
+		.  sprintf("%020d",0)
+		. space_chr(15);
 
 
 	header('Content-Type: text/plain');
@@ -123,7 +130,12 @@ function export_data($item_id){
 
 }
 
-
+//空白字元 $len 個
+function space_chr($len){
+	for ($i =0; $i <$len ; $i++ )
+		$str  .=' ';
+	return $str ;
+}
 
 
 //計算每人要繳的金額放入資料庫

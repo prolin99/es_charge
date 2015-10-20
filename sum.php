@@ -12,12 +12,12 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
 
- if (!$xoopsUser) 
+ if (!$xoopsUser)
   	redirect_header(XOOPS_URL,3, "需要登入，才能使用！");
 
 /*-----------執行動作判斷區----------*/
 //取得中文班名
-$data['class_list_c'] = es_class_name_list_c('long')  ; 
+$data['class_list_c'] = es_class_name_list_c('long')  ;
 
 
 
@@ -37,10 +37,10 @@ $data['detail_list']=get_item_detail_list_name($item_id) ;
 $charge_array= get_detail_charge_dollars( $item_id) ;
 
 //檢查是否在期限內
-if  (item_in_time($item_id))  {		//是否在報名時間內	
+if  (item_in_time($item_id))  {		//是否在報名時間內
 	$data['inTime'] = true ;
 }
-	
+
 
 
 $data['seletc_item'] = $item_id ;
@@ -80,7 +80,9 @@ $xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
 $xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
 $xoopsTpl->assign( "jquery" , get_jquery(true)) ;
 $xoopsTpl->assign( "data" , $data ) ;
- 
+$xoopsTpl->assign( "no_bootstrap_v2" , $_SESSION['bootstrap']>=3 ) ;
+
+
 include_once XOOPS_ROOT_PATH.'/footer.php';
 
 ?>

@@ -107,6 +107,9 @@ $xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
 $xoopsTpl->assign( "jquery" , get_jquery(true)) ;
 $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "DEF" , $DEF ) ;
+$xoopsTpl->assign( "no_bootstrap_v2" , $_SESSION['bootstrap']>=3 ) ;
+
+
 //$xoopsTpl->display("es_report_tpl.html") ;
 include_once XOOPS_ROOT_PATH.'/footer.php';
 //include_once 'footer.php';

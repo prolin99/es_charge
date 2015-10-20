@@ -169,6 +169,14 @@ $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="" ;
 
 $i++ ;
+$modversion['config'][$i]['name'] = 'es_c_school_accont2';
+$modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE11';
+$modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC11';
+$modversion['config'][$i]['formtype']    = 'text';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default'] ="" ;
+
+$i++ ;
 $modversion['config'][$i]['name'] = 'es_c_school_id';
 $modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE7';
 $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC7';

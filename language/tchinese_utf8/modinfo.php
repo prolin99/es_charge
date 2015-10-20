@@ -22,6 +22,9 @@ define("_MI_ESCHARGE_CONFIG_DESC5","郵局5元");
 
 define("_MI_ESCHARGE_CONFIG_TITLE6","學校的劃撥帳號");
 define("_MI_ESCHARGE_CONFIG_DESC6","學校撥款劃撥的帳號(8碼)");
+define("_MI_ESCHARGE_CONFIG_TITLE11","學校的扣款手續費帳帳號");
+define("_MI_ESCHARGE_CONFIG_DESC11","應該和上面的學校撥款劃撥帳號相同(8碼)");
+
 
 define("_MI_ESCHARGE_CONFIG_TITLE7","事業單位代號");
 define("_MI_ESCHARGE_CONFIG_DESC7","由郵局儲匯處編給(3碼)");
@@ -29,8 +32,8 @@ define("_MI_ESCHARGE_CONFIG_DESC7","由郵局儲匯處編給(3碼)");
 define("_MI_ESCHARGE_CONFIG_TITLE8","區處站所代號");
 define("_MI_ESCHARGE_CONFIG_DESC8","郵局提供，目前為空白(4碼)");
 
-define("_MI_ESCHARGE_CONFIG_TITLE9","有建立郵局帳號");
-define("_MI_ESCHARGE_CONFIG_DESC9","有學生扣款帳號資料");
+define("_MI_ESCHARGE_CONFIG_TITLE9","已有建立郵局帳號");
+define("_MI_ESCHARGE_CONFIG_DESC9","有學生扣款帳號資料，才能進行相關功能");
 
 
 ?>

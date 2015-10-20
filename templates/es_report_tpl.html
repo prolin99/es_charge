@@ -1,5 +1,10 @@
-<{$bootstrap}>
-<{$jquery}>
+<{if  $no_bootstrap_v2}>
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<{else}>
+    <{$bootstrap}>
+    <{$jquery}>
+<{/if}>
 <{$toolbar}>
 
 <style type="text/css">

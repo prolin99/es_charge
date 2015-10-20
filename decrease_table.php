@@ -8,9 +8,9 @@
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 
-//$xoopsOption['template_main'] = "es_decrease_table_tpl.html";
+$xoopsOption['template_main'] = "es_decrease_table_tpl.html";
 include_once "header.php";
-$xoopsOption['template_main'] = set_bootstrap("es_decrease_table_tpl.html");
+//$xoopsOption['template_main'] = set_bootstrap("es_decrease_table_tpl.html");
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
@@ -121,7 +121,7 @@ $xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
 $xoopsTpl->assign( "jquery" , get_jquery(true)) ;
 $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "decrease_cause" , $decrease_cause ) ;
-
+$xoopsTpl->assign( "no_bootstrap_v2" , $_SESSION['bootstrap']>=3 ) ;
 
 include_once XOOPS_ROOT_PATH.'/footer.php';
 

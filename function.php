@@ -27,9 +27,11 @@ $DEF['bank_account_use'] = $xoopsModuleConfig['es_c_bank_account'] ;
 $DEF['fee'] = $xoopsModuleConfig['es_c_bank_pay'] ;
 //學校帳號 8 碼
 $DEF['school_accont'] = $xoopsModuleConfig['es_c_school_accont'] ;
+//學校帳號--扣手續費帳號 8 碼
+$DEF['school_accont2'] = $xoopsModuleConfig['es_c_school_accont2'] ;
 //學校代號 3 碼
 $DEF['school_id'] = $xoopsModuleConfig['es_c_school_id'] ;
-//郵局辦室區號
+//郵局區處站所代號 4 碼
 $DEF['poster_block'] = $xoopsModuleConfig['es_c_poster_block'] ;
 
 

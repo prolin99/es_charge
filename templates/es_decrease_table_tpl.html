@@ -1,5 +1,10 @@
-<{$bootstrap}>
-<{$jquery}>
+<{if  $no_bootstrap_v2}>
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<{else}>
+    <{$bootstrap}>
+    <{$jquery}>
+<{/if}>
 <{$toolbar}>
 
 <div class="row-fluid"  >
@@ -47,6 +52,13 @@
        <th class='span2'>備註</th>
     </tr>
 
+    <{*  在 TD 中 b2 和其它的不同 *}>
+    <{if  $no_bootstrap_v2}>
+        <{assign var="span_w" value='span1'}>
+    <{else}>
+        <{assign var="span_w" value='span11'}>
+    <{/if}>
+
   <{foreach  key=key item=stud   from= $data.students }>
     <{if ($data.selected[$stud.stud_id].selected) }>
     <tr>
@@ -59,7 +71,7 @@
       </td>
       <td >
 
-           <{html_options name='cause_id'  class="span10"  options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }>
+           <{html_options name='cause_id'   class=$span_w    options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }>
 
        </td>
 
@@ -94,9 +106,7 @@
                           title="申請補助">
                         </span>
 
-
                         <span class='span6'>
-
                            <{ if ($data.decase_list[$stud_id].other[$detail_key] ) }>
                            <i class="icon-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  style="background-color: green"     title="第二種身份--<{$data.decase_list[$stud_id].other_cause_str[$detail_key]}> ">
                            <{else}>
@@ -109,29 +119,20 @@
                       <{/if}>
 
             </div>
-
+                    <{* 補充說明文字 *}>
                       <{ if !($data.dent_support[$detail_key]) }>
                      <div class="row-fluid"  id="other_div_<{$stud.stud_id}>_<{$detail_key}>" style="display:none"  >
-
                           <{ html_options name=other[$stud_id.$detail_key]  class="span8 other_sel" options=$decrease_cause id="other_$stud_id$detai_link"    selected=$data.decase_list[$stud_id].other[$detail_key]   ref="cause_$stud_id"    title="第二種減免身份"    style="background-color: #CCCCCC"  }>
                          </div>
-
                       <{/if}>
 
         </div>
-
-
-
-
-
-          </td>
+      </td>
 
       <{/foreach}>
       <td>
-          <div class="span2">
-              <input    name='ps[<{$stud.stud_id}>]' type='text' id='ps_<{$stud.stud_id}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}>'  value='<{$data.selected[$stud_id].ps}>'   onchange="ps_save($(this));" />
-          </div>
-    </td>
+          <input   name='ps[<{$stud.stud_id}>]' type='text' id='ps_<{$stud.stud_id}>'  class='$span_w' title='(<{$stud.class_sit_num}>)<{$stud.name}>'  value='<{$data.selected[$stud_id].ps}>'   onchange="ps_save($(this));" />
+      </td>
 
      </tr>
     <{/if}>

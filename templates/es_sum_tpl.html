@@ -1,15 +1,22 @@
-<{$bootstrap}>
-<{$jquery}>
+<{if  $no_bootstrap_v2}>
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<{else}>
+    <{$bootstrap}>
+    <{$jquery}>
+<{/if}>
 <{$toolbar}>
-<{if ($data.class_id )  }>     
+
+
+<{if ($data.class_id )  }>
     <form id ='frm' class="form-horizontal" action="sum.php"  method='post'>
       	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
-      	 <{if ($data.seletc_item ) }>  
+      	 <{if ($data.seletc_item ) }>
       	<a class="btn btn-success"  href="sum_report.php?do=excel&show=all&item_id=<{$data.seletc_item}>">匯出 EXCEL</a>
-      	<{/if}>	
+      	<{/if}>
    </form>
 
-<{if ($data.seletc_item ) }>  
+<{if ($data.seletc_item ) }>
 <style type="text/css">
 @media print {
   a[href]:after {
@@ -23,17 +30,17 @@
 <div id='printableArea' class='printableArea'>
 <h3><{$data.class_list_c[$data.class_id]}> 班級細目統計，收費人數：<{$data.class_source_pay.man}>人(學籍人數：<{$data.students_count}>人)</h3>
 
-     <{if ($data.out_student)   }> <{* 多餘繳費人記錄 *}> 
+     <{if ($data.out_student)   }> <{* 多餘繳費人記錄 *}>
      <div class="alert alert-error">
         <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
                 <p>繳費記錄中： <{$s_stud.student_sn}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？
                 <{if ($data.inTime ) }>
                     <a class="btn btn-danger"  href="javascript:if(confirm('確定學生<{$s_stud.rec_name}>已轉出，在這次收費記錄中已無需繳費?'))location='index.php?mode=del&class_id=<{$s_stud.class_id}>&item_id=<{$s_stud.item_id}>&id=<{$s_stud.record_id}>&sn=<{$s_stud.student_sn}>'">刪除</a>
-                <{/if}>    
+                <{/if}>
               </p>
          <{/foreach}>
-     </div>   
-     <{/if}>  
+     </div>
+     <{/if}>
 
  <table class="table table-bordered">
  	<tr><td>收費細目</td><td>細目額</td><td>班級金額</td><td>減免數</td><td>減免額</td><td>應收合計</td> </tr>
@@ -43,7 +50,7 @@
    <tr><td>總計</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><{$data.class_source_pay.end_sum}></td> </tr>
  </table>
  <p>導師簽章：</p>
- 
+
 </div>
 <{/if}>
 
