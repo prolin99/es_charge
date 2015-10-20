@@ -19,20 +19,20 @@
  	<a class="btn btn-success"  href="decrease_list.php?do=excel&show=all&item_id=<{$data.select_item}>">依學生減免匯出(全)</a>
  	<a class="btn btn-primary"  href="decrease_list.php?do=excel&show=only&item_id=<{$data.select_item}>">依學生減免匯出(僅補助)</a>
       	<a class="btn btn-success"  href="decrease_list2.php?do=excel&show=all&item_id=<{$data.select_item}>">依項目減免匯出(全)</a>
-      	<a class="btn btn-primary"  href="decrease_list2.php?do=excel&show=only&item_id=<{$data.select_item}>">依項目減免匯出(僅補助)</a>      	
+      	<a class="btn btn-primary"  href="decrease_list2.php?do=excel&show=only&item_id=<{$data.select_item}>">依項目減免匯出(僅補助)</a>
    </form>
-</div>   
+</div>
 <!--      減免列表                                   -->
-<{if ($data.select_item ) }>  
+<{if ($data.select_item ) }>
 <{ $i++ }>
 <h4>全校減免學生金額列表</h4>
-     
-     <{if ($data.out_student)   }><{* 多餘繳費人記錄 *}> 
+
+     <{if ($data.out_student)   }><{* 多餘繳費人記錄 *}>
      <div class="alert alert-error">
         <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
                 <p>繳費記錄中： 班級:<{$s_stud.class_id}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？(id:<{$s_stud.record_id}>)</p>
          <{/foreach}>
-     </div>   
+     </div>
      <{/if}>
 	<!--      表格標題                                   -->
       <table class="table table-bordered" >
@@ -44,7 +44,7 @@
        <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <td><{$detail_val|truncate:9}></td>
       <{/foreach}>
-      
+
       <td>減免原因</td>
       <td>修改日期</td>
 
@@ -56,7 +56,7 @@
       <td ><{$data.class_list_c[$stud.curr_class_num]}></td>
       <td ><{$stud.class_sit_num}></td>
       <td ><{$stud.name}></td>
-      
+
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <!--      dollar_item_stud_sn_detail_id                金額  checked 補助                   -->
         <{if ($data.decase_list[$key].cause_chk[$detail_key])}>
@@ -64,19 +64,18 @@
           <{if ($data.decase_list[$key].other[$detail_key])}>
             <!-- other cause_chk  -->
             <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
-          <{else}>        
+          <{else}>
             <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
-          <{/if}>     
+          <{/if}>
         <{else}>
         <td id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></td>
         <{/if}>
       <{/foreach}>
-      
+
       <td><{$stud.cause|truncate:18}>
           <{if ($stud.ps) }>
-            <br />
             <span class="label label-info"><{$stud.ps}></span>
-          <{/if}>  
+          <{/if}>
       </td>
       <td>
       <{if ($stud.modify_time>= $data.newsday) }>

@@ -288,11 +288,11 @@ function get_class_spec_old_item($item_id , $class_id ) {
 	//取得該班學生在舊表中有特殊身份的列表
 	global  $xoopsDB ,$decrease_cause ;
 	$sql =  "  SELECT  c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num , c.item_id FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
-			"where   c.student_sn = s.stud_id and c.item_id < '$item_id'  and s.class_id='$class_id' and c.cause>0 group by  c.student_sn order by  c.cause " ;
+			"where   c.student_sn = s.stud_id and c.item_id < '$item_id'  and s.class_id='$class_id' and c.cause>0 group by  c.student_sn order by  class_sit_num , c.cause " ;
 			//echo $sql ;
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 		while($stud=$xoopsDB->fetchArray($result)){
- 			$data .= '<p>' .$stud['class_sit_num'] . $stud['name']  . ' -- ' . $decrease_cause[ $stud['cause'] ] ." </p>\n" ;
+ 			$data .= $stud['class_sit_num'] . $stud['name']  . ' -- ' . $decrease_cause[ $stud['cause'] ] ." <br />\n" ;
 		}
 	return $data ;
 
@@ -781,11 +781,18 @@ function  get_grade_source_pay_sum($item_id ,$class_id  , $my_class_charge_array
 
 function get_class_no_account($class_id ='all') {
     global  $xoopsDB ;
-    //班級無扣款帳號的資料，傳回學生 stud_id
-    $sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student")
-        . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account")
-        . " as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  and a.class_id = '$class_id'   "
-        . "  order by  a.class_id, a.class_sit_num  "  ;
+    //all or 班級無扣款帳號的資料，傳回學生 stud_id
+    if ($class_id =='all')
+        $sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student")
+            . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account")
+            . " as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  "
+            . "  order by  a.class_id, a.class_sit_num  "  ;
+    else
+        $sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student")
+            . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account")
+            . " as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  and a.class_id = '$class_id'   "
+            . "  order by  a.class_id, a.class_sit_num  "  ;
+
     $result = $xoopsDB->query($sql)   ;
 
     while($stud=$xoopsDB->fetchArray($result)){

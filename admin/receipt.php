@@ -61,7 +61,9 @@ if  ($item_id) {
 	$col++ ;
 	$col_str =$col .  $row ;
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str, '自行繳費' ) ;
-
+	$col++ ;
+	$col_str =$col .  $row ;
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($col_str, '無扣款帳號提醒' ) ;
 
 	//有繳費的各班級
 	$class_list = get_class_id_list($item_id) ;
@@ -84,7 +86,7 @@ if  ($item_id) {
 
 function class_output( $class_id , $item_id) {
 
-	global   $detail_list , $charge_array , $objPHPExcel , $row  ,$class_list_c;
+	global   $detail_list , $charge_array , $objPHPExcel , $row  ,$class_list_c , $DEF;
 
 	//取得班上要繳費的人員資料
 	$class_students= get_class_pay_students($class_id  , $item_id) ;
@@ -92,6 +94,9 @@ function class_output( $class_id , $item_id) {
 	//取得班上 有減免的資料
 	$class_decase_list = get_decrease_list_item_array($class_id , $item_id) ;
 
+	//有扣款帳號，要查無帳號者
+	if ($DEF['bank_account_use'] )
+		$no_account_list = get_class_no_account('all') ;
 
         //資料區
         foreach ( $class_students  as $stud_id => $stud )  {
@@ -122,13 +127,18 @@ function class_output( $class_id , $item_id) {
 		$col_str = $col .$row ;
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",$stud_pay) ;
 
+		$col++ ;
 		// 自行繳費標記
 		if  ($stud['in_bank']==0) {
-			$col++ ;
 			$col_str = $col .$row ;
-			$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",'自') ;		
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",'自繳') ;
 		}
-
+		$col++ ;
+		// 無帳號
+		if  ($no_account_list[$stud_id]) {
+			$col_str = $col .$row ;
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue("$col_str",'無帳號') ;
+		}
 
 	}
 	//加入分頁
