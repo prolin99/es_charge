@@ -123,8 +123,8 @@ function import_excel($file_up,$ver=5) {
                         where stud_sn = '$stud_sn'  ; " ;
                 else
                     $sql=  " INSERT INTO " . $xoopsDB->prefix("charge_account") .
-			           "  (`stud_sn`, `stud_name`, `acc_name`, `acc_person_id`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id`  )
-			            VALUES ( '$stud_sn'  , '{$v[3]}' , '{$v[7]}' , '{$v[8]}' , '{$v[9]}' , '{$v[10]}' , '{$v[11]}' , '{$v[12]}'  )  ;" ;
+			           "  (`a_id` , `stud_sn`, `stud_name`, `acc_name`, `acc_person_id`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id`  )
+			            VALUES ('0',  '$stud_sn'  , '{$v[3]}' , '{$v[7]}' , '{$v[8]}' , '{$v[9]}' , '{$v[10]}' , '{$v[11]}' , '{$v[12]}'  )  ;" ;
 
 			    $result = $xoopsDB->query($sql)  or      $message .= "語法錯誤：$sql <br/>" ;
 				//echo $sql ."<br>" ;
@@ -150,12 +150,14 @@ function import_excel($file_up,$ver=5) {
 if ( $_POST['do_key'] ) {
     import_data() ;
 }
+
+//清空資料表
 if ( $_POST['do_clear'] =='clear') {
 	$sql= " TRUNCATE " . $xoopsDB->prefix("charge_account")  ;
 	$result = $xoopsDB->query($sql)  ;
 }
 
-//輸入 ------------------------------------------------
+//輸入 -單筆方式-----------------------------------------------
 if ($_POST['do']== 'input')  {
 	foreach ($_POST["acc_person_id"] as $sn =>$acc_person_id) {
 		$check1='no' ;
@@ -168,10 +170,16 @@ if ($_POST['do']== 'input')  {
 		if ($check1=='ok')	{
 			$acc_pid = strtoupper($_POST["acc_person_id"][$sn]) ;
 			$acc_m =  strtoupper($_POST["acc_mode"][$sn]) ;
+			if  ($acc_m<>'G') $acc_m ='P' ;
+			$acc_b_id = sprintf("%07d", $_POST["acc_b_id"][$sn] ) ;
+			$acc_id = sprintf("%07d" ,$_POST["acc_id"][$sn] ) ;
+			$acc_g_id = sprintf("%07d", $_POST["acc_g_id"][$sn] ) ;
+
+
 			$sql=  " INSERT INTO " . $xoopsDB->prefix("charge_account") .
-				"  (`stud_sn`, `stud_name`, `acc_name`, `acc_person_id`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id`  )
-				VALUES ( '$sn'  , '{$_POST['st_name'][$sn]}' , '{$_POST['acc_name'][$sn]}' , '$acc_pid' ,
-				'$acc_m'  , '{$_POST['acc_b_id'][$sn]}'  , '{$_POST['acc_id'][$sn]}' , '{$_POST['acc_g_id'][$sn]}'   )  ; " ;
+				"  (`a_id` ,`stud_sn`, `stud_name`, `acc_name`, `acc_person_id`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id`  )
+				VALUES ( '0' ,  '$sn'  , '{$_POST['st_name'][$sn]}' , '{$_POST['acc_name'][$sn]}' , '$acc_pid' ,
+				'$acc_m'  , '$acc_b_id'  , '$acc_id' , '$acc_g_id'   )  ; " ;
 			//echo $sql ."<br>" ;
 			$result = $xoopsDB->query($sql)   ;
 		}
@@ -209,8 +217,9 @@ if ($DEF['bank_account_use']) {
 
 	//無帳號資料的學生
 	if  ($DEF['bank_account_use']) {
-		$sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
-				" as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
+		$sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student") . "  as a "
+			." LEFT JOIN " . $xoopsDB->prefix("charge_account") . " as b "
+			. " on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
 		$result = $xoopsDB->query($sql)   ;
 
 		while($stud=$xoopsDB->fetchArray($result)){

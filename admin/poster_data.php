@@ -73,14 +73,26 @@ function export_data($item_id){
 		$poster_block = space_chr(4) ;
 
 	//各人扣款 ，要有帳號及允許扣款
+	/*
 	$sql = " SELECT a.student_sn, a.end_pay , a.item_id  , b.* , c.class_id , c.class_sit_num  , count(*) as ccn ,sum(end_pay) as sum_pay    From "
-		. $xoopsDB->prefix("charge_record") . " as a , "
-		. $xoopsDB->prefix("charge_account") .  " as  b  ,  "
-		.  $xoopsDB->prefix("e_student") .  " as  c "
-		."  where a.item_id = '$item_id'   and    a.student_sn  = b.stud_sn  and a.student_sn=c.stud_id and a.in_bank=1 "
+		. $xoopsDB->prefix("charge_record") . " as a "
+		." inner JOIN  "
+		. $xoopsDB->prefix("charge_account") .  " as  b  "
+		."  on  a.student_sn  = b.stud_sn  "
+		." LEFT JOIN   "
+		.  $xoopsDB->prefix("e_student") .  " as  c   "
+		."  on a.student_sn=c.stud_id  "
+		."  where a.item_id = '$item_id'    and a.in_bank=1 "
 		."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
 		."  ORDER BY class_id, class_sit_num " ;
-	//echo $sql ;
+	*/
+	$sql = " SELECT a.student_sn, a.end_pay , a.item_id , a.class_id, a.sit_num  , b.* ,  count(*) as ccn ,sum(end_pay) as sum_pay    From "
+		. $xoopsDB->prefix("charge_record") . " as a , "
+		. $xoopsDB->prefix("charge_account") .  " as  b  "
+		."  where  a.student_sn  = b.stud_sn and  a.item_id = '$item_id'    and a.in_bank=1 "
+		."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
+		."  ORDER BY class_id, sit_num " ;
+
 
 	$result = $xoopsDB->queryF($sql)   ;
 
@@ -89,8 +101,9 @@ function export_data($item_id){
 	while($stud=$xoopsDB->fetchArray($result)){
 		$pay = $stud['sum_pay'] + $DEF['fee'] ;
 
-		//學生代碼使用班級+座號 5 碼
-		$stud_show_id = sprintf("%03d",$stud['class_id']) . sprintf("%02d",$stud['class_sit_num']) ;
+		//學生代碼使用  account 中序號 a_id
+		//$stud_show_id = sprintf("%03d",$stud['class_id']) . sprintf("%02d",$stud['sit_num']) ;
+		$stud_show_id =  sprintf("%05d",$stud['a_id'])   ;
 
 		//合併轉帳(同家長同扣款帳號)
 		$do_sum =' ' ;
@@ -100,14 +113,14 @@ function export_data($item_id){
 			//存戶
 			$data .= '1' .$stud['acc_mode'] . $DEF['school_id'] . $poster_block .   $date_pay.  space_chr(3)
 				.  sprintf("%07d",$stud['acc_b_id']).sprintf("%07d",$stud['acc_id']).$stud['acc_person_id']
-				. sprintf("%09d",$pay).'00'.   sprintf("%03d",$stud['class_id'])     .  sprintf("%03d",$stud['class_sit_num'])
-				.$do_sum. space_chr(3)  . $stud_show_id   . '1 ' .  space_chr(3)  .'1' .  space_chr(5)   . $month_pay .  space_chr(5)  ."\n" ;
+				. sprintf("%09d",$pay).'00'.   sprintf("%03d",$stud['class_id'])     .  sprintf("%03d",$stud['sit_num'])
+				.$do_sum. space_chr(3)  . $stud_show_id   . '1 ' .  space_chr(3)  .'1' .  space_chr(5)   . $month_pay .  space_chr(5)  ."\r\n" ;
 		else
 			//劃撥戶
 			$data .= '1' .$stud['acc_mode'] . $DEF['school_id']  .  $poster_block   .   $date_pay.  space_chr(3)
 				.  sprintf("%014d",$stud['acc_g_id']) . $stud['acc_person_id']
-				. sprintf("%09d",$pay).'00'.  sprintf("%03d",$stud['class_id'])  .  sprintf("%03d",$stud['class_sit_num'])
-				.$do_sum . space_chr(3) . $stud_show_id . '1 ' .  space_chr(3)  .'1' .  space_chr(5)  . $month_pay . space_chr(5)  ."\n" ;
+				. sprintf("%09d",$pay).'00'.  sprintf("%03d",$stud['class_id'])  .  sprintf("%03d",$stud['sit_num'])
+				.$do_sum . space_chr(3) . $stud_show_id . '1 ' .  space_chr(3)  .'1' .  space_chr(5)  . $month_pay . space_chr(5)  ."\r\n" ;
 
 		//筆數、總金額
 		$sum_rec++ ;
@@ -122,7 +135,7 @@ function export_data($item_id){
 
 
 	header('Content-Type: text/plain');
-	header('Content-Disposition: attachment;filename=post001.dat' );
+	header('Content-Disposition: attachment;filename=post001.dat.txt' );
 	header('Cache-Control: max-age=0');
 
 	ob_clean();
