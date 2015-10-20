@@ -42,11 +42,14 @@ $class_id =$my_class_id ;
 		}
 	}
 
-	//開列學生名單-----------------------------------------------------
+	//開列班上學生名單-----------------------------------------------------
 	if ($_POST['act_add']) {
 
 		if ($_POST['item_id']<>'' AND $_POST['class_id']<>''  and  $_POST['selected_stud']  )
 		{
+            //已在資料庫中
+            $inClassRec=get_class_students_charge($_POST['item_id'] ,$_POST['class_id']) ;
+
 			//取得費用小計
 			$pay_sum = get_class_need_pay_sum($_POST['item_id'] ,$_POST['class_id']) ;
 
@@ -56,16 +59,20 @@ $class_id =$my_class_id ;
 
 			$batch_value="";
 			foreach($_POST['selected_stud'] as $key=>$value){
- 				$sn=$value;
+                //value 學生代號_座號
+                $value_array= preg_split("/_/", $value);
+ 				$sn=$value_array[0];
+                $sit_num = $value_array[1];
  				$stud_name=$students[$sn]['name'] ;
-				$batch_value.="('','$sn','{$_POST['item_id']}'  ,'{$_POST['class_id']}' ,'$pay_sum'  ,'$stud_name'    ),";
+                if (!$inClassRec[$sn] )		//是否已在記錄中
+ 				    $batch_value.="('0','$sn','{$_POST['item_id']}'  ,'{$_POST['class_id']}' , $sit_num ,'$pay_sum'  ,'$stud_name'    ),";
 			}
 
 			$batch_value=substr($batch_value,0,-1);
 			if  ($batch_value){
-				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , dollars , rec_name )  values $batch_value ";
- 				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
- 			}
+				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , sit_num , dollars , rec_name )  values $batch_value ";
+				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+			}
 		}
 
 	}
@@ -86,14 +93,14 @@ $class_id =$my_class_id ;
 			$batch_value="";
 			foreach($students as $key=>$stud){
 				if (!$in_record_student[$key] ){		//是否已在記錄中
- 					//$sn=$value;
- 					$batch_value.="('','{$stud['stud_id']}','{$_POST['item_id']}'  ,'{$stud['class_id']}' ,'$pay_sum' ,'{$stud['name']}'  ),";
- 				}
+					//$sn=$value;
+					$batch_value.="('0','{$stud['stud_id']}','{$_POST['item_id']}'  ,'{$stud['class_id']}'  ,'{$stud['class_sit_num']}'  ,'$pay_sum' ,'{$stud['name']}'  ),";
+				}
 			}
 
 			$batch_value=substr($batch_value,0,-1);
 			if  ($batch_value) {
-				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , dollars , rec_name )  values $batch_value ";
+				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , sit_num ,  dollars , rec_name )  values $batch_value ";
 				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 			}
 		}
@@ -125,11 +132,6 @@ $class_id =$my_class_id ;
 //--------------------------------------------------------------------------------------------------------
 	//取得目前可填收費表
 	$data['item_list']=get_item_list('action') ;
-
-
-
-
-
 
 	//管理者可以選取多班
 	if($isAdmin){

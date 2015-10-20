@@ -26,7 +26,7 @@ function chk_add_pay_date(){
 function go_update_add_pay_date(){
   global $xoopsDB;
 
-     $sql="  ALTER TABLE   ".$xoopsDB->prefix("charge_item") ."   ADD  `bank_date` date DEFAULT NULL " ;
+     $sql="  ALTER TABLE   ".$xoopsDB->prefix("charge_item") ."   ADD  `bank_date` date DEFAULT NULL  " ;
      $xoopsDB->queryF($sql)  ;
 }
 
@@ -45,6 +45,7 @@ function go_update_add_account(){
   global $xoopsDB;
 
      $sql=" CREATE TABLE  ".$xoopsDB->prefix("charge_account") ."   (
+       `a_id` bigint(20) NOT NULL AUTO_INCREMENT,
        `stud_sn` bigint(20) NOT NULL,
        `stud_name` varchar(30) NOT NULL,
        `acc_name` varchar(30) NOT NULL,
@@ -53,7 +54,8 @@ function go_update_add_account(){
        `acc_b_id` varchar(20) NOT NULL,
        `acc_id` varchar(20) NOT NULL,
        `acc_g_id` varchar(20) NOT NULL,
-       PRIMARY KEY (`stud_sn`)
+       PRIMARY KEY (`stud_sn`),
+       KEY `a_id` (`a_id`)
      ) ENGINE=MyISAM     ";
      $xoopsDB->queryF($sql)  ;
 }
@@ -62,7 +64,7 @@ function go_update_add_account(){
 //----- 增加 charge_record  資料表  end_pay , pay_ok  欄位-----------------------
 function chk_add_pay_sum(){
   global $xoopsDB;
-  $sql=" select end_pay  from ".$xoopsDB->prefix("charge_record");
+  $sql=" select sit_num  from ".$xoopsDB->prefix("charge_record");
   $result=$xoopsDB->query($sql);
   if(empty($result)) return false;
   return true;
@@ -71,7 +73,7 @@ function chk_add_pay_sum(){
 function go_update_add_pay_sum(){
   global $xoopsDB;
 
-     $sql=" ALTER TABLE  ".$xoopsDB->prefix("charge_record") ."  ADD `end_pay` int(11) NOT NULL,  ADD  `pay_ok` int(11) NOT NULL   ";
+     $sql=" ALTER TABLE  ".$xoopsDB->prefix("charge_record") ."  ADD `end_pay` int(11) NOT NULL,  ADD  `pay_ok` int(11) NOT NULL  , ADD `sit_num` INT NOT NULL  ";
      $xoopsDB->queryF($sql)  ;
 
  }
