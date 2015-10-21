@@ -82,7 +82,7 @@ if  ( $item_id ) {
 	//取得先前自行繳費的名單
 	$data['self_pay']= get_class_self_pay($class_id , $item_id ) ;
 
-    //無扣款帳號的資料顯示
+    //無扣款帳號的資料顯示。並強迫改成自行繳費
     if ($DEF['bank_account_use'])
         $data['no_account'] = get_class_no_account($class_id) ;
 

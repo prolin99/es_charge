@@ -28,8 +28,6 @@ if  ($item_id) {
 	//有繳費的各班級
 	$class_list = get_class_id_list($item_id) ;
 
-
-
 	foreach ($class_list as $class_id=> $class) {
 		//分別以各班計算每人要繳費，寫在資料庫 end_pay
 		each_stud_pay_class($class_id , $item_id) ;
@@ -72,26 +70,36 @@ function export_data($item_id){
 	else
 		$poster_block = space_chr(4) ;
 
+
 	//各人扣款 ，要有帳號及允許扣款
-	/*
-	$sql = " SELECT a.student_sn, a.end_pay , a.item_id  , b.* , c.class_id , c.class_sit_num  , count(*) as ccn ,sum(end_pay) as sum_pay    From "
-		. $xoopsDB->prefix("charge_record") . " as a "
-		." inner JOIN  "
-		. $xoopsDB->prefix("charge_account") .  " as  b  "
-		."  on  a.student_sn  = b.stud_sn  "
-		." LEFT JOIN   "
-		.  $xoopsDB->prefix("e_student") .  " as  c   "
-		."  on a.student_sn=c.stud_id  "
-		."  where a.item_id = '$item_id'    and a.in_bank=1 "
-		."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
-		."  ORDER BY class_id, class_sit_num " ;
-	*/
-	$sql = " SELECT a.student_sn, a.end_pay , a.item_id , a.class_id, a.sit_num  , b.* ,  count(*) as ccn ,sum(end_pay) as sum_pay    From "
-		. $xoopsDB->prefix("charge_record") . " as a , "
-		. $xoopsDB->prefix("charge_account") .  " as  b  "
-		."  where  a.student_sn  = b.stud_sn and  a.item_id = '$item_id'    and a.in_bank=1 "
-		."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
-		."  ORDER BY class_id, sit_num " ;
+	//如果在  舊表中 charge_record sit_num 大小
+
+	$sql = "  SELECT MAX(sit_num) as m  FROM  " . $xoopsDB->prefix("charge_record")
+		. "  where item_id = '$item_id'    " ;
+ 	$result = $xoopsDB->queryF($sql)   ;
+	while($row=$xoopsDB->fetchArray($result)){
+		$mx_sit = $row['m'] ;
+	}
+
+	if ($mx_sit == 0 )
+		$sql = " SELECT a.student_sn, a.end_pay , a.item_id  , b.* , c.class_id , c.class_sit_num as sit_num  , count(*) as ccn ,sum(end_pay) as sum_pay    From "
+			. $xoopsDB->prefix("charge_record") . " as a "
+			." inner JOIN  "
+			. $xoopsDB->prefix("charge_account") .  " as  b  "
+			."  on  a.student_sn  = b.stud_sn  "
+			." LEFT JOIN   "
+			.  $xoopsDB->prefix("e_student") .  " as  c   "
+			."  on a.student_sn=c.stud_id  "
+			."  where a.item_id = '$item_id'    and a.in_bank=1 "
+			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
+			."  ORDER BY class_id, sit_num " ;
+	else
+		$sql = " SELECT a.student_sn, a.end_pay , a.item_id , a.class_id, a.sit_num  , b.* ,  count(*) as ccn ,sum(end_pay) as sum_pay    From "
+			. $xoopsDB->prefix("charge_record") . " as a , "
+			. $xoopsDB->prefix("charge_account") .  " as  b  "
+			."  where  a.student_sn  = b.stud_sn and  a.item_id = '$item_id'    and a.in_bank=1 "
+			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
+			."  ORDER BY class_id, sit_num " ;
 
 
 	$result = $xoopsDB->queryF($sql)   ;
