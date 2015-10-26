@@ -30,7 +30,7 @@ if  ($item_id) {
 
 	foreach ($class_list as $class_id=> $class) {
 		//分別以各班計算每人要繳費，寫在資料庫 end_pay
-		each_stud_pay_class($class_id , $item_id) ;
+		each_stud_pay_class($class_id , $item_id ,  $detail_list ,  $charge_array) ;
 	}
 
 
@@ -156,35 +156,4 @@ function space_chr($len){
 	for ($i =0; $i <$len ; $i++ )
 		$str  .=' ';
 	return $str ;
-}
-
-
-//計算每人要繳的金額放入資料庫
-function each_stud_pay_class( $class_id , $item_id) {
-
-	global   $xoopsDB, $detail_list , $charge_array ;
-
-	//取得班上要繳費的人員資料
-	$class_students= get_class_pay_students($class_id  , $item_id) ;
-
-	//取得班上 有減免的資料
-	$class_decase_list = get_decrease_list_item_array($class_id , $item_id) ;
-
-
-    //資料區
-    foreach ( $class_students  as $stud_id => $stud )  {
-    	$y = ($class_id /100)-1 ;
-		$stud_pay=0 ;  //學生小計
-		foreach   (  $detail_list   as $detail_id => $detail ) {
-			$s_pay =$charge_array[$detail_id][$y] ;
-			//實付
-			$pay = $charge_array[$detail_id][$y] -$class_decase_list[$stud_id]['dollar'][ $detail_id] ;
-			$stud_pay += $pay ;		//總額
-		}
-
-		//寫入紀錄：
-		$sql = " UPDATE  " . $xoopsDB->prefix("charge_record") . "   SET  end_pay = '$stud_pay' where item_id='$item_id' and  student_sn=	'$stud_id'  ;  " ;
-
-		$result = $xoopsDB->queryF($sql) ;
-	}
 }

@@ -17,7 +17,7 @@
         <span><label>繳費項目：( 記錄有時效性，歷史資料會受學籍名冊影響！)</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
         <a class="btn btn-success"  href="to_bank.php?do=excel&item_id=<{$data.select_item}>">收費清冊 excel</a>
         <a class="btn btn-success"  href="receipt.php?do=excel&item_id=<{$data.select_item}>">學生收據 excel</a>
-        <a class="btn btn-primary"  href="poster_data.php?do=excel&item_id=<{$data.select_item}>">產生郵局傳送檔</a>
+        <a class="btn btn-primary"  href="poster_data.php?do=excel&item_id=<{$data.select_item}>">產生郵局傳送檔(僅本系統中)</a>
    </form>
 </div>
 

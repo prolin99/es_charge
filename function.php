@@ -800,3 +800,59 @@ function get_class_no_account($class_id ='all') {
     }
     return $data ;
 }
+
+
+
+//計算每人要繳的金額放入資料庫 班級、付費代號，各細項名，各單項費
+function each_stud_pay_class( $class_id , $item_id , $detail_list , $charge_array) {
+
+	global   $xoopsDB  ;
+
+	//取得班上要繳費的人員資料
+	$class_students= get_class_pay_students($class_id  , $item_id) ;
+
+	//取得班上 有減免的資料
+	$class_decase_list = get_decrease_list_item_array($class_id , $item_id) ;
+
+
+    //資料區
+    foreach ( $class_students  as $stud_id => $stud )  {
+    	$y = ($class_id /100)-1 ;
+		$stud_pay=0 ;  //學生小計
+		foreach   (  $detail_list   as $detail_id => $detail ) {
+			$s_pay =$charge_array[$detail_id][$y] ;
+			//實付
+			$pay = $charge_array[$detail_id][$y] -$class_decase_list[$stud_id]['dollar'][ $detail_id] ;
+			$stud_pay += $pay ;		//總額
+		}
+
+		//寫入紀錄：
+		$sql = " UPDATE  " . $xoopsDB->prefix("charge_record") . "   SET  end_pay = '$stud_pay' where item_id='$item_id' and  student_sn=	'$stud_id'  ;  " ;
+
+		$result = $xoopsDB->queryF($sql) ;
+	}
+}
+
+//取得需要繳費人數
+function get_need_pay_stud_num($item_id) {
+	global   $xoopsDB  ;
+    $sql = " select count(*)  as num from   " . $xoopsDB->prefix("charge_record") . "    where item_id='$item_id'  "  ;
+    $result = $xoopsDB->queryF($sql) ;
+    while($stud=$xoopsDB->fetchArray($result)){
+        $data = $stud['num']  ;
+    }
+    return $data ;
+}
+
+//取得需要在郵局資料中在校生及外部扣款生
+function get_poster_stud_num($item_id) {
+	global   $xoopsDB  ;
+    $sql = " select  stud_else , count(*)  as num  , sum(pay) as spay from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'   group  by stud_else "  ;
+    //echo $sql ;
+    $result = $xoopsDB->queryF($sql) ;
+    while($stud=$xoopsDB->fetchArray($result)){
+        $data[$stud['stud_else']] = $stud['num']  ;
+        $data['pay_sum'] += $stud['spay'] ;
+    }
+    return $data ;
+}

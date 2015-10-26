@@ -78,6 +78,10 @@ $modversion['templates'][$i]['file'] = 'es_c_a_poster_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_c_a_poster_tpl.html';
 
 $i++ ;
+$modversion['templates'][$i]['file'] = 'es_a_post_join_tpl.html';
+$modversion['templates'][$i]['description'] = 'es_a_post_join_tpl.html';
+
+$i++ ;
 $modversion['templates'][$i]['file'] = 'es_index_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_index_tpl.html';
 $i++ ;

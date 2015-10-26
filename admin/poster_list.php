@@ -36,7 +36,7 @@ function import_data(){
 		if ($ext=='XLSX')
 			import_excel($file_up , 2007) ;
 		//刪除上傳的檔。
-	//	unlink($file_up)  ;
+		unlink($file_up)  ;
 	}
 	return $main;
 }

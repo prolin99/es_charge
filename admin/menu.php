@@ -32,6 +32,13 @@ $adminmenu[$i]['desc'] = '收據、報表' ;
 $adminmenu[$i]['icon'] = 'images/admin/genadm.png' ;
 
 $i++ ;
+$adminmenu[$i]['title'] =  '其他合併郵局扣款';
+$adminmenu[$i]['link'] = "admin/post_join.php";
+$adminmenu[$i]['desc'] = '合併其他部份無單位名冊的學生扣款資料' ;
+$adminmenu[$i]['icon'] = 'images/admin/genadm.png' ;
+
+
+$i++ ;
 $adminmenu[$i]['title'] =  '統計';
 $adminmenu[$i]['link'] = "admin/sum.php";
  $adminmenu[$i]['desc'] = '各項統計' ;
