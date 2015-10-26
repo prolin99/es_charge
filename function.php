@@ -34,6 +34,20 @@ $DEF['school_id'] = $xoopsModuleConfig['es_c_school_id'] ;
 //郵局區處站所代號 4 碼
 $DEF['poster_block'] = $xoopsModuleConfig['es_c_poster_block'] ;
 
+//把文字代號轉換成數字(年段、班級名)
+$class2id = preg_split('/,/' ,$xoopsModuleConfig['es_c_other_class2id']) ;
+ foreach($class2id  as  $lid => $class_str) {
+    $c2i = preg_split('/:/' ,$class_str) ;
+    if (  is_numeric($c2i[1]  ) ) {
+        $temp_class = strtoupper(trim($c2i[0])) ;
+        $DEF['class2id'][$temp_class] = $c2i[1] +0 ;
+    }
+}
+//var_dump($DEF['class2id']) ;
+
+
+
+
 
 /********************* 預設函數 *********************/
 
@@ -847,12 +861,111 @@ function get_need_pay_stud_num($item_id) {
 //取得需要在郵局資料中在校生及外部扣款生
 function get_poster_stud_num($item_id) {
 	global   $xoopsDB  ;
-    $sql = " select  stud_else , count(*)  as num  , sum(pay) as spay from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'   group  by stud_else "  ;
+    $sql = " select  stud_else ,cash  , count(*)  as num  , sum(pay) as spay from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'   group  by stud_else  ,cash "  ;
     //echo $sql ;
     $result = $xoopsDB->queryF($sql) ;
     while($stud=$xoopsDB->fetchArray($result)){
-        $data[$stud['stud_else']] = $stud['num']  ;
+
+        $data['num'][$stud['stud_else']][$stud['cash']] = $stud['num']  ;
+        $data['num'][$stud['stud_else']]['all'] += $stud['num']  ;
+        $data['pay'][$stud['stud_else']][$stud['cash']]  = $stud['spay'] ;
+        $data['pay'][$stud['stud_else']]['all'] += $stud['spay']  ;
         $data['pay_sum'] += $stud['spay'] ;
     }
     return $data ;
+}
+
+
+
+// ---------------------------------------   郵局報表  -----------------------------------------------------------------
+//空白字元 $len 個
+function space_chr($len){
+	for ($i =0; $i <$len ; $i++ )
+		$str  .=' ';
+	return $str ;
+}
+
+
+//取得扣款日期，格式  中華年 YYYMMDD
+function get_bank_date_cht($item_id) {
+	global   $xoopsDB ,$DEF;
+	$sql =  "  SELECT bank_date  FROM " . $xoopsDB->prefix("charge_item") .  " where item_id ='$item_id'     " ;
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	while($date_list=$xoopsDB->fetchArray($result)){
+		$bank_date = $date_list['bank_date'] ;
+	}
+
+	//中文年月日  YYYMMDD
+	$data_arr = split ('[/-]', $bank_date);
+	return sprintf("%03d", $data_arr[0]-1911)  .sprintf("%02d", $data_arr[1]) .sprintf("%02d", $data_arr[2])  ;
+
+}
+
+
+//郵局格式
+function export_poster_data($item_id){
+	global   $xoopsDB ,$DEF;
+
+	//取得扣款日 YYYMMDD
+	$date_pay = get_bank_date_cht($item_id) ;
+	//扣款年月  YYYMM
+	$month_pay = substr($date_pay,0,5) ;
+	//區處站所代號 4 碼
+	if ($DEF['poster_block'] )
+		$poster_block= $DEF['poster_block']  ;
+	else
+		$poster_block = space_chr(4) ;
+
+
+
+	$sql = " SELECT  *  ,count(*) as ccn   From "
+			. $xoopsDB->prefix("charge_poster_data")
+			."  where   cash='0'   "
+			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
+			."  ORDER BY class_id, sit_num " ;
+	$result = $xoopsDB->queryF($sql)   ;
+
+	$sum_rec=0 ;
+	$sum_pay = 0  ;
+	while($stud=$xoopsDB->fetchArray($result)){
+		$pay = $stud['pay'] + $DEF['fee'] ;
+
+		//學生代碼使用 班級3碼 + 座號 2 碼
+		$stud_show_id = sprintf("%03d",$stud['class_id']) . sprintf("%02d",$stud['sit_num']) ;
+
+		//合併轉帳(同家長同扣款帳號)
+		$do_sum =' ' ;
+		if ($stud['ccn']>1)   $do_sum = '1'  ;
+
+		if ($stud['acc_mode'] == 'P' )
+			//存戶
+			$data .= '1' .$stud['acc_mode'] . $DEF['school_id'] . $poster_block .   $date_pay.  space_chr(3)
+				.  sprintf("%07d",$stud['acc_b_id']).sprintf("%07d",$stud['acc_id']).$stud['acc_personid']
+				. sprintf("%09d",$pay).'00'.   sprintf("%03d",$stud['class_id'])     .  sprintf("%03d",$stud['sit_num'])
+				.$do_sum. space_chr(3)  . $stud_show_id   . '1 ' .  space_chr(3)  .'1' .  space_chr(5)   . $month_pay .  space_chr(5)  ."\r\n" ;
+		else
+			//劃撥戶
+			$data .= '1' .$stud['acc_mode'] . $DEF['school_id']  .  $poster_block   .   $date_pay.  space_chr(3)
+				.  sprintf("%014d",$stud['acc_g_id']) . $stud['acc_personid']
+				. sprintf("%09d",$pay).'00'.  sprintf("%03d",$stud['class_id'])  .  sprintf("%03d",$stud['sit_num'])
+				.$do_sum . space_chr(3) . $stud_show_id . '1 ' .  space_chr(3)  .'1' .  space_chr(5)  . $month_pay . space_chr(5)  ."\r\n" ;
+
+		//筆數、總金額
+		$sum_rec++ ;
+		$sum_pay +=  $pay ;
+	}
+	//最後總合
+	$total_str = '2 ' . $DEF['school_id'] .  $poster_block .  $date_pay  . '000'
+		. sprintf("%07d" , $sum_rec) .  sprintf("%011d",$sum_pay).'00'
+		. sprintf("%08d",$DEF['school_accont']).  sprintf("%08d",$DEF['school_accont2'])
+		.  sprintf("%020d",0)
+		. space_chr(15);
+
+
+	header('Content-Type: text/plain');
+	header('Content-Disposition: attachment;filename=post001.dat.txt' );
+	header('Cache-Control: max-age=0');
+    ob_clean();
+
+	echo $data .$total_str;
 }

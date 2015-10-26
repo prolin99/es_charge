@@ -196,5 +196,11 @@ $modversion['config'][$i]['formtype']    = 'text';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default'] ="" ;
 
-
+$i++ ;
+$modversion['config'][$i]['name'] = 'es_c_other_class2id' ;
+$modversion['config'][$i]['title']   = '_MI_ESCHARGE_CONFIG_TITLE12' ;
+$modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC12' ;
+$modversion['config'][$i]['formtype']    = 'text' ;
+$modversion['config'][$i]['valuetype']   = 'text' ;
+$modversion['config'][$i]['default'] ="幼大:0,幼小:0,蜜蜂班:1,蝴蝶班:2,大象班:3" ;
 ?>

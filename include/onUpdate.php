@@ -11,8 +11,47 @@ function xoops_module_update_es_charge(&$module, $old_version) {
     if(!chk_add_pay_sum()) go_update_add_pay_sum();
     //扣款日
     if(!chk_add_pay_date()) go_update_add_pay_date();
+
+    //合併郵局記錄表
+    if(!chk_add_poster_data()) go_update_add_poster_data();
     return true;
 }
+
+//----- 增加 charge_account 資料表 ------------------------------
+function chk_add_poster_data(){
+  global $xoopsDB;
+  $sql=" select acc_personid  from ".$xoopsDB->prefix("charge_poster_data");
+  $result=$xoopsDB->query($sql);
+  if(empty($result)) return false;
+  return true;
+}
+
+function go_update_add_poster_data(){
+  global $xoopsDB;
+
+     $sql=" CREATE TABLE  ". $xoopsDB->prefix("charge_poster_data")
+      . "   (
+     `item_id` int(11) NOT NULL,
+     `t_id` varchar(20)  NOT NULL,
+     `class_id` int(11) NOT NULL,
+     `sit_num` int(11) NOT NULL,
+     `st_name` varchar(30)  NOT NULL,
+     `pay` int(11) NOT NULL,
+     `acc_name` varchar(30)  NOT NULL,
+     `acc_personid` varchar(20)  NOT NULL,
+     `acc_mode` varchar(10)  NOT NULL,
+     `acc_b_id` varchar(20)  NOT NULL,
+     `acc_id` varchar(20)  NOT NULL,
+     `acc_g_id`  varchar(20)  NOT NULL,
+     `stud_else` int(11) NOT NULL,
+     `cash` int(11) NOT NULL,
+     PRIMARY KEY (`item_id`,`t_id`)
+    ) ENGINE=MyISAM    ";
+ 
+     $xoopsDB->queryF($sql)  ;
+}
+
+
 
 //----- 增加  扣款日 ------------------------------
 function chk_add_pay_date(){

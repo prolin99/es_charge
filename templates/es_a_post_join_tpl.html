@@ -12,15 +12,28 @@
         <input type=file name=userdata>
         <button type='submit'  name='do_key' value='add_other' class='btn btn-success'>匯入</button>
         </p>
-        <p>3.<a class="btn btn-primary"  href="poster_data.php?do=excel&item_id=<{$data.select_item}>">產生郵局傳送檔</a></p>
+        <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary'>產生郵局傳送檔</button></p>
         <br /><br /><br /><br />
         <p><button type='submit'  name='do_key' value='clear' class='btn btn-danger' title='清空資料重新再匯'  onclick='return confirm("確定要刪除?")'  >清空本次資料</button></p>
    </form>
    <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載：扣款學生 EXCEL 範例檔</a><br/>
 </div>
 
-     <{if ($message) }><{* 統計資料 *}>
+
      <div class="alert alert-info">
-         <{$message}>
+        說明：<br />
+        本功能在提供轉換出郵局扣款記錄，支援在無學生名冊的情形下使用。<br />
+        如果有使用收費系統，先把本次收費資料匯入。再匯入其他年段(如幼稚班)的 Excel 資料。<br />
+        也可以全部不使用收費系統，全以 EXCEL 資料匯入。<br />
+        如果資料有修改過，建議全部清空後再重新匯入。<br />
+    </div>
+    <div class="alert alert-success">
+        統計資料：<br />
+        <{$message}><{* 統計資料 *}>
+    </div>
+
+     <{if ($err_message) }><{* 錯誤 *}>
+     <div class="alert alert-danger">
+         <{$err_message}>
      </div>
      <{/if}>

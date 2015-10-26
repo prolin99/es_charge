@@ -72,3 +72,21 @@ CREATE TABLE   `charge_account` (
   PRIMARY KEY (`stud_sn`) ,
   KEY `a_id` (`a_id`)
 ) ENGINE=MyISAM  COMMENT='郵局扣款帳號';
+
+CREATE TABLE  `charge_poster_data` (
+  `item_id` int(11) NOT NULL,
+  `t_id` varchar(20)  NOT NULL,
+  `class_id` int(11) NOT NULL,
+  `sit_num` int(11) NOT NULL,
+  `st_name` varchar(30)  NOT NULL,
+  `pay` int(11) NOT NULL,
+  `acc_name` varchar(30)  NOT NULL,
+  `acc_personid` varchar(20)  NOT NULL,
+  `acc_mode` varchar(10)  NOT NULL,
+  `acc_b_id` varchar(20)  NOT NULL,
+  `acc_id` varchar(20)  NOT NULL,
+  `acc_g_id``` varchar(20)  NOT NULL,
+  `stud_else` int(11) NOT NULL,
+  `cash` int(11) NOT NULL,
+  PRIMARY KEY (`item_id`,`t_id`)
+) ENGINE=MyISAM  ;

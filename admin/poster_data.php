@@ -41,20 +41,7 @@ if  ($item_id) {
 
 /*-----------函數區----------*/
 
-//取得扣款日期，格式  中華年 YYYMMDD
-function get_bank_date_cht($item_id) {
-	global   $xoopsDB ,$DEF;
-	$sql =  "  SELECT bank_date  FROM " . $xoopsDB->prefix("charge_item") .  " where item_id ='$item_id'     " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
-	while($date_list=$xoopsDB->fetchArray($result)){
-		$bank_date = $date_list['bank_date'] ;
-	}
 
-	//中文年月日  YYYMMDD
-	$data_arr = split ('[/-]', $bank_date);
-	return sprintf("%03d", $data_arr[0]-1911)  .sprintf("%02d", $data_arr[1]) .sprintf("%02d", $data_arr[2])  ;
-
-}
 
 //郵局格式
 function export_data($item_id){
@@ -149,11 +136,4 @@ function export_data($item_id){
 	ob_clean();
 	echo $data .$total_str;
 
-}
-
-//空白字元 $len 個
-function space_chr($len){
-	for ($i =0; $i <$len ; $i++ )
-		$str  .=' ';
-	return $str ;
 }

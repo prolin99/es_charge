@@ -36,4 +36,6 @@ define("_MI_ESCHARGE_CONFIG_TITLE9","已有建立郵局帳號");
 define("_MI_ESCHARGE_CONFIG_DESC9","有學生扣款帳號資料，才能進行相關功能");
 
 
+define("_MI_ESCHARGE_CONFIG_TITLE12","外加的年級、班級名稱轉換數字");
+define("_MI_ESCHARGE_CONFIG_DESC12","合併其它年段做郵局扣款，可能資料為幼稚班，但由於郵局學生要以數字做代號。(代號:數字，以逗號做分隔)，如幼大:0,蜜蜂班:1,幼小:0" );
 ?>
