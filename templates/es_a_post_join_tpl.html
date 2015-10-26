@@ -1,0 +1,26 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+
+<div id='frm' class="row-fluid"  >
+    <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
+        <span><label>繳費項目：( 記錄有時效性，歷史資料會受學籍名冊影響！)</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
+        <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success'>本次收費學生匯入資料</button></p>
+        <p>
+            <span>2.其他扣款學生 excel (如幼稚園)：</span>
+        <input type=file name=userdata>
+        <button type='submit'  name='do_key' value='add_other' class='btn btn-success'>匯入</button>
+        </p>
+        <p>3.<a class="btn btn-primary"  href="poster_data.php?do=excel&item_id=<{$data.select_item}>">產生郵局傳送檔</a></p>
+        <br /><br /><br /><br />
+        <p><button type='submit'  name='do_key' value='clear' class='btn btn-danger' title='清空資料重新再匯'  onclick='return confirm("確定要刪除?")'  >清空本次資料</button></p>
+   </form>
+   <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載：扣款學生 EXCEL 範例檔</a><br/>
+</div>
+
+     <{if ($message) }><{* 統計資料 *}>
+     <div class="alert alert-info">
+         <{$message}>
+     </div>
+     <{/if}>
