@@ -94,6 +94,9 @@ function export_data($item_id){
 	$sum_rec=0 ;
 	$sum_pay = 0  ;
 	while($stud=$xoopsDB->fetchArray($result)){
+		if ($stud['sum_pay'] <=0)        //無需繳費不用設扣款
+            continue;
+			
 		$pay = $stud['sum_pay'] + $DEF['fee'] ;
 
 		//學生代碼使用  account 中序號 a_id

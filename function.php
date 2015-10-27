@@ -932,6 +932,9 @@ function export_poster_data($item_id){
 	$sum_rec=0 ;
 	$sum_pay = 0  ;
 	while($stud=$xoopsDB->fetchArray($result)){
+        if ($stud['do_pay'] <=0)        //無需繳費不用設扣款
+            continue;
+            
 		$pay = $stud['do_pay'] + $DEF['fee'] ;
 
 		//學生代碼使用 班級3碼 + 座號 2 碼
