@@ -76,7 +76,7 @@ if ($_POST['act_del'] )  {
 
 //正式開始，會清除已填報資料
 if ($_POST['act_clear'] )  {
-	clear_item_test_data($_GET['item_id']) ;
+	clear_item_test_data($_POST['item_id']) ;
 }
 
 //-------------------------------------------------------------------
