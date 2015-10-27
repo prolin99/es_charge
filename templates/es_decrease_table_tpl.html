@@ -74,9 +74,7 @@
 
       </td>
       <td >
-
            <{html_options name='cause_id'   class=$span_w    options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }>
-
        </td>
 
           <!--            繳費金額(有申請減免                   -->
@@ -219,7 +217,7 @@ function save_cause( mode ,  item, class_id , stud_id ,cause  ){
     else
       $('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
 
-
+      //有值清空，無值填入
     var old_data= $('#'+input_id).val() ;
     if (old_data) {
       $('#'+input_id).val('') ;
@@ -240,12 +238,15 @@ function get_decrease_val( input_id ){
     var cause_id = $('#cause_' + splits[1] ) .val()  ;
     //var need = $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked') ;
 
-    var need =1 ;
+    var need =0 ;
     //if ( $('#ineed_' + stud_id +'_'+ detail_id ).attr('checked')==undefined )
-
-    if ( $('#ineed_' + stud_id +'_'+ detail_id ).prop('checked')==false )
+    //預設為無補助
+    if ( $('#ineed_' + stud_id +'_'+ detail_id ).prop('checked')== true  )
+        need =1
+    else
        need= 0 ;
 
+    //第二原因   
     var other = $('#other_' + stud_id  +'_' + detail_id).val() ;
     if  (other==undefined )
         other= 0 ;
