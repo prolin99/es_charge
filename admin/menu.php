@@ -16,6 +16,11 @@ $adminmenu[$i]['link'] = "admin/decrease.php";
 $adminmenu[$i]['desc'] = '列出減免名單' ;
 $adminmenu[$i]['icon'] = 'images/admin/main.png' ;
 
+$i++ ;
+$adminmenu[$i]['title'] =  '統計';
+$adminmenu[$i]['link'] = "admin/sum.php";
+ $adminmenu[$i]['desc'] = '各項統計' ;
+$adminmenu[$i]['icon'] = 'images/admin/log_48.png' ;
 
     $i++ ;
     $adminmenu[$i]['title'] =  '扣款郵局帳號管理';
@@ -36,14 +41,6 @@ $adminmenu[$i]['title'] =  '合併其他郵局扣款';
 $adminmenu[$i]['link'] = "admin/post_join.php";
 $adminmenu[$i]['desc'] = '合併其他部份無單位名冊的學生扣款資料' ;
 $adminmenu[$i]['icon'] = 'images/admin/genadm.png' ;
-
-
-$i++ ;
-$adminmenu[$i]['title'] =  '統計';
-$adminmenu[$i]['link'] = "admin/sum.php";
- $adminmenu[$i]['desc'] = '各項統計' ;
-$adminmenu[$i]['icon'] = 'images/admin/log_48.png' ;
-
 
 $i++ ;
 $adminmenu[$i]['title'] = "關於";
