@@ -110,7 +110,7 @@ function import_excel($item_id ,$file_up,$ver=5) {
 		$v="";
 
 		//讀取一列中的每一格
-		for ($col = 0; $col <= 15; $col++) {
+		for ($col = 0; $col <= 11; $col++) {
             $val =  $sheet->getCellByColumnAndRow($col, $row)->getCalculatedValue();
 			if(!get_magic_quotes_runtime()) {
 				$v[$col]=strtoupper(trim(addSlashes($val)));
@@ -220,6 +220,7 @@ if ($item_id ) {
     //取得學生總數
     $message .='需要繳費總人數 : ' .  get_need_pay_stud_num($item_id) ;
     //取得放在轉帳號的在籍、不在籍
+	$data['total'] = get_poster_stud_num($item_id) ;
     $post_num = get_poster_stud_num($item_id) ;
     $message .='<br />在郵局扣款表中，在單位人數： ' .  (0+$post_num['num'][0]['all']) . ' ， EXCEL 匯入的人數 ：  '  . ( 0+ $post_num['num'][1]['all'])  ;
 
@@ -227,6 +228,7 @@ if ($item_id ) {
     $message .='<br />現金繳費人數 在單位： ' .  (0+$post_num['num'][0][1]) . ' ， EXCEL 匯入的 ：  '  . ( 0+ $post_num['num'][1][1])  ;
     $message .='<br />現金繳費金額：' .  ( 0+$post_num['pay'][0][1] + $post_num['pay'][1][1] )  .' 元' . '單位內 ' .(0+$post_num['pay'][0][1])  .' 元  , EXCEL 內 ' .(0+$post_num['pay'][1][1])  .' 元' ;
     $message .='<br />總金額：' .( 0+  $post_num['pay_sum'] ).' 元' ;
+
 }
 
 

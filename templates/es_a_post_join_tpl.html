@@ -19,6 +19,42 @@
    <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載：扣款學生 EXCEL 範例檔</a><br/>
 </div>
 
+<{if ($err_message) }><{* 錯誤 *}>
+<div class="alert alert-danger">
+    <{$err_message}>
+</div>
+<{/if}>
+
+<div >
+    統計資料：(不含扣款手續費)<br />
+    <{* 統計資料 *}>
+    <table class="table table-bordered">
+        <tr>
+            <td>類別</td>
+            <td>名冊內</td>
+            <td>EXCEL</td>
+            <td>總計</td>
+        </tr>
+        <tr>
+            <td>需繳人數(總金額)</td>
+            <td><{$data.total.num.0.all}> ( <{$data.total.pay.0.all}> 元 )</td>
+            <td><{$data.total.num.1.all}> ( <{$data.total.pay.1.all}> 元 )</td>
+            <td><{$data.total.num.all}> ( <{$data.total.pay.all}> 元 )</td>
+        </tr>
+        <tr>
+            <td>扣款人數(總金額)</td>
+            <td><{$data.total.num.0.0}> ( <{$data.total.pay.0.0}> 元 )</td>
+            <td><{$data.total.num.1.0}> ( <{$data.total.pay.1.0}> 元 )</td>
+            <td><{$data.total.num.pm.0}> ( <{$data.total.pay.pm.0}> 元 )</td>
+        </tr>
+        <tr>
+            <td>現金繳費(總金額)</td>
+            <td><{$data.total.num.0.1}> ( <{$data.total.pay.0.1}> 元 )</td>
+            <td><{$data.total.num.1.1}> ( <{$data.total.pay.1.1}> 元 )</td>
+            <td><{$data.total.num.pm.1}> ( <{$data.total.pay.pm.1}> 元 )</td>
+        </tr>
+    </table>
+</div>
 
      <div class="alert alert-info">
         說明：<br />
@@ -27,13 +63,3 @@
         也可以全部不使用收費系統，全以 EXCEL 資料匯入。<br />
         如果資料有修改過，建議全部清空後再重新匯入。<br />
     </div>
-    <div class="alert alert-success">
-        統計資料：<br />
-        <{$message}><{* 統計資料 *}>
-    </div>
-
-     <{if ($err_message) }><{* 錯誤 *}>
-     <div class="alert alert-danger">
-         <{$err_message}>
-     </div>
-     <{/if}>

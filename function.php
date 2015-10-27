@@ -868,8 +868,12 @@ function get_poster_stud_num($item_id) {
 
         $data['num'][$stud['stud_else']][$stud['cash']] = $stud['num']  ;
         $data['num'][$stud['stud_else']]['all'] += $stud['num']  ;
+        $data['num']['all'] += $stud['num']  ;
+        $data['num']['pm'][$stud['cash']] += $stud['num']  ;
         $data['pay'][$stud['stud_else']][$stud['cash']]  = $stud['spay'] ;
         $data['pay'][$stud['stud_else']]['all'] += $stud['spay']  ;
+        $data['pay']['pm'][$stud['cash']]  += $stud['spay']  ;
+        $data['pay']['all'] += $stud['spay'] ;
         $data['pay_sum'] += $stud['spay'] ;
     }
     return $data ;
@@ -918,7 +922,7 @@ function export_poster_data($item_id){
 
 
 
-	$sql = " SELECT  *  ,count(*) as ccn   From "
+	$sql = " SELECT  *  ,count(*) as ccn , sum(pay) as do_pay   From "
 			. $xoopsDB->prefix("charge_poster_data")
 			."  where   cash='0'   "
 			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
@@ -928,7 +932,7 @@ function export_poster_data($item_id){
 	$sum_rec=0 ;
 	$sum_pay = 0  ;
 	while($stud=$xoopsDB->fetchArray($result)){
-		$pay = $stud['pay'] + $DEF['fee'] ;
+		$pay = $stud['do_pay'] + $DEF['fee'] ;
 
 		//學生代碼使用 班級3碼 + 座號 2 碼
 		$stud_show_id = sprintf("%03d",$stud['class_id']) . sprintf("%02d",$stud['sit_num']) ;
