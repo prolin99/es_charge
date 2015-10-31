@@ -6,11 +6,11 @@
 <div id='frm' class="row-fluid"  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <span><label>繳費項目：( 記錄有時效性，歷史資料會受學籍名冊影響！)</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
-        <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success'>本次收費學生匯入資料</button></p>
+        <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success'>單位名冊內收費學生匯入資料</button></p>
         <p>
             <span>2.其他扣款學生 excel (如幼稚園)：</span>
         <input type=file name=userdata>
-        <button type='submit'  name='do_key' value='add_other' class='btn btn-success'>匯入</button>
+        <button type='submit'  name='do_key' value='add_other' class='btn btn-success' title='注意格式是否正確！'>匯入</button>
         </p>
         <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary'>產生郵局傳送檔</button></p>
         <br /><br /><br /><br />
@@ -31,8 +31,8 @@
     <table class="table table-bordered">
         <tr>
             <td>類別</td>
-            <td>名冊內</td>
-            <td>EXCEL</td>
+            <td>單位名冊內</td>
+            <td>EXCEL匯入部份</td>
             <td>總計</td>
         </tr>
         <tr>
@@ -42,18 +42,19 @@
             <td><{$data.total.num.all}> ( <{$data.total.pay.all}> 元 )</td>
         </tr>
         <tr>
-            <td>扣款人數(總金額)</td>
+            <td>郵局扣款人數(總金額)</td>
             <td><{$data.total.num.0.0}> ( <{$data.total.pay.0.0}> 元 )</td>
-            <td><{$data.total.num.1.0}> ( <{$data.total.pay.1.0}> 元 )</td>
+            <td><{$data.total.num.1.0}> ( <{$data.total.pay.1.0}> 元 </td>
             <td><{$data.total.num.pm.0}> ( <{$data.total.pay.pm.0}> 元 )</td>
         </tr>
         <tr>
-            <td>現金繳費(總金額)</td>
+            <td>自行繳費人數(總金額)</td>
             <td><{$data.total.num.0.1}> ( <{$data.total.pay.0.1}> 元 )</td>
-            <td><{$data.total.num.1.1}> ( <{$data.total.pay.1.1}> 元 )</td>
+            <td><{$data.total.num.1.1}> ( <{$data.total.pay.1.1}> 元 ))</td>
             <td><{$data.total.num.pm.1}> ( <{$data.total.pay.pm.1}> 元 )</td>
         </tr>
     </table>
+    郵局格式最後總計：<{$data.p_text}>
 </div>
    <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載：扣款學生 EXCEL 範例檔</a><br/>
      <div class="alert alert-info">

@@ -858,7 +858,7 @@ function get_need_pay_stud_num($item_id) {
     return $data ;
 }
 
-//取得需要在郵局資料中在校生及外部扣款生
+//取得統計人數、總計 需要在郵局資料中在校生及外部扣款生
 function get_poster_stud_num($item_id) {
 	global   $xoopsDB  ;
     $sql = " select  stud_else ,cash  , count(*)  as num  , sum(pay) as spay from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'   group  by stud_else  ,cash "  ;
@@ -879,6 +879,25 @@ function get_poster_stud_num($item_id) {
     return $data ;
 }
 
+//取得 合併扣款筆數(同帳號做合併)
+function get_poster_chare_num($item_id) {
+	global   $xoopsDB  ;
+    //全部筆數
+    $sql = " select    count(*)  as num   from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'  and cash=0 "  ;
+    $result = $xoopsDB->queryF($sql) ;
+    while($row=$xoopsDB->fetchArray($result)){
+        $all_rec = $row['num'] ;
+    }
+    //同帳號合併
+    $sql = " select    count(*)  as num   from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'  and cash=0  group by acc_mode, acc_b_id , acc_id , acc_g_id  having num > 1  "  ;
+    //echo $sql ;
+    $result = $xoopsDB->queryF($sql) ;
+    while($row=$xoopsDB->fetchArray($result)){
+        $same_count += $row['num'] -1 ;
+    }
+    $charge_rec= $all_rec - $same_count ;
+    return $charge_rec ;
+}
 
 
 // ---------------------------------------   郵局報表  -----------------------------------------------------------------
@@ -934,7 +953,7 @@ function export_poster_data($item_id){
 	while($stud=$xoopsDB->fetchArray($result)){
         if ($stud['do_pay'] <=0)        //無需繳費不用設扣款
             continue;
-            
+
 		$pay = $stud['do_pay'] + $DEF['fee'] ;
 
 		//學生代碼使用 班級3碼 + 座號 2 碼
