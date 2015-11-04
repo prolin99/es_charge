@@ -882,21 +882,19 @@ function get_poster_stud_num($item_id) {
 //取得 合併扣款筆數(同帳號做合併)
 function get_poster_chare_num($item_id) {
 	global   $xoopsDB  ;
-    //全部筆數
-    $sql = " select    count(*)  as num   from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'  and cash=0 "  ;
-    $result = $xoopsDB->queryF($sql) ;
-    while($row=$xoopsDB->fetchArray($result)){
-        $all_rec = $row['num'] ;
-    }
-    //同帳號合併
-    $sql = " select    count(*)  as num   from   " . $xoopsDB->prefix("charge_poster_data") . "    where item_id='$item_id'  and cash=0  group by acc_mode, acc_b_id , acc_id , acc_g_id  having num > 1  "  ;
-    //echo $sql ;
-    $result = $xoopsDB->queryF($sql) ;
-    while($row=$xoopsDB->fetchArray($result)){
-        $same_count += $row['num'] -1 ;
-    }
-    $charge_rec= $all_rec - $same_count ;
+    //合併後要扣款的筆數
+    $sql = " SELECT  *  ,count(*) as ccn , sum(pay) as do_pay   From "
+  			. $xoopsDB->prefix("charge_poster_data")
+  			."  where  item_id='$item_id'  and  cash='0'  "
+  			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
+        ."  having  do_pay>0  "
+  			."  ORDER BY class_id, sit_num " ;
+  	$result = $xoopsDB->queryF($sql)   ;
+    
+    $charge_rec =   $xoopsDB->getRowsNum($result) ;
+
     return $charge_rec ;
+
 }
 
 
@@ -943,10 +941,12 @@ function export_poster_data($item_id){
 
 	$sql = " SELECT  *  ,count(*) as ccn , sum(pay) as do_pay   From "
 			. $xoopsDB->prefix("charge_poster_data")
-			."  where   cash='0'   "
+			."  where  item_id='$item_id'  and  cash='0'  "
 			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
+      ."  having  do_pay>0  "
 			."  ORDER BY class_id, sit_num " ;
 	$result = $xoopsDB->queryF($sql)   ;
+  //die($sql) ;
 
 	$sum_rec=0 ;
 	$sum_pay = 0  ;
@@ -960,10 +960,10 @@ function export_poster_data($item_id){
 		$stud_show_id = sprintf("%03d",$stud['class_id']) . sprintf("%02d",$stud['sit_num']) ;
 
 		//合併轉帳(同家長同扣款帳號)
-		$do_sum =' ' ;
+		$do_sum = ' ' ;
 		if ($stud['ccn']>1)   $do_sum = '1'  ;
 
-		if ($stud['acc_mode'] == 'P' )
+		if (strtoupper($stud['acc_mode']) == 'P' )
 			//存戶
 			$data .= '1' .$stud['acc_mode'] . $DEF['school_id'] . $poster_block .   $date_pay.  space_chr(3)
 				.  sprintf("%07d",$stud['acc_b_id']).sprintf("%07d",$stud['acc_id']).$stud['acc_personid']
