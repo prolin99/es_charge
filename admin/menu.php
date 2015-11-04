@@ -22,25 +22,24 @@ $adminmenu[$i]['link'] = "admin/sum.php";
  $adminmenu[$i]['desc'] = '各項統計' ;
 $adminmenu[$i]['icon'] = 'images/admin/log_48.png' ;
 
-    $i++ ;
-    $adminmenu[$i]['title'] =  '扣款郵局帳號管理';
-    $adminmenu[$i]['link'] = "admin/poster_list.php";
-    $adminmenu[$i]['desc'] = '學生扣款帳號管理' ;
-    $adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
-
-
-
 $i++ ;
 $adminmenu[$i]['title'] =  '報表';
 $adminmenu[$i]['link'] = "admin/data_output.php";
 $adminmenu[$i]['desc'] = '收據、報表' ;
 $adminmenu[$i]['icon'] = 'images/admin/genadm.png' ;
 
+
 $i++ ;
 $adminmenu[$i]['title'] =  '合併其他郵局扣款';
 $adminmenu[$i]['link'] = "admin/post_join.php";
 $adminmenu[$i]['desc'] = '合併其他部份無單位名冊的學生扣款資料' ;
-$adminmenu[$i]['icon'] = 'images/admin/genadm.png' ;
+$adminmenu[$i]['icon'] = 'images/admin/poster2.png' ;
+
+$i++ ;
+$adminmenu[$i]['title'] =  '扣款郵局帳號管理';
+$adminmenu[$i]['link'] = "admin/poster_list.php";
+$adminmenu[$i]['desc'] = '學生扣款帳號管理' ;
+$adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
 
 $i++ ;
 $adminmenu[$i]['title'] = "關於";

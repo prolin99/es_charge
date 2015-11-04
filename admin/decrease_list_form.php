@@ -131,7 +131,8 @@ if  ($item_id) {
 	$objPHPExcel->getActiveSheet()->setTitle('student_decrease_list');
 
 
-	header('Content-Type: application/vnd.ms-excel');
+	//header('Content-Type: application/vnd.ms-excel');
+	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=decrease_frm_'.date("mdHi").'.xlsx' );
 	header('Cache-Control: max-age=0');
 

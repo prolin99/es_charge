@@ -74,7 +74,8 @@ require_once '../../tadtools/PHPExcel/IOFactory.php';
 
 
 
-	header('Content-Type: application/vnd.ms-excel');
+	//header('Content-Type: application/vnd.ms-excel');
+	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=account'.date("mdHi").'.xlsx' );
 	header('Cache-Control: max-age=0');
 

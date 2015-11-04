@@ -73,7 +73,8 @@ if  ($item_id) {
 		class_output($class_id , $item_id) ;
 	}
 
-	header('Content-Type: application/vnd.ms-excel');
+	//header('Content-Type: application/vnd.ms-excel');
+	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=receipt'.date("mdHi").'.xlsx' );
 	header('Cache-Control: max-age=0');
 
@@ -81,7 +82,6 @@ if  ($item_id) {
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	$objWriter->save('php://output');
 	exit;
-
 }
 
 function class_output( $class_id , $item_id) {

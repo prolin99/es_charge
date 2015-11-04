@@ -5,6 +5,13 @@
 
 <div id='frm' class="row-fluid"  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
+        <div  class="row-fluid"  >
+        <span class='span4'><h1>郵局扣款轉檔</h1></span>
+            <span class='span5'>
+            <button type='submit'  name='do_key' value='clear' class='btn btn-danger' title='如資料有修改過，先清空資料才重新再匯'  onclick='return confirm("確定要清空?")'  >清空本次資料</button>
+            <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse' title='其它要扣款的學生(如幼稚園)'>下載：扣款學生 EXCEL 範例檔</a>
+            </span>
+        </div>
         <span><label>繳費項目：( 記錄有時效性，歷史資料會受學籍名冊影響！)</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
         <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success'>單位名冊內收費學生匯入資料</button></p>
         <p>
@@ -13,8 +20,7 @@
         <button type='submit'  name='do_key' value='add_other' class='btn btn-success' title='注意格式是否正確！'>匯入</button>
         </p>
         <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary'>產生郵局傳送檔</button></p>
-        <br /><br /><br /><br />
-        <p><button type='submit'  name='do_key' value='clear' class='btn btn-danger' title='清空資料重新再匯'  onclick='return confirm("確定要刪除?")'  >清空本次資料</button></p>
+        <br /><br />
    </form>
 
 </div>
@@ -37,26 +43,26 @@
         </tr>
         <tr>
             <td>需繳人數(總金額)</td>
-            <td><{$data.total.num.0.all}> ( <{$data.total.pay.0.all}> 元 )</td>
-            <td><{$data.total.num.1.all}> ( <{$data.total.pay.1.all}> 元 )</td>
-            <td><{$data.total.num.all}> ( <{$data.total.pay.all}> 元 )</td>
+            <td><{$data.total.num.0.all}> 人 ( <{$data.total.pay.0.all}> 元 )</td>
+            <td><{$data.total.num.1.all}> 人 ( <{$data.total.pay.1.all}> 元 )</td>
+            <td><{$data.total.num.all}> 人 ( <{$data.total.pay.all}> 元 )</td>
         </tr>
         <tr>
             <td>郵局扣款人數(總金額)</td>
-            <td><{$data.total.num.0.0}> ( <{$data.total.pay.0.0}> 元 )</td>
-            <td><{$data.total.num.1.0}> ( <{$data.total.pay.1.0}> 元 ) </td>
-            <td><{$data.total.num.pm.0}> ( <{$data.total.pay.pm.0}> 元 )</td>
+            <td><{$data.total.num.0.0}> 人 ( <{$data.total.pay.0.0}> 元 )</td>
+            <td><{$data.total.num.1.0}> 人 ( <{$data.total.pay.1.0}> 元 ) </td>
+            <td><{$data.total.num.pm.0}> 人 ( <{$data.total.pay.pm.0}> 元 )</td>
         </tr>
         <tr>
             <td>自行繳費人數(總金額)</td>
-            <td><{$data.total.num.0.1}> ( <{$data.total.pay.0.1}> 元 )</td>
-            <td><{$data.total.num.1.1}> ( <{$data.total.pay.1.1}> 元 )</td>
-            <td><{$data.total.num.pm.1}> ( <{$data.total.pay.pm.1}> 元 )</td>
+            <td><{$data.total.num.0.1}> 人 ( <{$data.total.pay.0.1}> 元 )</td>
+            <td><{$data.total.num.1.1}> 人 ( <{$data.total.pay.1.1}> 元 )</td>
+            <td><{$data.total.num.pm.1}> 人 ( <{$data.total.pay.pm.1}> 元 )</td>
         </tr>
     </table>
     郵局格式最後總計：<{$data.p_text}>
 </div>
-   <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載：扣款學生 EXCEL 範例檔</a><br/>
+   <br/>
      <div class="alert alert-info">
         說明：<br />
         本功能在提供轉換出郵局扣款記錄，支援在無學生名冊的情形下使用。<br />

@@ -55,7 +55,7 @@ if  ($item_id) {
         $objActSheet->setCellValue('G1', '應收') ;
         $objActSheet->setCellValue('H1', '減免') ;
         $objActSheet->setCellValue('I1', '實付') ;
-        $objActSheet->setCellValue('J1', '補助') ;		
+        $objActSheet->setCellValue('J1', '補助') ;
         $objActSheet->setCellValue('K1', '原因') ;
 
 
@@ -65,11 +65,11 @@ if  ($item_id) {
         //資料區
         foreach ($data['decase_list'] as $stud_id => $stud )  {
         	$row++ ;
- 			//echo $row ;
+			//echo $row ;
         	$y = ($stud['curr_class_num'] /100)-1 ;
 
-       		$objActSheet->setCellValue('A'.$row,$row-1) ;
-       		$objActSheet->setCellValue('B'.$row, $detail_list[$stud['detail_id']]  ) ;
+			$objActSheet->setCellValue('A'.$row,$row-1) ;
+			$objActSheet->setCellValue('B'.$row, $detail_list[$stud['detail_id']]  ) ;
 			$objActSheet->setCellValue('C'.$row ,$class_list_c[$stud['curr_class_num']]) ;
             $objActSheet->setCellValue('D'.$row ,$stud['class_sit_num']);
             $objActSheet->setCellValue('E'.$row, $stud['sex']);
@@ -85,11 +85,12 @@ if  ($item_id) {
               if  ($stud['cause_other'])	//有第二原因
                 $objActSheet->setCellValue('k'.$row , $decrease_cause[$stud['cause_other']] )    ;
               else
- 	      		$objActSheet->setCellValue('k'.$row ,  $stud['cause_str']  ) ;
+	    		$objActSheet->setCellValue('k'.$row ,  $stud['cause_str']  ) ;
 
         }
 
-	header('Content-Type: application/vnd.ms-excel');
+	//header('Content-Type: application/vnd.ms-excel');
+	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=dec_kind_'.$show_mode.date("mdHi").'.xlsx' );
 	header('Cache-Control: max-age=0');
 
