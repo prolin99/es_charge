@@ -64,6 +64,14 @@
     </table>
     郵局格式最後總計：<{$data.p_text}>
 </div>
+<div class="alert alert-info">
+   說明：<br />
+   本功能在提供轉換出郵局扣款記錄，支援在無學生名冊的情形下使用。<br />
+   如果有使用收費系統，先把本次收費資料匯入。再匯入其他年段(如幼稚班)的 Excel 資料。<br />
+   也可以全部不使用收費系統，全以 EXCEL 資料匯入。<br />
+   如果資料有修改過，建議全部清空後再重新匯入。<br />
+   完成後要保留資料，不可再刪除，否則下方的對帳功能將無法使用。
+</div>
 <div id='frm2' class="row-fluid alert-info"  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <div  class="row-fluid"  >
@@ -87,8 +95,5 @@
    <br/>
      <div class="alert alert-info">
         說明：<br />
-        本功能在提供轉換出郵局扣款記錄，支援在無學生名冊的情形下使用。<br />
-        如果有使用收費系統，先把本次收費資料匯入。再匯入其他年段(如幼稚班)的 Excel 資料。<br />
-        也可以全部不使用收費系統，全以 EXCEL 資料匯入。<br />
-        如果資料有修改過，建議全部清空後再重新匯入。<br />
+        上傳郵局對帳檔，會把扣款失敗學生做標記。 
     </div>
