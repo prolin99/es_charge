@@ -85,8 +85,9 @@ CREATE TABLE  `charge_poster_data` (
   `acc_mode` varchar(10)  NOT NULL,
   `acc_b_id` varchar(20)  NOT NULL,
   `acc_id` varchar(20)  NOT NULL,
-  `acc_g_id``` varchar(20)  NOT NULL,
+  `acc_g_id` varchar(20)  NOT NULL,
   `stud_else` int(11) NOT NULL,
   `cash` int(11) NOT NULL,
+  `pay_fail` int(11) NOT NULL,
   PRIMARY KEY (`item_id`,`t_id`)
 ) ENGINE=MyISAM  ;
