@@ -16,7 +16,7 @@
         <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success'>單位名冊內收費學生匯入資料</button></p>
         <p>
             <span>2.其他扣款學生 excel (如幼稚園)：</span>
-        <input type=file name=userdata>
+        <input type=file name=userdata accept='.xls,.xlsx'>
         <button type='submit'  name='do_key' value='add_other' class='btn btn-success' title='注意格式是否正確！'>匯入</button>
         </p>
         <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary'>產生郵局傳送檔</button><span class='alert alert-info'>請依郵局作業，傳送、傳真相關檔案)</span></p>
@@ -24,6 +24,8 @@
    </form>
 
 </div>
+
+
 
 <{if ($err_message) }><{* 錯誤 *}>
 <div class="alert alert-danger">
@@ -61,6 +63,26 @@
         </tr>
     </table>
     郵局格式最後總計：<{$data.p_text}>
+</div>
+<div id='frm2' class="row-fluid alert-info"  >
+    <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
+        <div  class="row-fluid"  >
+        <span class='span4'><h1>郵局扣款結果對帳</h1></span>
+        </div>
+        <span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
+        <p>
+            <span>郵局扣款結果檔：</span>
+        <input type=file name='result_data' accept='.txt'>
+        <button type='submit'  name='do_key2' value='result_upload' class='btn btn-success' title='注意格式是否正確！'>上傳</button>
+        </p>
+        <p><button type='submit'  name='do_key2' value='result_stud' class='btn btn-primary'>扣款失敗名冊</button></p>
+        <{if ($data.fail_studs) }>
+        扣款失敗人數：<{$data.fail_studs }> 人
+        <{/if}>
+        <br />
+        <{$message2}>
+        <br />
+   </form>
 </div>
    <br/>
      <div class="alert alert-info">

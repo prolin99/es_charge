@@ -19,6 +19,11 @@ if ($_POST["do_key"] =='export') {
     export_poster_data($_POST['item_id'] ) ;
     exit() ;
 }
+if ($_POST["do_key2"] =='result_stud') {
+    export_fail($_POST['item_id'] ) ;
+    exit() ;
+}
+
 
 include_once "../../tadtools/PHPExcel.php";
 require_once '../../tadtools/PHPExcel/IOFactory.php';
@@ -185,10 +190,69 @@ function clear_poster_data($item_id){
 }
 
 
+
+//對帳單 ，匯入純文字檔
+function result_data($item_id ){
+	global   $xoopsDB  ;
+	if ($_FILES['result_data']['name'] ) {
+		$file_up = XOOPS_ROOT_PATH."/uploads/" .$_FILES['result_data']['name'] ;
+		copy($_FILES['result_data']['tmp_name'] , $file_up );
+		//$main="開始匯入" . $file_up .'<br>';
+
+		//失敗註記還原
+		$sql =  " UPDATE  " . $xoopsDB->prefix("charge_poster_data") . " SET  pay_fail = '0'  	where      item_id = '$item_id'    ; " ;
+		 $xoopsDB->queryF($sql) 	 ;
+
+
+		//讀取文字檔 ，分行讀取
+		$fp=fopen( $file_up ,"r");
+		while(!feof($fp)){
+			$mydata[] =fgets($fp );
+		}
+		fclose($fp);
+
+		$pay_ok_num = 0 ;
+		foreach ($mydata as $li =>$line)   {
+			if ($line[0] ==1 ){
+				//扣款金額
+				$pay = substr($line,43,9);
+				//失敗原因 01  or  10   ????
+				$no_pay = substr($line,78,2);
+				if ($no_pay<>'  '){
+					$pay_err_sum += $pay ;
+					//身份証、局號、帳號
+					$person_id =   substr($line,33,10);
+					$acc_bid= substr($line,19,7);
+					$id= substr($line,26,7);
+					//echo "$person_id $acc_bid $id ---  $no_pay <br />" ;
+					//只以身份證做判別
+					$sql =  " UPDATE  " . $xoopsDB->prefix("charge_poster_data") . " SET  pay_fail =  '$no_pay'
+                        where  acc_personid  = '$person_id'  and  acc_b_id='$acc_bid'  and acc_id='$id'   and   item_id = '$item_id'    ; " ;
+					 $xoopsDB->queryF($sql) 	 ;
+				}else
+					$pay_ok_num ++ ;
+				$pay_num ++ ;
+				$pay_sum += $pay ;
+
+			}
+
+			if ($line[0] ==2 )	{
+				break ;
+			}
+
+		}
+		$main .= "應扣款筆數 $pay_num 筆， 應扣款額額：$pay_sum 元  。   成功扣款： $pay_ok_num 筆 ，成功扣款總額： " . (  $pay_sum- $pay_err_sum )  ." 元 ";
+
+		//刪除上傳的檔。
+		unlink($file_up)  ;
+	}
+	return $main;
+}
+
 /*-----------執行動作判斷區----------*/
 $item_id=empty($_REQUEST['item_id'])?"":$_REQUEST['item_id'];
 
-
+//轉帳表
 switch ($_POST["do_key"]){
     case "add":
         add_from_charge($_POST['item_id'] ) ;
@@ -201,6 +265,16 @@ switch ($_POST["do_key"]){
     break;
     case "export":
         export_poster_data($_POST['item_id'] ) ;
+    break;
+}
+
+//對帳表
+switch ($_POST["do_key2"]){
+    case "result_upload":
+        $message2 = result_data($_POST['item_id'] ) ;
+    break;
+    case "result_stud":
+        export_fail($_POST['item_id'] ) ;
     break;
 }
 
@@ -218,21 +292,16 @@ $data['item_list']=get_item_list('all') ;
 
 if ($item_id ) {
     //取得學生總數
-    $message .='需要繳費總人數 : ' .  get_need_pay_stud_num($item_id) ;
+    //$message .='需要繳費總人數 : ' .  get_need_pay_stud_num($item_id) ;
     //取得放在轉帳號的在籍、不在籍
 	$data['total'] = get_poster_stud_num($item_id) ;
 	//
 	$pr = get_poster_chare_num($item_id) ;
 	$data['p_text'] = "扣款記錄  $pr 筆 * 手續費 {$DEF['fee']}  +  總計: {$data['total']['pay']['pm'][0]} = "   .( $pr *  $DEF['fee'] + $data['total']['pay']['pm'][0]  ) ;
-	/*
-    $post_num = get_poster_stud_num($item_id) ;
-    $message .='<br />在郵局扣款表中，在單位人數： ' .  (0+$post_num['num'][0]['all']) . ' ， EXCEL 匯入的人數 ：  '  . ( 0+ $post_num['num'][1]['all'])  ;
 
-    $message .='<br />扣款總金額： ' .  ( 0+$post_num['pay'][0][0] + $post_num['pay'][1][0] )  .' 元(不計手續費)' . '單位內 ' .(0+$post_num['pay'][0][0])  .' 元  , EXCEL 內 ' .(0+$post_num['pay'][1][0])  .' 元' ;
-    $message .='<br />現金繳費人數 在單位： ' .  (0+$post_num['num'][0][1]) . ' ， EXCEL 匯入的 ：  '  . ( 0+ $post_num['num'][1][1])  ;
-    $message .='<br />現金繳費金額：' .  ( 0+$post_num['pay'][0][1] + $post_num['pay'][1][1] )  .' 元' . '單位內 ' .(0+$post_num['pay'][0][1])  .' 元  , EXCEL 內 ' .(0+$post_num['pay'][1][1])  .' 元' ;
-    $message .='<br />總金額：' .( 0+  $post_num['pay_sum'] ).' 元' ;
-*/
+	//扣款失敗人數
+	$data['fail_studs'] =get_poster_chare_fail($item_id) ;
+
 }
 
 
@@ -243,7 +312,7 @@ if ($item_id ) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "data" , $data ) ;
-$xoopsTpl->assign( "message" , $message ) ;
+$xoopsTpl->assign( "message2" , $message2 ) ;
 $xoopsTpl->assign( "err_message" , $err_message ) ;
 
 include_once 'footer.php';
