@@ -946,7 +946,7 @@ function export_fail($item_id){
 
     //合併後要扣款的筆數
     $sql = " SELECT  *    From ". $xoopsDB->prefix("charge_poster_data")
-		."  where  item_id='$item_id'  and  pay_fail<>'0'   "  ;
+		."  where  item_id='$item_id'  and  pay_fail<>'0'   order by class_id , sit_num "  ;
 
 	$result = $xoopsDB->queryF($sql)   ;
 	while($stud=$xoopsDB->fetchArray($result)){
