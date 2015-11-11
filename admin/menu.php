@@ -30,9 +30,9 @@ $adminmenu[$i]['icon'] = 'images/admin/genadm.png' ;
 
 
 $i++ ;
-$adminmenu[$i]['title'] =  '合併其他郵局扣款';
+$adminmenu[$i]['title'] =  '郵局扣款作業';
 $adminmenu[$i]['link'] = "admin/post_join.php";
-$adminmenu[$i]['desc'] = '合併其他部份無單位名冊的學生扣款資料' ;
+$adminmenu[$i]['desc'] = '合併其他部份無單位名冊的學生扣款資料，對帳處理' ;
 $adminmenu[$i]['icon'] = 'images/admin/poster2.png' ;
 
 $i++ ;
