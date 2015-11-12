@@ -72,7 +72,7 @@
    如果資料有修改過，建議全部清空後再重新匯入。<br />
    完成後要保留資料，不可再刪除，否則下方的對帳功能將無法使用。
 </div>
-<div id='frm2' class="row-fluid alert-info"  >
+<div id='frm2' class="row-fluid  "  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <div  class="row-fluid"  >
         <span class='span4'><h1>郵局扣款結果對帳</h1></span>
@@ -85,7 +85,35 @@
         </p>
         <p><button type='submit'  name='do_key2' value='result_stud' class='btn btn-primary'>下載扣款失敗名冊</button></p>
         <{if ($data.fail_studs) }>
-        扣款失敗人數：<{$data.fail_studs }> 人
+        <table class="table table-bordered">
+            <tr>
+                <td>類別</td>
+                <td>人數(筆數)</td>
+                <td>金額</td>
+             </tr>
+             <tr>
+                 <td>送郵局扣款</td>
+                 <td><{$data.item.p_rec_num  }> 筆</td>
+                  <td><{$data.item.p_sum  }> 元</td>
+              </tr>
+              <tr>
+                  <td>郵局對帳單</td>
+                  <td><{$data.item.c_rec_num  }> 筆</td>
+                   <td><{$data.item.c_sum  }> 元  (*註1)</td>
+               </tr>
+               <tr>
+                   <td>扣款失敗</td>
+                   <td><{$data.item.f_rec_num  }> 筆</td>
+                    <td><{$data.item.f_sum  }> 元 (*註2)</td>
+                </tr>
+               <tr>
+                   <td>扣款失敗學生需補繳</td>
+                   <td><{$data.fail_studs.stud_num  }> 人</td>
+                    <td><{$data.fail_studs.pay_sum  }> 元</td>
+                </tr>
+            </table>
+            *註1：請和郵局對帳單最後一行最後的數字做比對是否正確。<br>
+            *註2：檢查補繳金額式子是否正確： <{$data.item.f_sum  }>  -    <{$data.item.f_rec_num  }> *    <{$DEF.fee}> =  <{$data.fail_studs.pay_sum  }>
         <{/if}>
         <br />
         <{$message2}>
@@ -95,5 +123,5 @@
    <br/>
      <div class="alert alert-info">
         說明：<br />
-        上傳郵局對帳檔，會把扣款失敗學生做標記。 
+        上傳郵局對帳檔，會把扣款失敗學生做標記。
     </div>

@@ -9,7 +9,7 @@ function xoops_module_update_es_charge(&$module, $old_version) {
     if(!chk_add_account()) go_update_add_account();
     //個人繳費小計
     if(!chk_add_pay_sum()) go_update_add_pay_sum();
-    //扣款日
+    //扣款日、傳送、對帳筆數、金額
     if(!chk_add_pay_date()) go_update_add_pay_date();
 
     //合併郵局記錄表
@@ -66,7 +66,12 @@ function chk_add_pay_date(){
 function go_update_add_pay_date(){
   global $xoopsDB;
 
-     $sql="  ALTER TABLE   ".$xoopsDB->prefix("charge_item") ."   ADD  `bank_date` date DEFAULT NULL  " ;
+     $sql="  ALTER TABLE   ".$xoopsDB->prefix("charge_item") ."   ADD  `bank_date` date DEFAULT NULL  ,
+     ADD `p_rec_num` INT NOT NULL ,
+     ADD `p_sum` INT NOT NULL ,
+     ADD `c_rec_num` INT NOT NULL ,
+     ADD `c_sum` INT NOT NULL ;
+     " ;
      $xoopsDB->queryF($sql)  ;
 }
 

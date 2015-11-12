@@ -243,6 +243,13 @@ function result_data($item_id ){
 		}
 		$main .= "應扣款筆數 $pay_num 筆， 應扣款額額：$pay_sum 元  。   成功扣款： $pay_ok_num 筆 ，成功扣款總額： " . (  $pay_sum- $pay_err_sum )  ." 元 ";
 
+		//把總筆數及總扣款數寫入
+		$chk_sum = $pay_sum- $pay_err_sum ;
+	    $sql = " update     ".  $xoopsDB->prefix("charge_item")
+	            ." SET  `c_rec_num`= '$pay_ok_num'  ,`c_sum`= '$chk_sum'  "
+				."  where  item_id='$item_id'     " ;
+		$result = $xoopsDB->queryF($sql)   ;
+
 		//刪除上傳的檔。
 		unlink($file_up)  ;
 	}
@@ -291,9 +298,7 @@ $data['item_list']=get_item_list('all') ;
  $data['select_item'] = $item_id  ;
 
 if ($item_id ) {
-    //取得學生總數
-    //$message .='需要繳費總人數 : ' .  get_need_pay_stud_num($item_id) ;
-    //取得放在轉帳號的在籍、不在籍
+    //取得各項統計資料
 	$data['total'] = get_poster_stud_num($item_id) ;
 	//
 	$pr = get_poster_chare_num($item_id) ;
@@ -301,6 +306,8 @@ if ($item_id ) {
 
 	//扣款失敗人數
 	$data['fail_studs'] =get_poster_chare_fail($item_id) ;
+	//在記錄中已有扣款單、對帳單
+	$data['item']= get_item_data($item_id) ;
 
 }
 
@@ -314,6 +321,7 @@ if ($item_id ) {
 $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "message2" , $message2 ) ;
 $xoopsTpl->assign( "err_message" , $err_message ) ;
+$xoopsTpl->assign( "DEF" , $DEF ) ;
 
 include_once 'footer.php';
 

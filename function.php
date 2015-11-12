@@ -209,6 +209,17 @@ function get_item_all_list(){
 	return $data ;
 }
 
+function get_item_data($item_id ){
+	//取得所有收費表的完整資料
+	global  $xoopsDB ;
+	$sql =  "  SELECT *  , (p_rec_num - c_rec_num)  as  f_rec_num  ,(p_sum-c_sum ) as f_sum  FROM " . $xoopsDB->prefix("charge_item") .  " where  item_id = '$item_id'    " ;
+	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	while($date_list=$xoopsDB->fetchArray($result)){
+		$data = $date_list ;
+	}
+	return $data ;
+}
+
 function get_item_detail_list( $item_id) {
 	//取得收費表中的全部細目
 
@@ -902,14 +913,15 @@ function get_poster_chare_num($item_id) {
 function get_poster_chare_fail($item_id) {
 	global   $xoopsDB  ;
     //合併後要扣款的筆數
-    $sql = " SELECT  *   From "
+    $sql = " SELECT  count(*) as stud_num  , sum(pay) as pay_sum    From "
   			. $xoopsDB->prefix("charge_poster_data")
   			."  where  item_id='$item_id'  and  pay_fail<>'0'   "  ;
   	$result = $xoopsDB->queryF($sql)   ;
 
-    $charge_rec =   $xoopsDB->getRowsNum($result) ;
-
-    return $charge_rec ;
+    while($date_list=$xoopsDB->fetchArray($result)){
+		$data = $date_list ;
+	}
+    return $data ;
 }
 
 //取得扣款失敗學生名冊，匯出 xlsx
@@ -1012,7 +1024,7 @@ function get_bank_date_cht($item_id) {
 }
 
 
-//郵局格式
+//郵局格式  (純文字檔)
 function export_poster_data($item_id){
 	global   $xoopsDB ,$DEF;
 
@@ -1076,6 +1088,11 @@ function export_poster_data($item_id){
 		.  sprintf("%020d",0)
 		. space_chr(15);
 
+    //把總筆數及總扣款數寫入
+    $sql = " update     ".  $xoopsDB->prefix("charge_item")
+            ." SET  `p_rec_num`= '$sum_rec'  ,`p_sum`= '$sum_pay'  "
+			."  where  item_id='$item_id'     " ;
+	$result = $xoopsDB->queryF($sql)   ;
 
 	header('Content-Type: text/plain');
 	header('Content-Disposition: attachment;filename=post001.dat.txt' );
