@@ -15,37 +15,32 @@
 <{if ($data.class_id )  }>
 <{*     減免列表            *}>
 <{if ($data.seletc_item ) }>
-<style type="text/css">
-@media print {
-  a[href]:after {
-    content: none;
-  }
-   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm ,  .blockContent ,#xo-logger-output{
-      display: none;
-   }
-}
-</style >
+
 
 <h3><{$data.class_list_c[$data.class_id]}>  減免學生金額列表(收費人數：<{$data.selected_count}>人，在籍人數：<{$data.students_count}>人)</h3>
 
-
+        <table class="table table-bordered table-hover" >
 	<!--      表格標題                                   -->
+    <tr>
       <div class="row-fluid" >
-      <div class='span1'>座號</div>
-      <div class='span1'>姓名</div>
+      <td class='span1'>座號</td>
+      <td class='span1'>姓名</td>
 
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <div class='span1'><{$detail_val|truncate:9}><span class="label"><{$data.detail_dollar.pay[$detail_key]}></span></div>
+        <td class='span1'><{$detail_val|truncate:9}><span class="label"><{$data.detail_dollar.pay[$detail_key]}></span></td>
       <{/foreach}>
 
-      <div class='span2'>減免原因</div>
+      <td class='span2'>減免原因</td>
 
       </div>
+  </tr>
       <!--      表格內容                                   -->
+
     <{foreach  key=key item=stud   from= $data.decase_list }>
+    <tr>
       <div class="row-fluid" id="div_<{$data.seletc_item}>_<{$key}>">
-      <div class='span1'  id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><span class="edit"><i class="icon-pencil"></i></span> <{$data.students[$key].class_sit_num}></div>
-      <div class='span1' id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></div>
+      <td><div class='span1'  id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><{$data.students[$key].class_sit_num}></div></td>
+      <td class='span1' id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></td>
 
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <{*    dollar_item_stud_sn_detail_id                金額  checked 補助                   *}>
@@ -53,24 +48,26 @@
           <{*  cause_chk   *}>
           <{if ($data.decase_list[$key].other[$detail_key])}>
              <{*   other cause_chk   *}>
-            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
+            <td class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
           <{else}>
-            <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></div>
+            <td class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="label label-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
           <{/if}>
 
         <{else}>
-        <div class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></div>
+        <td class='span1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></td>
         <{/if}>
       <{/foreach}>
 
-      <div class='span2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="icon-trash"></i></span><{$data.selected[$key].cause|truncate:18}>
+      <td class='span2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="icon-trash"></i></span><{$data.selected[$key].cause|truncate:18}>
           <{if ($data.selected[$key].ps) }>
             <i class="icon-info-sign" title="連絡內容：<{$data.selected[$key].ps}>"></i>
           <{/if}>
-        </div>
+        </td>
 
       </div>
+  </tr>
     <{/foreach }>
+</table>
 
 	 <{if ($data.inTime ) }>
 
@@ -86,22 +83,24 @@
 	 <hr />
        <{* 新增學生        --------------------------------------------------------------------------------------                            *}>
      <div  id= 'frm_add' class="row-fluid">
-     <div class="span8">
+         <div class="span8">
+
        <form method='post' name='editForm' id='editForm_new' class="form-horizontal" >
  		<fieldset>
 
     <{if ($data.admin) }>
     	<!-- 管理者可處理全校學生    -->
-    	<legend>新增減免學生，繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='span2' onchange="submit();"}>
+    	<legend>新增減免學生，繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id   onchange="submit();"}>
     	<span class="alert alert-error" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
     	</legend>
 	<{else}>
     	<legend>新增減免學生</legend>
     <{/if}>
-     			<div class="control-group">
-
-     			<label class="control-label" for="stud" >學生：</label>
-     			<select name="stud" >
+      <table class="table table-bordered table-hover " >
+        <tr>
+     			<td >
+                    學生：
+                    <select name="stud" >
 			<option label="選擇學生" value="0">選擇學生</option>
 			 <{foreach  key=key item=stud   from= $data.students }>
 			  	<{if ($data.selected[$stud.stud_id].selected and  !$data.decase_list[$stud.stud_id]) }>
@@ -109,21 +108,25 @@
     				<{/if}>
      			<{/foreach }>
 			</select>
-			</div>
+			</td>
+        </tr>
 
-			<div class="control-group">
-			<label class="control-label" for="cause_id"  >主減免原因：</label>
- 			<{html_options name='cause_id'  options=$decrease_cause  onchange="cause_check($(this));"  }>
-                    (多身份,點補助後圖示指定)
-                   </div>
+			<tr>
+			<td>主減免原因：
+     			<{html_options name='cause_id'  options=$decrease_cause  onchange="cause_check($(this));"     }><br/>
+                        (少數有多身份,點補助後圖示指定)
+                </td>
+            </tr>
+
 
  			<{*  各項費用  ---------------------   *}>
  			<{foreach  key=key item=detail   from= $data.detail_list }>
- 			<div class="control-group">
+ 			<tr>
+                <td>
  			<span class="fill" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
- 			<label class="control-label" for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>):</label>
- 			 <i class="icon-forward"></i> </span>
-  			<input   class='span2'  name='dollars[<{$key}>]' type='text' id='dollars<{$key}>'  title='<{$detail}><{$data.detail_dollar.pay[$key]}>'  tabindex='<{$key}>'
+ 			<label   for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>):</label>
+ 			 <i class="icon-forward"></i>     &nbsp;&nbsp;</span>
+  			<input    name='dollars[<{$key}>]' type='text' id='dollars<{$key}>'  title='<{$detail}><{$data.detail_dollar.pay[$key]}>'  tabindex='<{$key}>'
   			    placeholder='<{$data.detail_dollar.decease[$key]}>' onchange="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
 
   			<div class="input-append">
@@ -142,15 +145,20 @@
                     <div class="input-append">
                      <{ html_options name=other[$key]  options=$decrease_cause id=other_$key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
                     </div>
- 			 </div>
+ 			 </td>
+         </tr>
  			<{/foreach }>
 
                       <{*    聯絡註記   *}>
- 			<div class="control-group">
-                    <label class="control-label" for="cause_id"  >聯絡註記：</label>
+ 			<tr>
+                <td>
+                    <label  for="cause_id"  >聯絡註記：</label>
                     <input   class='span8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  />
                     </div>
-
+                </td>
+            </tr>
+            <tr>
+                <td>
 			<div class="form-actions">
 			<input name='item_id' type='hidden' value='<{$data.seletc_item}>' />
 			<input name='class_id' type='hidden' value='<{$data.class_id}>' />
@@ -158,10 +166,12 @@
  			<button class="btn btn-primary" type="submit" name='act_add' value='act_add' >新增</button>
 
  			</div>
-
-
+        </td>
+    </tr>
+</table>
  		</fieldset>
 		</form>
+    </table>
 		<{if ($data.spec_list)}>
 		<h4>舊記錄中班上有減免身份</h4>
 		<{$data.spec_list}>
@@ -189,8 +199,9 @@
     //刪除----------------------------------------------------------------------------------
   $(document).on("click", ".del", function(){
 
-    var div_id = $(this).parent().parent().attr("id")  ;
+    var div_id = $(this).parent().attr("id")  ;
     	   if(confirm('是否確定要刪除？')) {
+               alert(div_id ) ;
            	ajax_del(  div_id) ;  // 刪除動作
            	//把這個 div 隱藏起來
            	$(this).parent().parent().hide() ;
@@ -252,8 +263,8 @@ function isInteger(value) {
     //修改----------------------------------------------------------------------------------
   $(document).on("click", ".edit", function(){
 
-    var div_id = $(this).parent().parent().attr("id")  ;
-
+    //var div_id = $(this).parent().attr("id")  ;
+    //alert (div_id) ;
 
     var splits = div_id.split('_') ;
     var form_id =  'form_' +splits[1]+'_'+ splits[2]   ;
