@@ -7,9 +7,9 @@
 //ALTER TABLE `charge_record` ADD `ps` VARCHAR( 200 ) NOT NULL ;
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "es_decrease_tpl.html";
+//$xoopsOption['template_main'] = "es_decrease_tpl.html";
 include_once "header.php";
-//$xoopsOption['template_main'] = set_bootstrap("es_decrease_tpl.html");
+$xoopsOption['template_main'] = set_bootstrap("es_decrease_tpl.html");
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
