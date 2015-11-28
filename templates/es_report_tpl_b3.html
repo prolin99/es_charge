@@ -66,7 +66,7 @@
        		<!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
          <{if ($data.decase_list_array[$stud.stud_id].dollar[$detail_key]) }>
-         <td ><span class="label label-inverse"><{$data.pay_list[$stud.stud_id][$detail_key]}></span></td>
+         <td ><span class="label label-primary"><{$data.pay_list[$stud.stud_id][$detail_key]}></span></td>
          <{else}>
         <td ><{$data.pay_list[$stud.stud_id][$detail_key]}></td>
         <{/if}>

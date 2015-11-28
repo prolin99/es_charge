@@ -1,12 +1,6 @@
-<{if  $no_bootstrap_v2}>
-    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
-<{else}>
-    <{$bootstrap}>
-    <{$jquery}>
-<{/if}>
+<{$bootstrap}>
+<{$jquery}>
 <{$toolbar}>
-
 
 <{if ($data.class_id )  }>
     <form id ='frm' class="form-horizontal" action="sum.php"  method='post'>
@@ -16,17 +10,7 @@
       	<{/if}>
    </form>
 
-<{if ($data.seletc_item ) }>
-<style type="text/css">
-@media print {
-  a[href]:after {
-    content: none;
-  }
-   .navbar , #ResponsiveSlides ,#leftBlock ,#rightBlock , #tf-footer , #frm ,  .blockContent ,#xo-logger-output{
-      display: none;
-   }
-}
-</style >
+ 
 <div id='printableArea' class='printableArea'>
 <h3><{$data.class_list_c[$data.class_id]}> 班級細目統計，收費人數：<{$data.class_source_pay.man}>人(學籍人數：<{$data.students_count}>人)</h3>
 
