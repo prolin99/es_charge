@@ -53,7 +53,7 @@
 
      <{* 多餘繳費人記錄 *}>
      <{if ($data.out_student)   }>
-     <div class="alert alert-error">
+     <div class="alert alert-danger">
         <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
                 <p>繳費記錄中： <{$s_stud.student_sn}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？<a class="btn btn-danger"  href="javascript:if(confirm('確定學生<{$s_stud.rec_name}>已轉出，在這次收費記錄中已無需繳費?'))location='index.php?mode=del&class_id=<{$s_stud.class_id}>&item_id=<{$s_stud.item_id}>&id=<{$s_stud.record_id}>&sn=<{$s_stud.student_sn}>'">刪除</a></p>
          <{/foreach}>
