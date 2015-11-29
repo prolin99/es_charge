@@ -3,6 +3,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
 
 
+<{if ($DEF.bank_account_use)}>
+
 <div id='frm' class="row-fluid"  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <div  class="row-fluid"  >
@@ -125,3 +127,6 @@
         說明：<br />
         上傳郵局對帳檔，會把扣款失敗學生做標記。
     </div>
+    <{else}>
+    <h3>未使用郵局扣款！(偏好設定中未啟用)</h3>
+    <{/if}>

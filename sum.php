@@ -8,7 +8,7 @@
 
 //$xoopsOption['template_main'] = "es_sum_tpl.html";
 include_once "header.php";
-$xoopsOption['template_main'] = set_bootstrap('es_sum_tpl.html');
+$xoopsOption['template_main'] = set_bootstrap("es_sum_tpl.html");
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
