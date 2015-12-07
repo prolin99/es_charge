@@ -1,10 +1,5 @@
-<{if  $no_bootstrap_v2}>
-    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
-<{else}>
-    <{$bootstrap}>
-    <{$jquery}>
-<{/if}>
+<{$bootstrap}>
+<{$jquery}>
 <{$toolbar}>
 <{if ($data.class_id )  }>
      <form class="form-horizontal" action="index.php"  method='post'>
@@ -46,7 +41,7 @@
          <button type="submit" class="btn btn-danger"  name='act_remove'  value="act_remove" onclick='return confirm("確定要移除?\n\nPS.繳費紀錄亦會一併被刪除")' >清空本班級開列的名單</button>
          </form>
      </div>
- 
+
      <{* 多餘繳費人記錄 *}>
      <{if ($data.out_student)   }>
      <div class="alert alert-error">

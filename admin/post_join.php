@@ -11,10 +11,12 @@ $xoopsOption['template_main'] = "es_a_post_join_tpl.html";
 include_once "header.php";
 
 include_once "../function.php";
+/*
 if (!$DEF['bank_account_use']) {
 	echo '未使用郵局扣款！' ;
 	exit() ;
 }
+*/
 if ($_POST["do_key"] =='export') {
     export_poster_data($_POST['item_id'] ) ;
     exit() ;

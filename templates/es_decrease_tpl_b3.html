@@ -70,7 +70,7 @@
 
      <{* 多餘繳費人記錄 *}>
      <{if ($data.out_student)   }>
-     <div class="alert alert-error">
+     <div class="alert alert-danger">
         <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
                 <p>繳費記錄中： <{$s_stud.student_sn}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？<a class="btn btn-danger"  href="javascript:if(confirm('確定學生<{$s_stud.rec_name}>已轉出，在這次收費記錄中已無需繳費?'))location='index.php?mode=del&class_id=<{$s_stud.class_id}>&item_id=<{$s_stud.item_id}>&id=<{$s_stud.record_id}>&sn=<{$s_stud.student_sn}>'">刪除</a></p>
          <{/foreach}>
@@ -82,14 +82,14 @@
      <div  id= 'frm_add' class="row">
          <div class="col-md-8 col-sm-8 ">
 
-       <form method='post' name='editForm' id='editForm_new' class="form-horizontal" >
+       <form method='post' name='editForm' id='editForm_new' class="form-inline" >
  		<fieldset>
 
     <{if ($data.admin) }>
     	<!-- 管理者可處理全校學生    -->
-    	<legend>新增減免學生，繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id   onchange="submit();"}>
-    	<span class="alert alert-error" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
-    	</legend>
+    	 繳費班級：<{html_options class='form-control' name='admin_class_id' options=$data.class_list selected=$data.class_id   onchange="submit();"}>
+    	<span class="alert alert-danger" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
+
 	<{else}>
     	<legend>新增減免學生</legend>
     <{/if}>
@@ -97,8 +97,8 @@
         <tr>
      			<td >
                     學生：
-                    <select name="stud" >
-			<option label="選擇學生" value="0" class="form-control">選擇學生</option>
+                    <select name="stud" class="form-control" >
+			<option label="選擇學生" value="0" >選擇學生</option>
 			 <{foreach  key=key item=stud   from= $data.students }>
 			  	<{if ($data.selected[$stud.stud_id].selected and  !$data.decase_list[$stud.stud_id]) }>
 				<option label="(<{$stud.class_sit_num}>)<{$stud.name}>" value="<{$stud.stud_id}>_<{$stud.class_sit_num}>"  >(<{$stud.class_sit_num}>)<{$stud.name}></option>
@@ -121,23 +121,28 @@
  			<tr>
                 <td>
  			<span class="fill" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
- 			<label   for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>):</label>
+ 			<label   for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>元):</label>
  			 <span class="glyphicon glyphicon-forward"></span>     &nbsp;&nbsp;</span>
+
   			<input    name='dollars[<{$key}>]' type='text' id='dollars<{$key}>'  title='<{$detail}><{$data.detail_dollar.pay[$key]}>'  tabindex='<{$key}>'
-  			    placeholder='<{$data.detail_dollar.decease[$key]}>' class="form-control"  onchange="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />元
+  			    placeholder='<{$data.detail_dollar.decease[$key]}>' class="form-control"  onchange="check_input($(this),<{$data.detail_dollar.pay[$key]}>);" />
+
 
   			<div class="input-append">
                       <{ if ($data.dent_support[$key]) }>
                       <label title='可減免，但無法補助' class="label">(無補助)</label>
                       <{else}>
-
+                        <span class="col-md-4 col-xs-4">
  			                  <label title='不參加的情況，請不要勾選補助'><input type='checkbox' name='decrease_sel[<{$key}>]' value='1'  >申請補助</label>
+                        </span>
                       <{/if}>
 
  			 </div>
                       <div class="input-append">
                       <{ if !($data.dent_support[$key]) }>
+                        <span class="col-md-4 col-xs-4">
                         <span class="glyphicon glyphicon-filter show_other" title='其他身份別選擇' data_ref='other_<{$key}>'  ></span>
+                        </span>
                         <{/if}>
                       </div>
                     <div class="input-append">
@@ -151,7 +156,7 @@
  			<tr>
                 <td>
                     <label  for="cause_id"  >聯絡註記：</label>
-                    <input   class='col-md-8 col-sm-8 col-xs-8'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  />
+                    <input   class='form-control'  name='ps' type='text'  title='其他補充說明文字(70字內)'  placeholder='其他補充說明文字(70字內)'  />
                     </div>
                 </td>
             </tr>
@@ -199,10 +204,10 @@
 
     var div_id = $(this).parent().attr("id")  ;
     	   if(confirm('是否確定要刪除？')) {
-               alert(div_id ) ;
-           	ajax_del(  div_id) ;  // 刪除動作
-           	//把這個 div 隱藏起來
-           	$(this).parent().parent().hide() ;
+              // alert(div_id ) ;
+              ajax_del(  div_id) ;  // 刪除動作
+              //把這個 div 隱藏起來
+              $(this).parent().parent().hide() ;
            }
  });
 

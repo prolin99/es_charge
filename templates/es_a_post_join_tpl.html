@@ -3,6 +3,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
 
 
+<{if ($DEF.bank_account_use)}>
+
 <div id='frm' class="row-fluid"  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <div  class="row-fluid"  >
@@ -13,13 +15,13 @@
             </span>
         </div>
         <span><label>繳費項目：<span class='alert alert-info'>( 記錄有時效性，歷史資料會受學籍名冊影響！)</span></label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
-        <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success'>單位名冊內收費學生匯入資料</button></p>
+        <p>1.<button type='submit'  name='do_key' value='add' class='btn btn-success' title='在本收費名單系統操作的學生'>單位名冊內收費學生匯入資料</button></p>
         <p>
             <span>2.其他扣款學生 excel (如幼稚園)：</span>
         <input type=file name=userdata accept='.xls,.xlsx'>
-        <button type='submit'  name='do_key' value='add_other' class='btn btn-success' title='注意格式是否正確！'>匯入</button>
+        <button type='submit'  name='do_key' value='add_other' class='btn btn-success' title='注意格式是否正確！範例檔案請由上方黒色按鍵處取得。'>匯入</button>
         </p>
-        <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary'>產生郵局傳送檔</button><span class='alert alert-info'>請依郵局作業，傳送、傳真相關檔案)</span></p>
+        <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary' title='文字檔，請下載存檔。'>產生郵局傳送檔</button><span class='alert alert-info'>請依郵局作業，傳送、傳真相關檔案)</span></p>
         <br /><br />
    </form>
 
@@ -81,9 +83,9 @@
         <p>
             <span>郵局扣款結果檔：</span>
         <input type=file name='result_data' accept='.txt'>
-        <button type='submit'  name='do_key2' value='result_upload' class='btn btn-success' title='注意格式是否正確！'>上傳</button>
+        <button type='submit'  name='do_key2' value='result_upload' class='btn btn-success' title='上傳郵局的交易結果文字檔'>上傳</button>
         </p>
-        <p><button type='submit'  name='do_key2' value='result_stud' class='btn btn-primary'>下載扣款失敗名冊</button></p>
+        <p><button type='submit'  name='do_key2' value='result_stud' class='btn btn-primary' title='匯出 EXCEL 格式檔'>下載扣款失敗名冊</button></p>
         <{if ($data.fail_studs) }>
         <table class="table table-bordered">
             <tr>
@@ -125,3 +127,6 @@
         說明：<br />
         上傳郵局對帳檔，會把扣款失敗學生做標記。
     </div>
+    <{else}>
+    <h3>未使用郵局扣款！(偏好設定中未啟用)</h3>
+    <{/if}>

@@ -1,10 +1,7 @@
-<{if  $no_bootstrap_v2}>
-    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
-<{else}>
+
     <{$bootstrap}>
     <{$jquery}>
-<{/if}>
+ 
 <{$toolbar}>
 
 <div class="row-fluid"  >
@@ -246,7 +243,7 @@ function get_decrease_val( input_id ){
     else
        need= 0 ;
 
-    //第二原因   
+    //第二原因
     var other = $('#other_' + stud_id  +'_' + detail_id).val() ;
     if  (other==undefined )
         other= 0 ;

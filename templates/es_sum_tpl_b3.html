@@ -1,10 +1,11 @@
-<{$bootstrap}>
-<{$jquery}>
+
 <{$toolbar}>
 
+
 <{if ($data.class_id )  }>
-    <form id ='frm' class="form-horizontal" action="sum.php"  method='post'>
-      	<span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='span5' onchange="submit();"}>
+    <form id ='frm' class="form-inline" action="sum.php"  method='post'>
+      	<span><label>繳費項目：</label>
+        </span><{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='form-control' onchange="submit();"}>
       	 <{if ($data.seletc_item ) }>
       	<a class="btn btn-success"  href="sum_report.php?do=excel&show=all&item_id=<{$data.seletc_item}>">匯出 EXCEL</a>
       	<{/if}>
@@ -16,7 +17,7 @@
 <h3><{$data.class_list_c[$data.class_id]}> 班級細目統計，收費人數：<{$data.class_source_pay.man}>人(學籍人數：<{$data.students_count}>人)</h3>
 
      <{if ($data.out_student)   }> <{* 多餘繳費人記錄 *}>
-     <div class="alert alert-error">
+     <div class="alert alert-danger">
         <{foreach  key=stud_sn item=s_stud   from= $data.out_student }>
                 <p>繳費記錄中： <{$s_stud.student_sn}> 學生: <{$s_stud.rec_name}>已不在最新的學生名冊中！是否已轉出？
                 <{if ($data.inTime ) }>
