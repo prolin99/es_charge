@@ -58,7 +58,7 @@ function import_excel($file_up,$ver=5) {
 	$highestRow = $sheet->getHighestRow(); // 取得總列數
 
     //0年級	1班級代號	2座號	3學生姓名	4性別	5學號	6純特戶	7轉帳戶名	8轉帳戶身份證編號	9存款別	10立帳局號	11存簿帳號	12劃撥帳號	13電話號碼	14地址	15身份別
-
+		//0年級	1班級代號	2座號	3學生姓名	4繳費 	5轉帳戶名	6轉帳戶身份證編號	7存款別(P/G)	8立帳局號	9存簿帳號	10劃撥帳號
 	// 一次讀取一列
 	for ($row = 2; $row <= $highestRow; $row++) {
 		$v="";
@@ -82,26 +82,26 @@ function import_excel($file_up,$ver=5) {
 
 
 
-        if (( !$v[0]   )  or  ( !$v[1])  or   ( !$v[2])  or   ( !$v[3])   or    ( !$v[7]   )  or  ( !$v[8])  or   ( !$v[9])  or   ( !$v[10])  or ( !$v[11])   ) {
+        if (( !$v[0]   )  or  ( !$v[1])  or   ( !$v[2])  or   ( !$v[3])   or    ( !$v[5]   )  or  ( !$v[6])  or   ( !$v[7])  or   ( !$v[8])  or ( !$v[9])   ) {
             $message .=  " $line_str 資料有缺少<br/> " ;
             $ckeck1 = 'no'     ;
         } else
             $ckeck1 = 'ok'     ;
-		if (strlen($v[8] ) <>10)  {
+		if (strlen($v[6] ) <>10)  {
             $message .=  " $line_str 身份證證號長度不正確！<br/> " ;
             $ckeck1 = 'no'     ;
         }
 
         if ($ckeck1 == 'ok' ) {
 			//帳號補 0
-			$v[10] = sprintf("%07d", $v[10]) ;
-			$v[11] = sprintf("%07d", $v[11]) ;
-			$v[12] = sprintf("%014d", $v[12]) ;
+			$v[8] = sprintf("%07d", $v[8]) ;
+			$v[9] = sprintf("%07d", $v[9]) ;
+			$v[10] = sprintf("%014d", $v[10]) ;
 
             $stud_sn='' ;
             //由學生資料中取得 單獨ID
             $sql = "  SELECT stud_id From "  . $xoopsDB->prefix("e_student") . " where `class_id`='$class_id' and
-				`class_sit_num`='$seat_id' and ( `name`='$stud_name'   or  parent=   '$v[7]' )        ; " ;
+				`class_sit_num`='$seat_id' and ( `name`='$stud_name'   or  parent=   '$v[5]' )        ; " ;
             $result = $xoopsDB->query($sql)   ;
             while($stud=$xoopsDB->fetchArray($result)){
                 $stud_sn = $stud['stud_id'] ;
@@ -119,12 +119,12 @@ function import_excel($file_up,$ver=5) {
 				//更新或新增
                 if ( $get_stud_sn==$stud_sn )
                     $sql=  " UPDATE  " . $xoopsDB->prefix("charge_account") . " SET  stud_name=  '{$v[3]}'  ,
-                        `acc_name`= '{$v[7]}' , `acc_person_id`= '{$v[8]}' , `acc_mode`= '{$v[9]}' , `acc_b_id`= '{$v[10]}' , `acc_id`= '{$v[11]}' , `acc_g_id`= '{$v[12]}'
+                        `acc_name`= '{$v[5]}' , `acc_person_id`= '{$v[6]}' , `acc_mode`= '{$v[7]}' , `acc_b_id`= '{$v[8]}' , `acc_id`= '{$v[9]}' , `acc_g_id`= '{$v[10]}'
                         where stud_sn = '$stud_sn'  ; " ;
                 else
                     $sql=  " INSERT INTO " . $xoopsDB->prefix("charge_account") .
 			           "  (`a_id` , `stud_sn`, `stud_name`, `acc_name`, `acc_person_id`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id`  )
-			            VALUES ('0',  '$stud_sn'  , '{$v[3]}' , '{$v[7]}' , '{$v[8]}' , '{$v[9]}' , '{$v[10]}' , '{$v[11]}' , '{$v[12]}'  )  ;" ;
+			            VALUES ('0',  '$stud_sn'  , '{$v[3]}' , '{$v[5]}' , '{$v[6]}' , '{$v[7]}' , '{$v[8]}' , '{$v[9]}' , '{$v[10]}'  )  ;" ;
 
 			    $result = $xoopsDB->query($sql)  or      $message .= "語法錯誤：$sql <br/>" ;
 				//echo $sql ."<br>" ;

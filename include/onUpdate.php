@@ -20,7 +20,8 @@ function xoops_module_update_es_charge(&$module, $old_version) {
 //----- 增加 charge_account 資料表 ------------------------------
 function chk_add_poster_data(){
   global $xoopsDB;
-  $sql=" select acc_personid  from ".$xoopsDB->prefix("charge_poster_data");
+  //$sql=" select acc_personid  from ".$xoopsDB->prefix("charge_poster_data");
+  $sql="select count(*) from ".$xoopsDB->prefix("charge_poster_data");
   $result=$xoopsDB->query($sql);
   if(empty($result)) return false;
   return true;
@@ -58,8 +59,12 @@ function go_update_add_poster_data(){
 function chk_add_pay_date(){
   global $xoopsDB;
   $sql=" select bank_date  from ".$xoopsDB->prefix("charge_item");
-  $result=$xoopsDB->query($sql);
-  if(empty($result)) return false;
+  $result=$xoopsDB->queryF($sql);
+
+  if(empty($result)) {
+
+   return false;
+ }
   return true;
 }
 
@@ -72,6 +77,7 @@ function go_update_add_pay_date(){
      ADD `c_rec_num` INT NOT NULL ,
      ADD `c_sum` INT NOT NULL ;
      " ;
+
      $xoopsDB->queryF($sql)  ;
 }
 

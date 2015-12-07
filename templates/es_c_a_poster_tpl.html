@@ -4,18 +4,22 @@
 
 
 <div id='frm' class="row-fluid"  >
+  郵局帳號 EXCEL 格式順序：
+  <table  class="table table-bordered"><tr><td>年級</td><td>	班級代號</td><td>	座號</td><td>	學生姓名</td><td>繳費</td>
+    <td>	轉帳戶名</td><td>	轉帳戶身份證編號</td><td>	存款別(P/G)</td><td>		立帳局號</td><td>		存簿帳號</td><td>		劃撥帳號</td><tr></table>
+
     <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
-        <span class='span1'>郵局帳號檔：</span>
+        <span class='span2'>郵局帳號 EXCEL 檔：</span>
         <input type=file name=userdata>
     	<button type='submit'  name='do_key' value='add' class='btn btn-primary'>更新帳號資料(EXCEL)</button>
-        <span class="alert alert-error">檔案不可有密碼保護</span>
+        <span class="label label-warning">檔案不可有密碼保護</span>
         <button type='submit'  name='do_clear' value='clear' class='btn btn-danger' onclick='return confirm("確定要刪除?")' >清除資料</button>
         <a class="btn btn-success"  href="export_account.php">匯出Excel</a>
    </form>
 </div>
 <div class="alert alert-info">
 <strong>相關說明：</strong>
-<a href='sample.xlsx' target='_blank' class='btn btn-inverse'>EXCEL 範例檔</a><br/>
+<a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>EXCEL 範例檔</a><br/>
 <div>使用 EXCEL 格式匯入，請依範例檔欄位填放資料，不使用的欄位也要保留。</div>
 <div>比對以班級、座號、姓名和學生資料庫比對。</div>
 
