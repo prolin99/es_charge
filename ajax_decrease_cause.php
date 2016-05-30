@@ -31,12 +31,12 @@ if ( item_in_time($item_id) or ($isAdmin)  ) {
 
 		//更新
 		$sql="update "  . $xoopsDB->prefix("charge_record") .   " set cause= '$cause'  where item_id='$item_id'  and student_sn='$stud_id'  ";
-		$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+		$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 
 		//echo $sql ;
 		if ($cause ==0 ){
 			//去除申請補助的設定
 			$sql="update "  . $xoopsDB->prefix("charge_decrease") .   " set cause_chk= 0  where item_id='$item_id'  and student_sn='$stud_id'  ";
-			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+			$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 
 		}
 	}
 	if  ( $stud_id  and  $mode ==99  ) {
@@ -44,7 +44,7 @@ if ( item_in_time($item_id) or ($isAdmin)  ) {
 		$ps =$myts->htmlspecialchars($myts->addSlashes ($_POST['cause'])  )  ;		
 		//更新
 		$sql="update "  . $xoopsDB->prefix("charge_record") .   " set ps = '$ps'  where item_id='$item_id'  and student_sn='$stud_id'  ";
-		$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+		$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 
 		
 	}
 	//echo $sql ;

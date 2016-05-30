@@ -73,7 +73,7 @@ function add_from_charge($item_id){
             ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash  )  "
             ."  VALUES ( '$item_id' , '{$stud[student_sn]}'  , '{$stud[class_id]}' , '{$stud[sit_num]}' , '{$stud[rec_name]}'  , '{$stud[end_pay]}'   "
             ." , '{$stud[acc_name]}'   , '{$stud[acc_person_id]}'    , '{$stud[acc_mode]}'   , '{$stud[acc_b_id]}'    , '{$stud[acc_id]}'    , '{$stud[acc_g_id]}'  , '0' , '$cash_fg'  ) ;   " ;
-        $result = $xoopsDB->queryF($sql)  or  $err_message .=    mysql_error()."(應該為班級座號重覆)<br />"  ;
+        $result = $xoopsDB->queryF($sql)  or  $err_message .=    $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
     }
 }
 
@@ -173,7 +173,7 @@ function import_excel($item_id ,$file_up,$ver=5) {
                ."  VALUES ( '$item_id' , '$stud_sn'  , '$class_id' , '$seat_id' , '$stud_name'  , '{$v[4]}'   "
                ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , '1' , '$cash_fg'  ) ;   " ;
 
-            $result = $xoopsDB->queryF($sql) or  $err_message .= $line_str  .  mysql_error()."(應該為班級座號重覆)<br />"  ;
+            $result = $xoopsDB->queryF($sql) or  $err_message .= $line_str  .  $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
 			$update_ok_num ++ ;
         }
 

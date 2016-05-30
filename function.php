@@ -63,7 +63,7 @@ function is_safe_chk() {
 	//檢查訪客、註冊者有無讀取權限，如果有出現訊息提醒
 	$sql =  "  SELECT count(*) as cc  FROM " . $xoopsDB->prefix("group_permission") .
 			" where   gperm_itemid =$mod_id and gperm_name='module_read' and   ( gperm_groupid =". XOOPS_GROUP_ANONYMOUS  ."  or   gperm_groupid =" . XOOPS_GROUP_USERS .")  " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
 		$cc = $date_list['cc'] ;
 	}
@@ -83,7 +83,7 @@ function get_class_list( ) {
 
 		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("e_student") . "   group by class_id   " ;
 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($row=$xoopsDB->fetchArray($result)){
 
 			$data[$row['class_id']]=$row['class_id'] ;
@@ -105,7 +105,7 @@ function get_class_students( $class_id , $mode='class') {
 	}else
 		$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("e_student") . "   where class_id='$class_id'   ORDER BY  `class_sit_num`  " ;
 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($stud=$xoopsDB->fetchArray($result)){
 
 			$data[$stud['stud_id'] ]=$stud ;
@@ -127,7 +127,7 @@ function get_record_class_list( $item_id ) {
 
 		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record") . "  where item_id='$item_id'  group by class_id   " ;
 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($row=$xoopsDB->fetchArray($result)){
 
 			$data[$row['class_id']]=$class_list_c[$row['class_id']] ;
@@ -147,7 +147,7 @@ function chk_student_out($item_id , $class_id , $mode= 'class' ) {
 		$sql =  "  SELECT  *   FROM " . $xoopsDB->prefix("charge_record") .  " WHERE  item_id ='$item_id'
 			and  student_sn NOT  IN (   SELECT stud_id  FROM " . $xoopsDB->prefix("e_student") .  " )  " ;
 	//echo $sql ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($row=$xoopsDB->fetchArray($result)){
  		$data[]  = $row ;
 	}
@@ -160,7 +160,7 @@ function item_in_time($item_id){
 	//是否在期限內
 	global  $xoopsDB ;
 	$sql =  "  SELECT item_id  FROM " . $xoopsDB->prefix("charge_item") .  " where item_id ='$item_id' and ( start_date<= NOW()   and  end_date >= (NOW() - INTERVAL 1 DAY ) )order by item_id     " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
  		$f_item_id = $date_list['item_id'] ;
 	}
@@ -181,7 +181,7 @@ function get_item_list($mode='action'){
 	else
 		$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 6   " ;
 
- 	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+ 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
  	$today = date('Y-m-d') ;
 	$data[0]='選擇繳費項目' ;
@@ -200,7 +200,7 @@ function get_item_all_list(){
 
 	global  $xoopsDB ;
 	$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 6  " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
 	while($date_list=$xoopsDB->fetchArray($result)){
  	 	$data[]= $date_list ;
@@ -213,7 +213,7 @@ function get_item_data($item_id ){
 	//取得所有收費表的完整資料
 	global  $xoopsDB ;
 	$sql =  "  SELECT *  , (p_rec_num - c_rec_num)  as  f_rec_num  ,(p_sum-c_sum ) as f_sum  FROM " . $xoopsDB->prefix("charge_item") .  " where  item_id = '$item_id'    " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
 		$data = $date_list ;
 	}
@@ -226,7 +226,7 @@ function get_item_detail_list( $item_id) {
 	global  $xoopsDB ;
 
 	$sql =  "  SELECT  *  FROM  " . $xoopsDB->prefix("charge_detail") .  "  where  item_id= '$item_id'  order by detail_id  " ;
- 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+ 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
  	 	$data[]= $date_list ;
 	}
@@ -241,7 +241,7 @@ function get_item_detail_list_name( $item_id) {
 	global  $xoopsDB ;
 
 	$sql =  "  SELECT  detail_id, detail  FROM  " . $xoopsDB->prefix("charge_detail") .  "  where  item_id= '$item_id'  order by detail_id  " ;
- 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+ 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
  	 	$data[$date_list['detail_id']]= $date_list['detail'] ;
 	}
@@ -266,7 +266,7 @@ function get_detail_charge_dollars( $item_id) {
 	global  $xoopsDB ;
 
 	$sql =  "  SELECT  detail_id, dollars  FROM  " . $xoopsDB->prefix("charge_detail") .  "  where  item_id= '$item_id'  order by detail_id  " ;
- 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+ 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
 		$class_dollar =  explode(",",$date_list['dollars'] ) ;
 
@@ -291,7 +291,7 @@ function get_class_students_charge( $item_id , $class_id  , $mode='class' ) {
  			$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("charge_record") . "   where class_id  like '$grade%'   and item_id='$item_id'  order by  class_id  " ;
  		}
  		//echo $sql ;
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['selected']='1' ;
  			$data[$stud['student_sn']]['cause_id'] = $stud['cause']  ;
@@ -315,7 +315,7 @@ function get_class_spec_old_item($item_id , $class_id ) {
 	$sql =  "  SELECT  c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num , c.item_id FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
 			"where   c.student_sn = s.stud_id and c.item_id < '$item_id'  and s.class_id='$class_id' and c.cause>0 group by  c.student_sn order by  class_sit_num , c.cause " ;
 			//echo $sql ;
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($stud=$xoopsDB->fetchArray($result)){
  			$data .= $stud['class_sit_num'] . $stud['name']  . ' -- ' . $decrease_cause[ $stud['cause'] ] ." <br />\n" ;
 		}
@@ -330,7 +330,7 @@ function get_class_pay_students(  $class_id , $item_id  ) {
  		 	" where  c.student_sn  =s.stud_id  and    c.class_id='$class_id'   and  c.item_id='$item_id'   "
  		 	;
 
-		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+		$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 		while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']] = $stud ;
 
@@ -346,13 +346,13 @@ function del_detail($detail_id){
 	//減免記錄
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .
      	   	   "  WHERE  `detail_id` = '$detail_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 
 	//細目
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_detail") .
      	   	   "  WHERE  `detail_id` = '$detail_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 }
 
@@ -363,23 +363,23 @@ function del_item($item_id){
 	//減免記錄
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .
      	   	   "  WHERE  `item_id` = '$item_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 	//學生記錄
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .
      	   	   "  WHERE  `item_id` = '$item_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 	//細目
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_detail") .
      	   	   "  WHERE  `item_id` = '$item_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
      	//主項
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_item") .
      	   	   "  WHERE  `item_id` = '$item_id'  " ;
 
-	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 
@@ -389,12 +389,12 @@ function clear_item_test_data($item_id){
 	//減免記錄
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .
      	   	   "  WHERE  `item_id` = '$item_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 	//學生記錄
 	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .
      	   	   "  WHERE  `item_id` = '$item_id'   " ;
-     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 
@@ -408,23 +408,23 @@ function class_del_item_record($class_id , $item_id ,$mode='class'){
 		//減免記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .
      	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num like '$grade%'  " ;
-     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 		//學生記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .
      	   	   "  WHERE  `item_id` = '$item_id'  and  class_id like '$grade%'  " ;
-     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	}else {
 		//班級
 		//減免記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .
      	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num='$class_id'  " ;
-     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 		//學生記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .
      	   	   "  WHERE  `item_id` = '$item_id'  and  class_id='$class_id'   " ;
-     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 	}
 
@@ -439,13 +439,13 @@ function student_del_item_record($class_id , $item_id ,$stud_sn , $record_id  ){
 		//減免記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_decrease") .
      	   	   "  WHERE  `item_id` = '$item_id'  and curr_class_num='$class_id'  and student_sn='$stud_sn'  " ;
-     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 		//學生記錄
 		$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_record") .
      	   	   "  WHERE  `item_id` = '$item_id'  and  class_id='$class_id' and student_sn='$stud_sn'   and record_id='$record_id'  " ;
 
-     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+     		$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 
@@ -466,7 +466,7 @@ function get_all_decrease_list_item_array(  $item_id  , $getall= 'all'  ) {
 	}
 	$sql = $sql .  "  ORDER BY   curr_class_num , class_sit_num ,   detail_id    " ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['dollar'][$stud['detail_id']] =$stud['decrease_dollar'] ;
  			$data[$stud['student_sn']]['cause_chk'][$stud['detail_id']] =$stud['cause_chk'] ;
@@ -505,7 +505,7 @@ function get_all_decrease_list_item_kind_array(  $item_id  , $getall= 'all'  ) {
 	}
 
 	$sql = $sql . "  ORDER BY  detail_id , curr_class_num , class_sit_num        " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
 		$stud['cause_str']=$decrease_cause[$stud['cause']] ;
 
@@ -524,7 +524,7 @@ function get_class_id_list( $item_id) {
 			" where  item_id = '$item_id'     group by   class_id  " ;
 
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($data_row=$xoopsDB->fetchArray($result)){
 				$data[$data_row['class_id'] ] = $data_row['class_id'] ;
 	}
@@ -555,7 +555,7 @@ function get_decrease_list($class_id , $item_id ,$detail_id ) {
 	                where a.student_sn= b.stud_id  and  curr_class_num='$class_id'   and  item_id='$item_id' and  detail_id = '$detail_id'
 	                ORDER BY  b.class_sit_num  " ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[]=$stud ;
 	}
@@ -571,7 +571,7 @@ function get_decrease_list_item($class_id , $item_id   ) {
 	               " where curr_class_num='$class_id'   and  item_id='$item_id'
 	                ORDER BY  item_id , sit_num , detail_id    " ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[]=$stud ;
 	}
@@ -586,7 +586,7 @@ function get_decrease_list_item_array($class_id , $item_id   ) {
 	$sql =  "  SELECT  * , s.class_sit_num  FROM " . $xoopsDB->prefix("charge_decrease") .  " c , "   . $xoopsDB->prefix("e_student") .  " s " .
 	               " where  s.stud_id =  c.student_sn        and  curr_class_num='$class_id'   and  item_id='$item_id'
 	               ORDER BY class_sit_num ,   detail_id    " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
  			$data[$stud['student_sn']]['dollar'][$stud['detail_id']] =$stud['decrease_dollar'] ;
  			$data[$stud['student_sn']]['cause_chk'][$stud['detail_id']] =$stud['cause_chk'] ;
@@ -648,7 +648,7 @@ Function get_class_teacher_list() {
 	$sql =  "  SELECT  t.uid, t.class_id , u.name  FROM " . $xoopsDB->prefix("e_classteacher") .'  t  , ' .   $xoopsDB->prefix("users")  .'  u    ' .
 	               " where t.uid= u.uid    " ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($data_row=$xoopsDB->fetchArray($result)){
  			$class_id[$data_row['class_id']] = $data_row['name'] ;
 	}
@@ -661,7 +661,7 @@ function get_my_class_id($uid   ) {
 	$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("e_classteacher") .
 	               " where uid= '$uid'   " ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($data_row=$xoopsDB->fetchArray($result)){
  			$class_id = $data_row['class_id'] ;
 	}
@@ -678,7 +678,7 @@ function get_class_self_pay($class_id , $item_id ) {
 
 	$sql =  "  SELECT  item_id  FROM " . $xoopsDB->prefix("charge_item") .
 			" where  item_id < '$item_id'    order by item_id DESC  LIMIT 0 , 1   " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($data_row=$xoopsDB->fetchArray($result)){
 		$pre_item_id =$data_row['item_id'] ;
 	}
@@ -686,7 +686,7 @@ function get_class_self_pay($class_id , $item_id ) {
 		$sql =  "  SELECT  student_sn  FROM " . $xoopsDB->prefix("charge_record") .
 			" where in_bank= '0' and  class_id='$class_id'  and item_id ='$pre_item_id'      " ;
 
-		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+		$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 		while($data_row=$xoopsDB->fetchArray($result)){
 				$data[$data_row['student_sn'] ] = $data_row['student_sn'] ;
 		}
@@ -702,7 +702,7 @@ function get_class_decrease_sum($item_id ,$class_id ) {
 	               " where curr_class_num='$class_id'   and  item_id='$item_id'              GROUP BY detail_id   " ;
 	               // echo $sql ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
  			$decrease['sum'][$stud['detail_id']]= $stud['detail_sum']  ; 		//各項目減免小計
  			$decrease['man'][$stud['detail_id']]= $stud['man']  ;			//各項目減免人數
@@ -720,7 +720,7 @@ function  get_class_source_pay_sum($item_id ,$class_id  , $my_class_charge_array
  		             "   where class_id='$class_id'   and item_id='$item_id'   " ;
 
 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($stud=$xoopsDB->fetchArray($result)){
 			$man = $stud['man']  ;
 			$pay_sum = $stud['pay_sum']  ;
@@ -749,7 +749,7 @@ function get_grade_id_list( $item_id) {
 			" where  item_id = '$item_id'     GROUP BY y  order by y  " ;
 
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($data_row=$xoopsDB->fetchArray($result)){
 				$data[$data_row['y'] ] = $data_row['y'] ;
 	}
@@ -766,7 +766,7 @@ function get_grade_decrease_sum($item_id ,$class_id ) {
 	               " where curr_class_num like '$class_id%'   and  item_id='$item_id'              GROUP BY detail_id   " ;
 	               // echo $sql ;
 
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($stud=$xoopsDB->fetchArray($result)){
  			$decrease['sum'][$stud['detail_id']]= $stud['detail_sum']  ; 		//各項目減免小計
  			$decrease['man'][$stud['detail_id']]= $stud['man']  ;			//各項目減免人數
@@ -784,7 +784,7 @@ function  get_grade_source_pay_sum($item_id ,$class_id  , $my_class_charge_array
  		             "   where class_id like '$class_id%'   and item_id='$item_id'   " ;
 
 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($stud=$xoopsDB->fetchArray($result)){
 			$man = $stud['man']  ;
 			$pay_sum = $stud['pay_sum']  ;
@@ -1012,7 +1012,7 @@ function space_chr($len){
 function get_bank_date_cht($item_id) {
 	global   $xoopsDB ,$DEF;
 	$sql =  "  SELECT bank_date  FROM " . $xoopsDB->prefix("charge_item") .  " where item_id ='$item_id'     " ;
-	$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error());
+	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 	while($date_list=$xoopsDB->fetchArray($result)){
 		$bank_date = $date_list['bank_date'] ;
 	}

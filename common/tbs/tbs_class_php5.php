@@ -268,7 +268,7 @@ public function DataOpen(&$Query) {
 		case 1: $this->RecSet = $this->SrcId; break;
 		case 2: $this->RecSet = @mysql_query($Query); break;
 		}
-		if ($this->RecSet===false) $this->DataAlert('MySql error message when opening the query: '.mysql_error());
+		if ($this->RecSet===false) $this->DataAlert('MySql error message when opening the query: '.$xoopsDB->error());
 		break;
 	case 1: // Num
 		$this->RecSet = true;

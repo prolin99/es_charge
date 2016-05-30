@@ -37,7 +37,7 @@ if ($need==0 )
 /*-----------執行動作判斷區----------*/
 //取得所在班級
 $my_class_id =  get_my_class_id($xoopsUser->uid() ) ;
-if (($my_class_id<>$class_id ) and  (!$isAdmin) ) 
+if (($my_class_id<>$class_id ) and  (!$isAdmin) )
 	die ;
 //是否在期限內
 if ( item_in_time($item_id) or ($isAdmin)  ) {
@@ -45,11 +45,11 @@ if ( item_in_time($item_id) or ($isAdmin)  ) {
 		if ($money >0 ){
 			 $sql = " REPLACE  INTO   " . $xoopsDB->prefix("charge_decrease") . "  set   detail_id='$detail_id' , student_sn='$stud_id' ,curr_class_num ='$class_id' ,
 		  		decrease_dollar='$money' , cause_chk ='$need'  , item_id='$item_id' , sit_num='$sit_num'  , cause_other='$other' " ;
-		 	$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+		 	$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 		}else {
 			$sql =  "  delete   FROM " . $xoopsDB->prefix("charge_decrease") . "   where detail_id='$detail_id' and student_sn='$stud_id' and  curr_class_num ='$class_id'   " ;
-			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+			$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
 		}
 		//echo $sql ;
-	}  
+	}
 }

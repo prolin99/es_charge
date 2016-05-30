@@ -16,7 +16,7 @@ $_GET['id'] ;
 	if ( $did >0 ) {
 		$sql  = " SELECT *  FROM  "  . $xoopsDB->prefix("charge_detail") .  "  WHERE  `detail_id`=$did" ;
  
-     		$result = $xoopsDB->query($sql) or die($sql."<br>". mysql_error()); 
+     		$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error()); 
      		$row = $xoopsDB->fetchArray($result)  ;
 
      		echo " 

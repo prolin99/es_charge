@@ -67,11 +67,11 @@ $class_id =$my_class_id ;
                 if (!$inClassRec[$sn] )		//是否已在記錄中
  				    $batch_value.="('0','$sn','{$_POST['item_id']}'  ,'{$_POST['class_id']}' , $sit_num ,'$pay_sum'  ,'$stud_name'    ),";
 			}
-
+            //嚴格模式
 			$batch_value=substr($batch_value,0,-1);
 			if  ($batch_value){
-				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , sit_num , dollars , rec_name )  values $batch_value ";
-				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , sit_num , dollars , rec_name  )  values $batch_value ";
+				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 			}
 		}
 
@@ -101,7 +101,7 @@ $class_id =$my_class_id ;
 			$batch_value=substr($batch_value,0,-1);
 			if  ($batch_value) {
 				$sql ="insert  INTO  " . $xoopsDB->prefix("charge_record") . "(record_id,student_sn,item_id ,class_id , sit_num ,  dollars , rec_name )  values $batch_value ";
-				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+				$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 			}
 		}
 

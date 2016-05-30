@@ -32,7 +32,7 @@ if ($_POST['act_add'] and $_POST['stud']) {
     //減免原因
         $sql = ' UPDATE  '.$xoopsDB->prefix('charge_record').
                     " SET  cause='{$_POST['cause_id']}'  , ps = '$ps'  WHERE student_sn = '$stud_sn'   ";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
     foreach ($_POST['dollars'] as $detail_id => $dollar) {
         //各項減免
@@ -49,7 +49,7 @@ if ($_POST['act_add'] and $_POST['stud']) {
                  " (`item_id`, `detail_id`, `student_sn`, `curr_class_num`, sit_num ,`decrease_dollar`, `cause_chk` ,cause_other  )
 	    	   	VALUES(   '{$_POST['item_id']}'  ,  '$detail_id'  ,  '$stud_sn'  ,  '{$_POST['class_id']}'  , '$sit_num' ,  '$dollar'  ,  '$cause'   ,'$other' )
 	    	   	";
-            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
         }
     }
 }

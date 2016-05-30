@@ -25,15 +25,15 @@ include_once "header.php";
 if ($_POST['act_save'] )  {
 	$creater = $xoopsUser->getVar('name') ;
 	$sql = " INSERT INTO " . $xoopsDB->prefix("charge_item") .
-		" (`item_id`,  `item_type`, `item`, `start_date`, `end_date`, `bank_date`, `comment`, `creater` )  " .
-		"VALUES ('','{$_POST['item_type']}'     ,'{$_POST['item']}'   , '{$_POST['start_date']}'  , '{$_POST['end_date']}'   ,  '{$_POST['bank_date']}'   , '{$_POST['comment']}'  , '$creater'   )" ;
- 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+		" (`item_id`,  `item_type`, `item`, `start_date`, `end_date`, `bank_date`, `comment`, `creater` ,`p_rec_num` ,`p_sum` ,`c_rec_num` ,`c_sum` )  " .
+		"VALUES ('0','{$_POST['item_type']}'     ,'{$_POST['item']}'   , '{$_POST['start_date']}'  , '{$_POST['end_date']}'   ,  '{$_POST['bank_date']}'   , '{$_POST['comment']}'  , '$creater' ,0,0,0,0   )" ;
+ 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
  	//快速新增細項
  	if ($_POST['formatted']) {
  		//取得最近所在 item_id
  		$sql = " SELECT MAX( item_id) as mid  FROM " . $xoopsDB->prefix("charge_item")  ;
- 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+ 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($date_list=$xoopsDB->fetchArray($result)){
  	 		$now_id= $date_list['mid'] ;
 
@@ -52,7 +52,7 @@ if ($_POST['act_save'] )  {
 			$batch_value=substr($batch_value,0,-1);
 			$sql=" INSERT INTO " . $xoopsDB->prefix("charge_detail") . "  (`item_id`, `detail_sort`, `detail`, `dollars` ) values $batch_value ";
 			//echo $sql ;
-			$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+			$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 	}
 }
@@ -63,7 +63,7 @@ if ($_POST['act_edit'] )  {
 	     	   "  SET item_type = '{$_POST['item_type']}'  ,  `item`='{$_POST['item']}'  ,   `start_date`='{$_POST['start_date']}' , `end_date` ='{$_POST['end_date']}',   `bank_date` ='{$_POST['bank_date']}', `comment`='{$_POST['comment']}'  " .
 	     	   "  WHERE  `item_id` = '{$_POST['item_id']}'  " ;
  	//echo 	$sql ;
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	$_GET['do']='edit' ;
 	$_GET['item_id'] = $_POST['item_id'] ;
 
@@ -86,7 +86,7 @@ if ($_GET['do']=='edit' )  {
   	$p_data['edit_fg'] = true ;
 	$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " where item_id = '{$_GET['item_id']}'  and  creater='$creater'  " ;
 
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
 	while($date_list=$xoopsDB->fetchArray($result)){
  	 	$p_data['edit_list']= $date_list ;

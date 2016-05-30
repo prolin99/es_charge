@@ -25,12 +25,12 @@ if  ($_GET['id']  ) {
 			$sql = " DELETE FROM "  . $xoopsDB->prefix("charge_decrease") .  
 			" where item_id= '$item_id' and student_sn='$stud_id'  
 			" ; 
-			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+			$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 
 			//echo $sql  ;
 
 			//身份別歸 0
 			$sql = " UPDATE   " . $xoopsDB->prefix("charge_record") . "  set  cause =0  where  item_id= '$item_id' and student_sn='$stud_id'     " ;
-			$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 	
+			$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 	
 			//echo $sql  ;
 		}	
 } 

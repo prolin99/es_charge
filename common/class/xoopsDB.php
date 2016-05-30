@@ -64,7 +64,7 @@ class xoopsDB{
 
 
     function error(){
-        return @mysql_error();
+        return @$xoopsDB->error();
     }
 
 

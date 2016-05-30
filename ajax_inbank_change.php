@@ -20,7 +20,7 @@ if ($_GET['id']) {
         if (item_in_time($item_id) or ($isAdmin)) {
             //更新
             $sql = 'update '.$xoopsDB->prefix('charge_record')." set in_bank= not in_bank  where item_id='$item_id'  and student_sn='$stud_id'  ";
-            $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.mysql_error());
+            $result = $xoopsDB->queryF($sql) or die($sql.'<br>'.$xoopsDB->error());
             //echo $sql ;
         }
 }

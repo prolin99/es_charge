@@ -60,7 +60,7 @@ function show_module_group_permission($module_id=0 ) {
 			where gp.gperm_groupid=g.groupid  and gp.gperm_itemid ='$module_id'  order by  gp.gperm_name " ;
  
 			
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	while($row=$xoopsDB->fetchArray($result)){
 		$pp=$row['gperm_name'] ;
 		if ($np == $pp ) {

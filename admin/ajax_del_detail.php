@@ -18,7 +18,7 @@ $_GET['id'] ;
 		/*
 		$sql  = " DELETE FROM  "  . $xoopsDB->prefix("charge_detail") .  "  WHERE  `detail_id`=$did" ;
  
-     		$result = $xoopsDB->queryF($sql) or die($sql."<br>". mysql_error()); 
+     		$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 
      		*/
  		
      		
