@@ -34,6 +34,7 @@
       <!--      表格內容                                   -->
 
     <{foreach  key=key item=stud   from= $data.decase_list }>
+
     <tr>
       <div class="row" id="div_<{$data.seletc_item}>_<{$key}>">
       <td><div class='col-md-1 col-sm-1 col-xs-1'  id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><{$data.students[$key].class_sit_num}></div></td>
@@ -112,14 +113,16 @@
 			<td>主減免原因：
      			<{html_options name='cause_id'  class="form-control" options=$decrease_cause  onchange="cause_check($(this));"     }><br/>
                         (少數有多身份,點補助後圖示指定)
-                </td>
-            </tr>
+      </td>
+      </tr>
 
 
  			<{*  各項費用  ---------------------   *}>
  			<{foreach  key=key item=detail   from= $data.detail_list }>
+      <{*       如年段的該項目無收費 則不出現                       *}>
+      <{if ($data.detail_dollar.pay[$key])<>0 }>
  			<tr>
-                <td>
+        <td>
  			<span class="fill" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
  			<label   for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>元):</label>
  			 <span class="glyphicon glyphicon-forward"></span>     &nbsp;&nbsp;</span>
@@ -143,13 +146,14 @@
                         <span class="col-md-4 col-xs-4">
                         <span class="glyphicon glyphicon-filter show_other" title='其他身份別選擇' data_ref='other_<{$key}>'  ></span>
                         </span>
-                        <{/if}>
+                      <{/if}>
                       </div>
                     <div class="input-append">
                      <{ html_options name=other[$key]   class="form-control" options=$decrease_cause id=other_$key   title="其他減免身份"  style="background-color: #CCCCCC;display:none"  }>
                     </div>
  			 </td>
-         </tr>
+       </tr>
+      <{/if}> <{* end      如年段的該項目無收費 則不出現                       *}>
  			<{/foreach }>
 
                       <{*    聯絡註記   *}>

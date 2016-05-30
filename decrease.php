@@ -38,8 +38,8 @@ if ($_POST['act_add'] and $_POST['stud']) {
         //各項減免
         if ($dollar > 0) {
             if ($_POST['cause_id'] > 0) {    //有特殊身份，才能申請補助
-               $cause = $_POST['decrease_sel'][$detail_id];
-                $other = $_POST['other'][$detail_id];        //其他身份別
+               $cause = $_POST['decrease_sel'][$detail_id] +0 ;   //強迫轉為數值
+                $other = $_POST['other'][$detail_id] +0 ;        //其他身份別
             } else {
                 $cause = 0;
                 $other = 0;
@@ -49,7 +49,10 @@ if ($_POST['act_add'] and $_POST['stud']) {
                  " (`item_id`, `detail_id`, `student_sn`, `curr_class_num`, sit_num ,`decrease_dollar`, `cause_chk` ,cause_other  )
 	    	   	VALUES(   '{$_POST['item_id']}'  ,  '$detail_id'  ,  '$stud_sn'  ,  '{$_POST['class_id']}'  , '$sit_num' ,  '$dollar'  ,  '$cause'   ,'$other' )
 	    	   	";
-            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+
+
+            $result = $xoopsDB->query($sql) ; //or redirect_header($_SERVER['PHP_SELF'], 3,  $xoopsDB->error());
+
         }
     }
 }

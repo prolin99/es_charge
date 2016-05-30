@@ -47,12 +47,15 @@
 
   <table class="table table-bordered table-hover" >
   <tr>
-      <th class='col-md-2 col-sm-2 col-xs-2'>姓名</th>
-      <th class='col-md-2 col-sm-2 col-xs-2'>主身份別</th>
+      <th class='col-md-1 col-sm-1 col-xs-1'>姓名</th>
+      <th class='col-md-1 col-sm-1 col-xs-1'>主身份別</th>
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <th  class='col-md-2 col-sm-2 col-xs-2'><{$detail_val}></th>
+       <{*       如年段的該項目無收費 則不出現                       *}>
+       <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
+        <th  class='col-md-1 col-sm-1 col-xs-2'><{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)</th>
+       <{/if}>  
       <{/foreach}>
-       <th class='col-md-2 col-sm-2 col-xs-2'>備註</th>
+       <th class='col-md-1 col-sm-1 col-xs-2'>備註</th>
     </tr>
 
   <{foreach  key=key item=stud   from= $data.students }>
@@ -61,7 +64,7 @@
      <td >
       (<{$stud.class_sit_num}>)<{$stud.name}>
       <{assign var="stud_id" value=$stud.stud_id}>
-      </td>
+     </td>
       <td >
            <{html_options name='cause_id'   class='form-control'    options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }>
        </td>
@@ -69,6 +72,8 @@
           <!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <{assign var="detai_link" value=_$detail_key }>
+        <{*       如年段的該項目無收費 則不出現                       *}>
+        <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
         <td >
        <div class="row money_div"  id='box_<{$stud.stud_id}>_<{$detail_key}>'  >
 
@@ -116,6 +121,8 @@
                       <{/if}>
 
       </td>
+      <{/if}> <{* 不收費 *}>
+
 
       <{/foreach}>
       <td class='col-md-2 col-sm-2 col-xs-2'>

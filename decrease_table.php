@@ -79,15 +79,16 @@ $data['class_list_c'] = es_class_name_list_c('long')  ;
 
 
 
-//細項名稱
+//細項名稱(1-保險，2-書本)
 $data['detail_list']=get_item_detail_list_name($item_id) ;
+
 //是否可申請補助的檢查
 $data['dent_support'] = check_deny_support($data['detail_list']) ;
 
 $detail_id_array = array_keys($data['detail_list']) ;
 
 
-//取得全部細項的收費
+//取得全部細項的收費 [項，年級]=金額
 $charge_array= get_detail_charge_dollars( $item_id) ;
 
 

@@ -60,11 +60,14 @@ while($data_row=$xoopsDB->fetchArray($result)){
 }
 
 //有繳費的班級及繳費人數
-$sql =  "  SELECT  class_id  ,   count(*) as st_count  ,sum(dollars) as dollars_sum FROM " . $xoopsDB->prefix("charge_record")  . 
+$sql =  "  SELECT  class_id  ,   count(*) as st_count  ,sum(dollars) as dollars_sum FROM " . $xoopsDB->prefix("charge_record")  .
 	" where  item_id = '$item_id'     group by   class_id  order by class_id  " ;
 $result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 while($data_row=$xoopsDB->fetchArray($result)){
 	$class_id = $data_row['class_id'] ;
+  //每人原應繳
+  $data_row['dollars'] =  $data_row['dollars_sum'] /$data_row['st_count'] ;
+
 	$data['record'][$class_id] = $data_row ;
 	$data['all_pay_st_num'] += $data_row['st_count']  ;
 	$data['all_st_num'] += $data['students'][$class_id] ;
