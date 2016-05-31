@@ -34,7 +34,8 @@ $modversion['tables'][1] = 'charge_item';
 $modversion['tables'][2] = 'charge_detail';
 $modversion['tables'][3] = 'charge_record';
 $modversion['tables'][4] = 'charge_decrease';
-
+$modversion['tables'][5] = 'charge_account';
+$modversion['tables'][6] = 'charge_poster_data';
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;
 $modversion['adminindex'] = 'admin/index.php';
