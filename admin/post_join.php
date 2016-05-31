@@ -210,7 +210,7 @@ function result_data($item_id ){
 
 		//失敗註記還原
 		$sql =  " UPDATE  " . $xoopsDB->prefix("charge_poster_data") . " SET  pay_fail = '0'  	where      item_id = '$item_id'    ; " ;
-		$xoopsDB->queryF($sql) 	 ;
+		 $xoopsDB->queryF($sql) 	 ;
 
 
 		//讀取文字檔 ，分行讀取

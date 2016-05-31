@@ -181,7 +181,7 @@ if ($_POST['do']== 'input')  {
 				VALUES ( '0' ,  '$sn'  , '{$_POST['st_name'][$sn]}' , '{$_POST['acc_name'][$sn]}' , '$acc_pid' ,
 				'$acc_m'  , '$acc_b_id'  , '$acc_id' , '$acc_g_id'   )  ; " ;
 			//echo $sql ."<br>" ;
-			$result = $xoopsDB->query($sql)   ;
+			$result = $xoopsDB->query($sql)  or  $message .=   $sql .'<br />' .$xoopsDB->error()."<br />"  ;
 		}
 
 	}
@@ -233,6 +233,7 @@ $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "message" , $message ) ;
 $xoopsTpl->assign( "infomessage" , $infomessage ) ;
 $xoopsTpl->assign( "class_sit_message" , $class_sit_message ) ;
+
 $xoopsTpl->assign( "bank_account_use" , $DEF['bank_account_use'] ) ;
 
 include_once 'footer.php';
