@@ -17,6 +17,13 @@ if (!$DEF['bank_account_use']) {
 	exit() ;
 }
 */
+
+//把  ONLY_FULL_GROUP_BY 移除
+$sql = " SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', '')); "  ;
+$xoopsDB->queryF($sql)   ;
+
+
+
 if ($_POST["do_key"] =='export') {
     export_poster_data($_POST['item_id'] ) ;
     exit() ;
@@ -169,9 +176,9 @@ function import_excel($item_id ,$file_up,$ver=5) {
 
 			//寫入
             $sql = " INSERT INTO " .  $xoopsDB->prefix("charge_poster_data")
-               ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash  )  "
+               ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash ,pay_fail  )  "
                ."  VALUES ( '$item_id' , '$stud_sn'  , '$class_id' , '$seat_id' , '$stud_name'  , '{$v[4]}'   "
-               ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , '1' , '$cash_fg'  ) ;   " ;
+               ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , '1' , '$cash_fg'  ,0 ) ;   " ;
 
             $result = $xoopsDB->queryF($sql) or  $err_message .= $line_str  .  $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
 			$update_ok_num ++ ;
@@ -203,7 +210,7 @@ function result_data($item_id ){
 
 		//失敗註記還原
 		$sql =  " UPDATE  " . $xoopsDB->prefix("charge_poster_data") . " SET  pay_fail = '0'  	where      item_id = '$item_id'    ; " ;
-		 $xoopsDB->queryF($sql) 	 ;
+		$xoopsDB->queryF($sql) 	 ;
 
 
 		//讀取文字檔 ，分行讀取
@@ -273,6 +280,7 @@ switch ($_POST["do_key"]){
         clear_poster_data($_POST['item_id'] ) ;
     break;
     case "export":
+        //郵局傳送檔
         export_poster_data($_POST['item_id'] ) ;
     break;
 }
