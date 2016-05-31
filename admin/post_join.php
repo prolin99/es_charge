@@ -58,7 +58,7 @@ function add_from_charge($item_id){
         ."  where    a.item_id = '$item_id'  "
         ."  ORDER BY class_id, sit_num " ;
 
-
+    //echo $sql_out ;
     $result_out = $xoopsDB->queryF($sql_out)   ;
 
 	while($stud=$xoopsDB->fetchArray($result_out)){
@@ -70,10 +70,10 @@ function add_from_charge($item_id){
 
         //寫入紀錄：
          $sql = " INSERT INTO " .  $xoopsDB->prefix("charge_poster_data")
-            ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash  )  "
+            ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash , pay_fail  )  "
             ."  VALUES ( '$item_id' , '{$stud[student_sn]}'  , '{$stud[class_id]}' , '{$stud[sit_num]}' , '{$stud[rec_name]}'  , '{$stud[end_pay]}'   "
-            ." , '{$stud[acc_name]}'   , '{$stud[acc_person_id]}'    , '{$stud[acc_mode]}'   , '{$stud[acc_b_id]}'    , '{$stud[acc_id]}'    , '{$stud[acc_g_id]}'  , '0' , '$cash_fg'  ) ;   " ;
-        $result = $xoopsDB->queryF($sql)  or  $err_message .=    $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
+            ." , '{$stud[acc_name]}'   , '{$stud[acc_person_id]}'    , '{$stud[acc_mode]}'   , '{$stud[acc_b_id]}'    , '{$stud[acc_id]}'    , '{$stud[acc_g_id]}'  , '0' , '$cash_fg' ,0  ) ;   " ;
+        $result = $xoopsDB->queryF($sql)  or  $err_message .=   $sql .'<br />' .$xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
     }
 }
 
