@@ -1022,7 +1022,8 @@ function get_bank_date_cht($item_id) {
 	}
 
 	//中文年月日  YYYMMDD
-	$data_arr = split ('[/-]', $bank_date);
+	$data_arr = preg_split ('/[\/-]/', $bank_date);
+
 	return sprintf("%03d", $data_arr[0]-1911)  .sprintf("%02d", $data_arr[1]) .sprintf("%02d", $data_arr[2])  ;
 
 }
