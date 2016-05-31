@@ -33,7 +33,7 @@
       <td>座號</td>
       <td>姓名</td>
        <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <td><{$detail_val|truncate:9}></td>
+        <td title='<{$detail_val}>'><{$detail_val|truncate:9}></td>
       <{/foreach}>
 
       <td>減免原因</td>
@@ -63,7 +63,7 @@
         <{/if}>
       <{/foreach}>
 
-      <td><{$stud.cause|truncate:18}>
+      <td title='<{$stud.cause}>'><{$stud.cause|truncate:18}>
           <{if ($stud.ps) }>
             <span class="label label-info"><{$stud.ps}></span>
           <{/if}>

@@ -1049,10 +1049,10 @@ function export_poster_data($item_id){
 			. $xoopsDB->prefix("charge_poster_data")
 			."  where  item_id='$item_id'  and  cash='0'  "
 			."  group by acc_mode, acc_b_id , acc_id , acc_g_id "
-      ."  having  do_pay>0  "
+            ."  having  do_pay>0  "
 			."  ORDER BY class_id, sit_num " ;
 	$result = $xoopsDB->queryF($sql)   ;
-  //die($sql) ;
+
 
 	$sum_rec=0 ;
 	$sum_pay = 0  ;
