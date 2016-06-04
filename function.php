@@ -922,7 +922,7 @@ function get_poster_chare_fail($item_id) {
     //合併後要扣款的筆數
     $sql = " SELECT  count(*) as stud_num  , sum(pay) as pay_sum    From "
   			. $xoopsDB->prefix("charge_poster_data")
-  			."  where  item_id='$item_id'  and  pay_fail<>'0'   "  ;
+  			."  where  item_id='$item_id' and pay >0  and  pay_fail<>'0'   "  ;
   	$result = $xoopsDB->queryF($sql)   ;
 
     while($date_list=$xoopsDB->fetchArray($result)){
@@ -965,7 +965,7 @@ function export_fail($item_id){
 
     //合併後要扣款的筆數
     $sql = " SELECT  *    From ". $xoopsDB->prefix("charge_poster_data")
-		."  where  item_id='$item_id'  and  pay_fail<>'0'   order by class_id , sit_num "  ;
+		."  where  item_id='$item_id'  and  pay>0 and  pay_fail<>'0'   order by class_id , sit_num "  ;
 
 	$result = $xoopsDB->queryF($sql)   ;
 	while($stud=$xoopsDB->fetchArray($result)){
