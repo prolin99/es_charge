@@ -52,8 +52,12 @@
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
        <{*       如年段的該項目無收費 則不出現                       *}>
        <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
-        <th  class='col-md-1 col-sm-1 col-xs-2'><{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)</th>
-       <{/if}>  
+        <th  class='col-md-1 col-sm-1 col-xs-2'><{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)
+            <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-record"    set="detailid_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='全班先減免此項' >全班扣</span>
+        </div>
+        </th>
+       <{/if}>
       <{/foreach}>
        <th class='col-md-1 col-sm-1 col-xs-2'>備註</th>
     </tr>
@@ -83,7 +87,7 @@
           </span>
           <{*   -----  金額  ------------------     *}>
           <span class="col-md-9 col-sm-9 col-xs-9">
-            <input   class='form-control money'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onchange="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
+            <input   class='form-control money detailid_<{$detail_key}>'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onchange="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
           </span>
 
                       <{*   -----  補助  ------------------     *}>
@@ -191,6 +195,19 @@ function save_cause( mode ,  item, class_id , stud_id ,cause  ){
                  }
        })
 }
+
+//全班全告
+$(document).on("click", ".glyphicon-record", function(){
+    if(confirm('是否要先把全班的這項費用設為減免？')) {
+        var input_id = $(this).attr("set")  ;
+        var money = $(this).attr("dollar")  ;
+        //alert( input_id ) ;
+
+        //找到 detailid_# 的 class 要放入金額
+        $('.'+input_id).val(money);
+        $('.'+input_id).trigger("change");
+    }
+});
 
 //指定金額鍵 -------------------------------------------------------------------------------------
   $(document).on("click", ".glyphicon-forward", function(){
