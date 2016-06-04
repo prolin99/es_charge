@@ -312,17 +312,20 @@ function get_class_students_charge( $item_id , $class_id  , $mode='class' ) {
 function get_class_spec_old_item($item_id , $class_id ) {
 	//取得該班學生在舊表中有特殊身份的列表
 	global  $xoopsDB ,$decrease_cause ;
-  //?????
-//	$sql =  "  SELECT  c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num , c.item_id FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
-//			"where   c.student_sn = s.stud_id and c.item_id < '$item_id'  and s.class_id='$class_id' and c.cause>0 group by  c.student_sn order by  class_sit_num , c.cause " ;
+
+    //	$sql =  "  SELECT  c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num , c.item_id FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
+    //			"where   c.student_sn = s.stud_id and c.item_id < '$item_id'  and s.class_id='$class_id' and c.cause>0 group by  c.student_sn order by  class_sit_num , c.cause " ;
     $sql =  "  SELECT DISTINCT   c.student_sn , c.cause , s.name , s.class_id , s.class_sit_num , c.item_id FROM " . $xoopsDB->prefix("charge_record") . " c , " . $xoopsDB->prefix("e_student") .  "  s " .
     			"where   c.student_sn = s.stud_id and c.item_id < '$item_id'  and s.class_id='$class_id' and c.cause>0   order by  class_sit_num , c.cause " ;
 
 
-		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
-		while($stud=$xoopsDB->fetchArray($result)){
- 			$data .= $stud['class_sit_num'] . $stud['name']  . ' -- ' . $decrease_cause[ $stud['cause'] ] ." <br />\n" ;
-		}
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($stud=$xoopsDB->fetchArray($result)){
+        //只出現一次
+        if (! $list[$stud['student_sn']] )
+ 		    $data .= $stud['class_sit_num'] . $stud['name']  . ' -- ' . $decrease_cause[ $stud['cause'] ] ." <br />\n" ;
+        $list[$stud['student_sn']] = true ;
+    }
 	return $data ;
 
 }
