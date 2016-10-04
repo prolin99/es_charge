@@ -36,11 +36,13 @@ $DEF['poster_block'] = $xoopsModuleConfig['es_c_poster_block'] ;
 
 //把文字代號轉換成數字(年段、班級名)
 $class2id = preg_split('/,/' ,$xoopsModuleConfig['es_c_other_class2id']) ;
+//$DEF['es_c_other_class2id']= $xoopsModuleConfig['es_c_other_class2id'];
  foreach($class2id  as  $lid => $class_str) {
     $c2i = preg_split('/:/' ,$class_str) ;
     if (  is_numeric($c2i[1]  ) ) {
         $temp_class = strtoupper(trim($c2i[0])) ;
         $DEF['class2id'][$temp_class] = $c2i[1] +0 ;
+        $DEF['es_c_other_class2id'].= $temp_class . ',' ;
     }
 }
 //var_dump($DEF['class2id']) ;

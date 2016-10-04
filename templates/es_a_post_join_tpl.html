@@ -20,6 +20,7 @@
             <span>2.其他扣款學生 excel (如幼稚園)：</span>
         <input type=file name=userdata accept='.xls,.xlsx'>
         <button type='submit'  name='do_key' value='add_other' class='btn btn-success' title='注意格式是否正確！範例檔案請由上方黒色按鍵處取得。'>匯入</button>
+        <div class='alert alert-info'>使用的年級、班級代號，如果 EXCEL 名稱不一致，會無法比對。(使用到的名稱如下：<{ $DEF.es_c_other_class2id }>)</div>
         </p>
         <p>3.<button type='submit'  name='do_key' value='export' class='btn btn-primary' title='文字檔，請下載存檔。'>產生郵局傳送檔</button><span class='alert alert-info'>請依郵局作業，傳送、傳真相關檔案)</span></p>
         <br /><br />
