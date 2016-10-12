@@ -10,12 +10,15 @@
     <td>	轉帳戶名</td><td>	轉帳戶身份證編號</td><td>	存款別(P/G)</td><td>		立帳局號</td><td>		存簿帳號</td><td>		劃撥帳號</td><tr></table>
 
     <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
-        <span class='span2'>郵局帳號 EXCEL 檔：</span>
+        <span class='span2'>最新的郵局帳號 EXCEL 檔：</span>
         <input type=file name=userdata>
-    	<button type='submit'  name='do_key' value='add' class='btn btn-primary'>更新帳號資料(EXCEL)</button>
+    	<button type='submit'  name='do_key' value='add' class='btn btn-primary' title='修正 EXCEL 檔中資料，再更新資料庫'>更新帳號資料(EXCEL)</button>
         <span class="label label-warning">檔案不可有密碼保護</span>
-        <button type='submit'  name='do_clear' value='clear' class='btn btn-danger' onclick='return confirm("確定要刪除?")' >清除資料</button>
-        <a class="btn btn-success"  href="export_account.php">匯出Excel</a>
+
+        <p></p><p>
+        <button type='submit'  name='do_clear' value='clear' class='btn btn-danger' onclick='return confirm("確定要刪除?")'  title='把全部資料清除可移除不在籍學生資料，建議新學年要做一次。'>清除全部帳號資料</button>
+        <a class="btn btn-success"  href="export_account.php" title='下載備份保存，再次校對帳號是否正確'>匯出帳號 Excel(備份、比對)</a>
+        </p>
    </form>
 </div>
 <div class="alert alert-info">

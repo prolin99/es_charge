@@ -23,11 +23,19 @@ $sql = " SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', '')); " 
 $xoopsDB->queryF($sql)   ;
 
 
-
+// 郵局傳檔
 if ($_POST["do_key"] =='export') {
     export_poster_data($_POST['item_id'] ) ;
     exit() ;
 }
+
+// 資料轉 EXCEL 這次撽費清單
+if ($_POST["do_key"] =='export_excel') {
+    export_poster_data_excel($_POST['item_id'] ) ;
+    exit() ;
+}
+
+// 失敗的清單
 if ($_POST["do_key2"] =='result_stud') {
     export_fail($_POST['item_id'] ) ;
     exit() ;
@@ -162,6 +170,11 @@ function import_excel($item_id ,$file_up,$ver=5) {
             $err_message .=  " $line_str 身份證證號長度不正確！<br/> " ;
 
         if ($ckeck1 == 'ok' ) {
+            //移除帳號中非數字部份字元
+			$v[8] = preg_replace( '/\D/', '',  $v[8] );
+			$v[9] = preg_replace( '/\D/', '',  $v[9] );
+			$v[10] = preg_replace( '/\D/', '',  $v[10] );
+
 			//帳號補 0
 			$v[8] = sprintf("%07d", $v[8]) ;
 			$v[9] = sprintf("%07d", $v[9]) ;
