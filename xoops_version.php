@@ -45,6 +45,8 @@ $modversion['adminmenu'] = 'admin/menu.php';
 $modversion['hasMain'] = 1;
 
 //---安裝設定---//
+$modversion['onInstall'] = 'include/onInstall.php';
+$modversion['onUninstall'] = 'include/onUninstall.php';
 $modversion['onUpdate'] = 'include/onUpdate.php';
 
 //---樣板設定---要有指定，才會編譯動作，//

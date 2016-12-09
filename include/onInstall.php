@@ -1,7 +1,7 @@
 <?php
-function xoops_module_install_es_exam(&$module) {
+function xoops_module_install_es_charge(&$module) {
 
-	mk_dir(XOOPS_ROOT_PATH."/uploads/es_exam");
+	mk_dir(XOOPS_ROOT_PATH."/uploads/es_charge");
 
 	return true;
 }
