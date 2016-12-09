@@ -88,7 +88,14 @@ function add_from_charge($item_id){
             ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash , pay_fail  )  "
             ."  VALUES ( '$item_id' , '{$stud[student_sn]}'  , '{$stud[class_id]}' , '{$stud[sit_num]}' , '{$stud[rec_name]}'  , '{$stud[end_pay]}'   "
             ." , '{$stud[acc_name]}'   , '{$stud[acc_person_id]}'    , '{$stud[acc_mode]}'   , '{$stud[acc_b_id]}'    , '{$stud[acc_id]}'    , '{$stud[acc_g_id]}'  , '0' , '$cash_fg' ,0  ) ;   " ;
-        $result = $xoopsDB->queryF($sql)  or  $err_message .=   $sql .'<br />' .$xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
+        $result = $xoopsDB->queryF($sql)  or  $err_message .=   $sql .'<br />' .$xoopsDB->error()."(應該為班級座號重覆或扣款帳號內容不正確引號)<br />"  ;
+
+        //如果有錯誤，寫到記錄檔中
+        if ($err_message) {
+            $file = XOOPS_ROOT_PATH."/uploads/es_charge/" . $item_id .'-err.log' ;
+            file_put_contents($file, $err_message);
+        }
+
     }
 }
 
@@ -200,6 +207,12 @@ function import_excel($item_id ,$file_up,$ver=5) {
 
 	}
 
+    //如果有錯誤，寫到記錄檔中
+    if ($err_message) {
+        $file = XOOPS_ROOT_PATH."/uploads/es_charge/" . $item_id .'-err.log' ;
+        file_put_contents($file, $err_message);
+    }
+
     $message = "完成 $update_ok_num 筆更新<br/>"   ;
 }
 
@@ -209,6 +222,11 @@ function clear_poster_data($item_id){
     global   $xoopsDB  ;
     $sql = " DELETE FROM " .  $xoopsDB->prefix("charge_poster_data")  ." WHERE item_id = '$item_id'  "  ;
     $result = $xoopsDB->queryF($sql) ;
+
+    //清除錯誤檔
+    $file = XOOPS_ROOT_PATH."/uploads/es_charge/" . $item_id .'-err.log' ;
+    if (file_exists($file) )
+        unlink($file) ;
 }
 
 
@@ -335,6 +353,12 @@ if ($item_id ) {
 }
 
 
+//如果有錯誤，就不可以再進行下一步
+$file = XOOPS_ROOT_PATH."/uploads/es_charge/" . $item_id .'-err.log' ;
+if (file_exists($file) ) {
+    $has_error = ture ;
+    $err_log = file_get_contents($file);
+}
 
 
 
@@ -345,6 +369,8 @@ $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "message2" , $message2 ) ;
 $xoopsTpl->assign( "err_message" , $err_message ) ;
 $xoopsTpl->assign( "DEF" , $DEF ) ;
+$xoopsTpl->assign( "has_error" , $has_error ) ;
+$xoopsTpl->assign( "err_log" , $err_log ) ;
 
 include_once 'footer.php';
 

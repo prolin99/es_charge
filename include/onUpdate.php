@@ -27,8 +27,21 @@ function xoops_module_update_es_charge(&$module, $old_version)
     if (!chk_add_poster_data()) {
         go_update_add_poster_data();
     }
+    mk_dir(XOOPS_ROOT_PATH."/uploads/es_charge");
 
     return true;
+}
+
+//建立目錄
+function mk_dir($dir=""){
+    //若無目錄名稱秀出警告訊息
+    if(empty($dir))return;
+    //若目錄不存在的話建立目錄
+    if (!is_dir($dir)) {
+        umask(000);
+        //若建立失敗秀出警告訊息
+        mkdir($dir, 0777);
+    }
 }
 
 //----- 增加 charge_account 資料表 ------------------------------
