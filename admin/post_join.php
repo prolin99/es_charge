@@ -46,7 +46,7 @@ include_once "../../tadtools/PHPExcel.php";
 require_once '../../tadtools/PHPExcel/IOFactory.php';
 /*-----------function區--------------*/
 
-//把資料轉放到 郵局的記錄檔案
+//把內部需要要繳費的資料轉放到 郵局的記錄檔案
 function add_from_charge($item_id){
     global   $xoopsDB , $err_message  ;
     //細項名稱
@@ -99,7 +99,7 @@ function add_from_charge($item_id){
     }
 }
 
-//匯入判別
+//額外線費學生資料 匯入判別  ---------------------------------------------------------------------------------
 function import_else_data($item_id ){
 	if ($_FILES['userdata']['name'] ) {
 		$file_up = XOOPS_ROOT_PATH."/uploads/" .$_FILES['userdata']['name'] ;
@@ -108,7 +108,9 @@ function import_else_data($item_id ){
 
 		//副檔名
 		$file_array= preg_split('/[.]/', $_FILES['userdata']['name'] ) ;
+
 		$ext= strtoupper(array_pop($file_array)) ;
+
 		if ($ext=='XLS')
 			import_excel($item_id , $file_up) ;
 		if ($ext=='XLSX')
@@ -119,7 +121,7 @@ function import_else_data($item_id ){
 	return $main;
 }
 
-//excel 格式
+//excel 格式 額外線費學生資料
 function import_excel($item_id ,$file_up,$ver=5) {
     global $xoopsDB,$xoopsTpl ,$err_message  , $message ,  $DEF ;
 
@@ -139,6 +141,7 @@ function import_excel($item_id ,$file_up,$ver=5) {
 		$v="";
 
 		//讀取一列中的每一格
+        $this_line_data_fg  = false   ;
 		for ($col = 0; $col <= 11; $col++) {
             $val =  $sheet->getCellByColumnAndRow($col, $row)->getCalculatedValue();
 			if(!get_magic_quotes_runtime()) {
@@ -146,65 +149,71 @@ function import_excel($item_id ,$file_up,$ver=5) {
 			}else{
 				$v[$col]= strtoupper(trim($val)) ;
 			}
+            if ($v[$col])         //有內容要做動作
+                $this_line_data_fg  = true  ;
 		}
 
-		$line_str =   join( ',' , $v   )  ;
-        //echo $line_str ."<br />" ;
-        //
 
-        if ( ! is_numeric($v[0]) )
-            $v[0] = $DEF['class2id'][$v[0]] ;
-
-        if (! is_numeric($v[1])  )
-            $v[1]=  $DEF['class2id'][$v[1]] ;
-
-        $class_id = $v[0]*100+$v[1] ;
-        $class_id  =  sprintf("%03d" ,$class_id) ;
-        $seat_id = $v[2] ;
-        $stud_name = trim($v[3]) ;
+        if ($this_line_data_fg) {        //些列有資料
+    		$line_str =   join( ',' , $v   )  ;
+            //echo $line_str ."<br />" ;
 
 
-        if ( ( $v[0]>=0   )  and  ( $v[1] >=1 )  and   ( $v[2]>=1)  and    ( $v[3] )   and    ( $v[4]>=0 )    )
-            $ckeck1 = 'ok'     ;
-        else {
-            $err_message .=  " $line_str  必需有年、班、姓名、座號、繳費總額 <br/> " ;
-            $ckeck1 = 'no'     ;
-        }
+            if ( ! is_numeric($v[0]) )
+                $v[0] = $DEF['class2id'][$v[0]] ;
+
+            if (! is_numeric($v[1])  )
+                $v[1]=  $DEF['class2id'][$v[1]] ;
+
+            $class_id = $v[0]*100+$v[1] ;
+            $class_id  =  sprintf("%03d" ,$class_id) ;
+            $seat_id = $v[2] ;
+            $stud_name = trim($v[3]) ;
+
+
+            if ( ( $v[0]>=0   )  and  ( $v[1] >=1 )  and   ( $v[2]>=1)  and    ( $v[3] )   and    ( $v[4]>=0 )    )
+                $ckeck1 = 'ok'     ;
+            else {
+                $err_message .=  " $line_str  必需有年、班、姓名、座號、繳費總額 <br/> " ;
+                $ckeck1 = 'no'     ;
+            }
 
 
 
-		if ( (strlen($v[6] ) <>10) and   (strlen($v[6] ) <>0)  )
-            $err_message .=  " $line_str 身份證證號長度不正確！<br/> " ;
-
-        if ($ckeck1 == 'ok' ) {
-            //移除帳號中非數字部份字元
-			$v[8] = preg_replace( '/\D/', '',  $v[8] );
-			$v[9] = preg_replace( '/\D/', '',  $v[9] );
-			$v[10] = preg_replace( '/\D/', '',  $v[10] );
-
-			//帳號補 0
-			$v[8] = sprintf("%07d", $v[8]) ;
-			$v[9] = sprintf("%07d", $v[9]) ;
-			$v[10] = sprintf("%014d", $v[10]) ;
-
-            $stud_sn = 'E' .  sprintf("%03d" ,$class_id)  . sprintf("%02d" ,$seat_id) ;
-            //自繳或無扣款資料
-            if  ( ($v[11]) or ($v[6]=='' )  )
-                $cash_fg =1 ;
-            else
-                $cash_fg =0 ;
-
-			//寫入
-            $sql = " INSERT INTO " .  $xoopsDB->prefix("charge_poster_data")
-               ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash ,pay_fail  )  "
-               ."  VALUES ( '$item_id' , '$stud_sn'  , '$class_id' , '$seat_id' , '$stud_name'  , '{$v[4]}'   "
-               ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , '1' , '$cash_fg'  ,0 ) ;   " ;
-
-            $result = $xoopsDB->queryF($sql) or  $err_message .= $line_str  .  $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
-			$update_ok_num ++ ;
-        }
+    		if ( (strlen($v[6] ) <>10) and   (strlen($v[6] ) <>0)  )
+                $err_message .=  " $line_str 身份證證號長度不正確！<br/> " ;
 
 
+
+            if ($ckeck1 == 'ok' ) {
+                //移除帳號中非數字部份字元
+    			$v[8] = preg_replace( '/\D/', '',  $v[8] );
+    			$v[9] = preg_replace( '/\D/', '',  $v[9] );
+    			$v[10] = preg_replace( '/\D/', '',  $v[10] );
+
+    			//帳號補 0
+    			$v[8] = sprintf("%07d", $v[8]) ;
+    			$v[9] = sprintf("%07d", $v[9]) ;
+    			$v[10] = sprintf("%014d", $v[10]) ;
+
+                $stud_sn = 'E' .  sprintf("%03d" ,$class_id)  . sprintf("%02d" ,$seat_id) ;
+                //自繳或無扣款資料
+                if  ( ($v[11]) or ($v[6]=='' )  )
+                    $cash_fg =1 ;
+                else
+                    $cash_fg =0 ;
+
+    			//寫入
+                $sql = " INSERT INTO " .  $xoopsDB->prefix("charge_poster_data")
+                   ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash ,pay_fail  )  "
+                   ."  VALUES ( '$item_id' , '$stud_sn'  , '$class_id' , '$seat_id' , '$stud_name'  , '{$v[4]}'   "
+                   ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , '1' , '$cash_fg'  ,0 ) ;   " ;
+
+                $result = $xoopsDB->queryF($sql) or  $err_message .= $line_str  .  $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
+    			$update_ok_num ++ ;
+            }
+
+        }//此列有內容
 	}
 
     //如果有錯誤，寫到記錄檔中
