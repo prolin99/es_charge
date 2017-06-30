@@ -5,12 +5,9 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
-include_once "header_admin.php";
-//樣版
+
 $xoopsOption['template_main'] = "es_admin_sum_class_tpl.html";
 include_once "header.php";
-
-
 include_once "../function.php";
 
 /*-----------function區--------------*/

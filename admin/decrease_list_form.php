@@ -5,10 +5,7 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
-
-
-include_once "header_admin.php";
-
+include_once "header.php";
 include_once "../function.php";
 
 include_once "../../tadtools/PHPExcel.php";
@@ -135,6 +132,7 @@ if  ($item_id) {
 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=decrease_frm_'.date("mdHi").'.xlsx' );
 	header('Cache-Control: max-age=0');
+	ob_clean();
 
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');

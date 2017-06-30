@@ -5,8 +5,7 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
-include_once "header_admin.php";
-//樣版
+
 $xoopsOption['template_main'] = "es_c_a_poster_tpl.html";
 include_once "header.php";
 
@@ -97,7 +96,7 @@ function import_excel($file_up,$ver=5) {
 			$v[8] = preg_replace( '/\D/', '',  $v[8] );
 			$v[9] = preg_replace( '/\D/', '',  $v[9] );
 			$v[10] = preg_replace( '/\D/', '',  $v[10] );
-			
+
 			//帳號補 0
 			$v[8] = sprintf("%07d", $v[8]) ;
 			$v[9] = sprintf("%07d", $v[9]) ;

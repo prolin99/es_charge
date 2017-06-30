@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------- //
 
 /*-----------引入檔案區--------------*/
-include_once "header_admin.php";
+include_once "header.php";
 include_once "../function.php";
 
 /*-----------執行動作判斷區----------*/
@@ -96,7 +96,7 @@ function export_data($item_id){
 	while($stud=$xoopsDB->fetchArray($result)){
 		if ($stud['sum_pay'] <=0)        //無需繳費不用設扣款
             continue;
-			
+
 		$pay = $stud['sum_pay'] + $DEF['fee'] ;
 
 		//學生代碼使用  account 中序號 a_id

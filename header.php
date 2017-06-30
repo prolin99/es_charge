@@ -5,39 +5,38 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 
-include_once "common/tool.php";
+//載入XOOPS主設定檔（必要）
+include_once "../../mainfile.php";
+//載入自訂的共同函數檔
 include_once "function.php";
 
 //判斷是否對該模組有管理權限
-$isAdmin=isAdmin();
-
-//ini_set('display_errors', 'On');
-
-$item_id=empty($_REQUEST['item_id'])?"":intval($_REQUEST['item_id']);
-$interface_menu['繳費系統']="index.php?item_id=$item_id";
-$interface_menu['總表模式減免']="decrease_table.php?item_id=$item_id";
-$interface_menu['單人模式減免']="decrease.php?item_id=$item_id";
-$interface_menu['收費報表']="report.php?item_id=$item_id";
-$interface_menu['細目統計']="sum.php?item_id=$item_id";
-
-
-
-
-if($isAdmin){
-  $interface_menu[_TO_ADMIN_PAGE]="admin/index.php";
+$isAdmin=false;
+if ($xoopsUser) {
+  $module_id = $xoopsModule->getVar('mid');
+  $isAdmin=$xoopsUser->isAdmin($module_id);
 }
 
+//回模組首頁
+$interface_menu[_TAD_TO_MOD]="index.php";
+$interface_icon[_TAD_TO_MOD]="fa-chevron-right";
 
-//給獨立模組用的登出按鈕
-$interface_menu=logout_button($interface_menu);
+$item_id=empty($_REQUEST['item_id'])?"":intval($_REQUEST['item_id']);
 
-//模組前台選單
-$module_menu=toolbar($interface_menu);
-
-//引入CSS樣式表檔案
-$module_css="<link rel='stylesheet' type='text/css' media='screen' href='module.css' />";
+$interface_menu['總表減免']="decrease_table.php?item_id=$item_id";
+$interface_menu['單人減免']="decrease.php?item_id=$item_id";
+$interface_menu['報表']="report.php?item_id=$item_id";
+$interface_menu['統計']="sum.php?item_id=$item_id";
 
 
-// is_safe_chk()  ;	//檢查是否訪客有權限
+
+
+
+//模組後台
+if($isAdmin){
+  $interface_menu[_TAD_TO_ADMIN]="admin/index.php";
+  $interface_icon[_TAD_TO_ADMIN]="fa-chevron-right";
+}
+
 
 ?>

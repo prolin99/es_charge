@@ -8,7 +8,7 @@
 
 //$xoopsOption['template_main'] = "es_sum_tpl.html";
 include_once "header.php";
-$xoopsOption['template_main'] = set_bootstrap("es_sum_tpl.html");
+$xoopsOption['template_main'] = set_bootstrap("es_sum.tpl");
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
@@ -78,10 +78,9 @@ $data['class_source_pay']['end_sum'] = $data['class_source_pay']['all']  - $data
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
-$xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
-$xoopsTpl->assign( "jquery" , get_jquery(true)) ;
+
 $xoopsTpl->assign( "data" , $data ) ;
-$xoopsTpl->assign( "no_bootstrap_v2" , $_SESSION['bootstrap']>=3 ) ;
+
 
 
 include_once XOOPS_ROOT_PATH.'/footer.php';

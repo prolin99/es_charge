@@ -5,8 +5,7 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
-include_once "header_admin.php";
-//樣版
+
 $xoopsOption['template_main'] = "es_admin_bank_tpl.html";
 include_once "header.php";
 

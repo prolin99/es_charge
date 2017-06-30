@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] = '學生收費管理';                    //模組名稱
-$modversion['version'] = '2.12';                        //模組版次
+$modversion['version'] = '2.2';                        //模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';        //模組作者
 $modversion['description'] = '收費管理，需配合學生名單模組';    //模組說明
 $modversion['credits'] = 'prolin';                        //模組授權者
@@ -82,39 +82,29 @@ $modversion['templates'][$i]['file'] = 'es_a_post_join_tpl.html';
 $modversion['templates'][$i]['description'] = 'es_a_post_join_tpl.html';
 
 ++$i;
-$modversion['templates'][$i]['file'] = 'es_index_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_index_tpl.html';
-++$i;
-$modversion['templates'][$i]['file'] = 'es_index_tpl_b3.html';
-$modversion['templates'][$i]['description'] = 'es_index_tpl_b3.html';
+$modversion['templates'][$i]['file'] = 'es_index.tpl';
+$modversion['templates'][$i]['description'] = 'es_index.tpl';
+
 
 ++$i;
-$modversion['templates'][$i]['file'] = 'es_decrease_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_decrease_tpl.html';
-++$i;
-$modversion['templates'][$i]['file'] = 'es_decrease_tpl_b3.html';
-$modversion['templates'][$i]['description'] = 'es_decrease_tpl_b3.html';
+$modversion['templates'][$i]['file'] = 'es_decrease.tpl';
+$modversion['templates'][$i]['description'] = 'es_decrease.tpl';
+
 
 ++$i;
-$modversion['templates'][$i]['file'] = 'es_report_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_report_tpl.html';
-++$i;
-$modversion['templates'][$i]['file'] = 'es_report_tpl_b3.html';
-$modversion['templates'][$i]['description'] = 'es_report_tpl_b3.html';
+$modversion['templates'][$i]['file'] = 'es_report.tpl';
+$modversion['templates'][$i]['description'] = 'es_report.tpl';
+
 
 ++$i;
-$modversion['templates'][$i]['file'] = 'es_sum_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_sum_tpl.html';
-++$i;
-$modversion['templates'][$i]['file'] = 'es_sum_tpl_b3.html';
-$modversion['templates'][$i]['description'] = 'es_sum_tpl_b3.html';
+$modversion['templates'][$i]['file'] = 'es_sum.tpl';
+$modversion['templates'][$i]['description'] = 'es_sum.tpl';
+
 
 ++$i;
-$modversion['templates'][$i]['file'] = 'es_decrease_table_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_decrease_table_tpl.html';
-++$i;
-$modversion['templates'][$i]['file'] = 'es_decrease_table_tpl_b3.html';
-$modversion['templates'][$i]['description'] = 'es_decrease_table_tpl_b3.html';
+$modversion['templates'][$i]['file'] = 'es_decrease_table.tpl';
+$modversion['templates'][$i]['description'] = 'es_decrease_table.tpl';
+
 
 $i = 0;
 //偏好設定
@@ -135,7 +125,7 @@ $modversion['config'][$i]['title'] = '_MI_ESCHARGE_CONFIG_TITLE2';
 $modversion['config'][$i]['description'] = '_MI_ESCHARGE_CONFIG_DESC2';
 $modversion['config'][$i]['formtype'] = 'textarea';
 $modversion['config'][$i]['valuetype'] = 'text';
-$modversion['config'][$i]['default'] = "特殊身份者才能勾選[申請補助]。無需繳費的減免(如家長費不用繳)，不要勾選[申請補助]。各項減免需要附上當年度本市身份證明文書。<br />\r\n點選<i class='icon-forward' ></i>輸入金額或清空，也可以直接輸入金額。<br />\r\n如果有多項身份別，請在該項補助後<i class='icon-filter'></i>切換顯示，再指定其他減免身份。 ";
+$modversion['config'][$i]['default'] = "特殊身份者才能勾選[申請補助]。無需繳費的減免(如家長費不用繳)，不要勾選[申請補助]。各項減免需要附上當年度本市身份證明文書。<br />\r\n點選<span class='glyphicon glyphicon-forward' ></span>輸入金額或清空，也可以直接輸入金額。<br />\r\n如果有多項身份別，請在該項補助後<span  class='glyphicon glyphicon-filter'></span>切換顯示，再指定其他減免身份。 ";
 ++$i;
 $modversion['config'][$i]['name'] = 'es_charge_default_detail';
 $modversion['config'][$i]['title'] = '_MI_ESCHARGE_CONFIG_TITLE3';

@@ -10,7 +10,7 @@
 include_once "header.php";
 //$xoopsOption['template_main'] = "es_index_tpl.html";
 
-$xoopsOption['template_main'] = set_bootstrap("es_index_tpl.html");
+$xoopsOption['template_main'] = set_bootstrap("es_index.tpl");
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
@@ -170,10 +170,8 @@ $data['class_id'] = $class_id ;
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
-$xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
-$xoopsTpl->assign( "jquery" , get_jquery(true)) ;
 $xoopsTpl->assign( "data" , $data ) ;
-$xoopsTpl->assign( "no_bootstrap_v2" , $_SESSION['bootstrap']>='3' ) ;
+
 
 
 include_once XOOPS_ROOT_PATH.'/footer.php';

@@ -6,8 +6,8 @@
 // ------------------------------------------------------------------------- //
 
 /*-----------引入檔案區--------------*/
-include_once "header_admin.php";
 include_once "header.php";
+include_once "../function.php";
 
 $_GET['id'] ;
 {
@@ -17,17 +17,15 @@ $_GET['id'] ;
 		del_detail($did) ;
 		/*
 		$sql  = " DELETE FROM  "  . $xoopsDB->prefix("charge_detail") .  "  WHERE  `detail_id`=$did" ;
- 
-     		$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error()); 
+
+     		$result = $xoopsDB->queryF($sql) or die($sql."<br>". $xoopsDB->error());
      		*/
- 		
-     		
+
+
      		echo "delete $did   " ;
-     		
-     		
+
+
      	}else {
      		echo "delete error " .   $_GET['id']  ;
      	}
-}     	
-
- 
+}
