@@ -95,15 +95,22 @@
         </div>
         <span><label>繳費項目：</label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
         <p>
-            <span>郵局扣款結果檔：</span>
+            <span>1.郵局扣款結果檔：</span>
         <input type=file name='result_data' accept='.txt'>
         <button type='submit'  name='do_key2' value='result_upload' class='btn btn-success' title='上傳郵局的交易結果文字檔'>上傳</button>
         </p>
-        <p><button type='submit'  name='do_key2' value='result_stud' class='btn btn-primary' title='匯出 EXCEL 格式檔'>下載扣款失敗名冊</button></p>
-        <{if ($data.fail_studs) }>
+        <{if $chk_error}>
+          <div class="alert alert-danger">無法正確進行！有錯誤： <{$chk_error}></div>
+        <{/if}>
+        <{if $message2}>
+          <div class="alert alert-danger">匯入對帳單完成，請檢查以下資料和表格中資料是否相符合！<br>
+            <{$message2}></div>
+        <{/if}>
+
+
         <table class="table table-bordered">
             <tr>
-                <td>類別</td>
+                <td>檢查用表格</td>
                 <td>人數(筆數)</td>
                 <td>金額</td>
              </tr>
@@ -130,10 +137,10 @@
             </table>
             *註1：請和郵局對帳單最後一行最後的數字做比對是否正確。<br>
             *註2：檢查補繳金額式子是否正確： <{$data.item.f_sum  }>  -    <{$data.item.f_rec_num  }> *    <{$DEF.fee}> =  <{$data.fail_studs.pay_sum  }>
-        <{/if}>
-        <br />
-        <{$message2}>
-        <br />
+
+        <p>2.<button type='submit'  name='do_key2' value='result_stud' class='btn btn-primary' title='匯出 EXCEL 格式檔'>下載扣款失敗名冊</button>(請先確定上方的檢查表格內容都是正確的。)</p>
+
+
    </form>
 </div>
    <br/>
