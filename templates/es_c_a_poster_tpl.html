@@ -39,50 +39,90 @@
     <{assign var='tab_i' value='1001'}>
     <{foreach  key=stud_sn item=stud   from= $data }>
 
-    <div class="row-fluid" id= 'div_<{$stud.stud_id}>_<{$stud.name}>'>
-    <span class="span1" ><{$stud.class_id}>班</span>
-    <span class="span1" ><{$stud.class_sit_num}>號</span>
-    <span class="span1" ><{$stud.name}></span>
-    <input name="st_name[<{$stud_sn}>]" value="<{$stud.name}>" type="hidden">
-    <span class="span1" >
-        <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$stud.stud_id}>1'
-    placeholder='帳戶姓名'   />
 
-    </span>
-    <span class="span1" >
-        <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$stud.stud_id}>2'
-    placeholder='身份証號'   />
-
-    </span>
-    <span class="span1" >
-        <input   class='form-control'  name='acc_mode[<{$stud_sn}>]' type='text' id='acc_mode<{$stud_sn}>'  title='存款別(P/G)'  tabindex='<{$stud.stud_id}>3'
-    placeholder='存款別(P/G)'  value='P' />
-
-    </span>
-    <span class="span1" >
-        <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$stud.stud_id}>4'
-    placeholder='立帳局號'   />
-
-    </span>
-    <span class="span1" >
-        <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$stud.stud_id}>5'
-    placeholder='存簿帳號'   />
-
-    </span>
-    <span class="span1" >
-        <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$stud.stud_id}>6'
-    placeholder='劃撥帳號'   />
-
-    </span>
-
-    </div>
     <{if  ($class_sit_message[$stud.class_id][$stud.class_sit_num]) }>
-    <div class="row-fluid">
-        ..............(姓名比對不到)：
+      <div class="row-fluid" id= 'div_<{$stud.stud_id}>_<{$stud.name}>'>
+
+      <span class="span1" ><{$stud.class_id}>班</span>
+      <span class="span1" ><{$stud.class_sit_num}>號</span>
+      <span class="span1" ><{$stud.name}></span>
+      <input name="st_name[<{$stud_sn}>]" value="<{$stud.name}>" type="hidden">
+      <span class="span1" >
+          <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$stud.stud_id}>1'
+      placeholder='帳戶姓名'  value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[5]}>'    />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$stud.stud_id}>2'
+      placeholder='身份証號'   value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[6]}>'    />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_mode[<{$stud_sn}>]' type='text' id='acc_mode<{$stud_sn}>'  title='存款別(P/G)'  tabindex='<{$stud.stud_id}>3'
+      placeholder='存款別存簿/劃撥(P/G)'  value='P' />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$stud.stud_id}>4'
+      placeholder='立帳局號'  value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[8]}>'    />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$stud.stud_id}>5'
+      placeholder='存簿帳號' value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[9]}>'  />
+
+      </span>
+      <span class="span2" >
+          <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$stud.stud_id}>6'
+      placeholder='劃撥帳號'  value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[10]}>' />
+
+      </span>
+      </div>
+      <div class="row-fluid">
         <span class="alert alert-info">
-        <{ $class_sit_message[$stud.class_id][$stud.class_sit_num]}>
-    </span>
-    </div>
+      ......(姓名比對不到，資料先放入，如果不對請清除上方格中資料！)：
+
+      <{ $class_sit_message[$stud.class_id][$stud.class_sit_num].s}>
+      </span>
+      </div>
+    <{else}>
+      <div class="row-fluid" id= 'div_<{$stud.stud_id}>_<{$stud.name}>'>
+      <span class="span1" ><{$stud.class_id}>班</span>
+      <span class="span1" ><{$stud.class_sit_num}>號</span>
+      <span class="span1" ><{$stud.name}></span>
+      <input name="st_name[<{$stud_sn}>]" value="<{$stud.name}>" type="hidden">
+      <span class="span1" >
+          <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$stud.stud_id}>1'
+      placeholder='帳戶姓名'   />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$stud.stud_id}>2'
+      placeholder='身份証號'   />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_mode[<{$stud_sn}>]' type='text' id='acc_mode<{$stud_sn}>'  title='存款別(P/G)'  tabindex='<{$stud.stud_id}>3'
+      placeholder='存款別存簿/劃撥(P/G)'  value='P' />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$stud.stud_id}>4'
+      placeholder='立帳局號'   />
+
+      </span>
+      <span class="span1" >
+          <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$stud.stud_id}>5'
+      placeholder='存簿帳號'   />
+
+      </span>
+      <span class="span2" >
+          <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$stud.stud_id}>6'
+      placeholder='劃撥帳號'   />
+
+      </span>
+
+      </div>
     <{/if}>
 
     <{/foreach}>
