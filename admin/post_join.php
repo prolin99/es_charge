@@ -300,6 +300,7 @@ function result_data($item_id)
                     $no_pay = substr($line, 78, 2);
                     if ($no_pay<>'  ') {
                         $pay_err_sum += $pay ;
+                        $pay_err_num ++ ;
                         //身份証、局號、帳號
                         $person_id =   substr($line, 33, 10);
                         $acc_bid= substr($line, 19, 7);
@@ -311,6 +312,7 @@ function result_data($item_id)
                         $xoopsDB->queryF($sql)     ;
                     } else {
                         $pay_ok_num ++ ;
+                        $pay_ok_sum += $pay ;
                     }
                     $pay_num ++ ;
                     $pay_sum += $pay ;
@@ -336,9 +338,9 @@ function result_data($item_id)
             $main .= "逐筆計算所得：<br>應扣款筆數 $pay_num 筆， 應扣款額額：$pay_sum 元  。   成功扣款： $pay_ok_num 筆 ，成功扣款總額： " . ($pay_sum- $pay_err_sum)  ." 元 ";
 
             //把總筆數及總扣款數寫入
-            $chk_sum = $pay_sum- $pay_err_sum ;
+            //$chk_sum = $pay_sum- $pay_err_sum ;
             $sql = " update     ".  $xoopsDB->prefix("charge_item")
-                    ." SET  `c_rec_num`= '$pay_ok_num'  ,`c_sum`= '$chk_sum'  "
+                    ." SET  `c_rec_num`= '$pay_ok_num'  ,`c_sum`= '$pay_ok_sum'  "
                     ."  where  item_id='$item_id'     " ;
             $result = $xoopsDB->queryF($sql)   ;
         } catch (Exception $e) {
@@ -406,6 +408,14 @@ if ($item_id) {
     $data['fail_studs'] =get_poster_chare_fail($item_id) ;
     //在記錄中已有扣款單、對帳單
     $data['item']= get_item_data($item_id) ;
+
+    //比對最後結果是否正確
+    if ($data['fail_studs']  and $data['item']){
+
+      if ($data['item']['f_sum'] - $data['item']['f_rec_num']*$DEF['fee']<>$data['fail_studs']['pay_sum'])
+        $chk_error.="<p>補繳金額計算式有問題，請做檢查！ {$data['item']['f_sum']} - {$data['item']['f_rec_num']} * {$DEF['fee']} <> {$data['fail_studs']['pay_sum']} </p>";
+    }
+
 }
 
 
