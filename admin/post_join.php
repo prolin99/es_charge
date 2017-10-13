@@ -334,17 +334,19 @@ function result_data($item_id)
                 }
             }
             $main .= "對帳記錄檔總數如下：<br>" ;
-            $main .= "總筆數：  $s_recode_num ，總金額：  $s_money          ，入帳總筆數： $s_in_recode_num          ，入帳總金額：$s_in_money    <br>";
+            $main .= "對帳記錄檔總筆數：  $s_recode_num ，應扣總金額：  $s_money          ，入帳總筆數： $s_in_recode_num          ，入帳總金額：$s_in_money    <br>";
             $main .= "逐筆計算所得：<br>應扣款筆數 $pay_num 筆， 應扣款額額：$pay_sum 元  。   成功扣款： $pay_ok_num 筆 ，成功扣款總額： " . ($pay_sum- $pay_err_sum)  ." 元 ";
 
+            if  ($s_in_recode_num  ==0)
+              throw new Exception('對帳記錄檔成功筆數為 0 ');
             //把總筆數及總扣款數寫入
             //$chk_sum = $pay_sum- $pay_err_sum ;
             $sql = " update     ".  $xoopsDB->prefix("charge_item")
-                    ." SET  `c_rec_num`= '$pay_ok_num'  ,`c_sum`= '$pay_ok_sum'  "
+                    ." SET  `c_rec_num`= '$s_in_recode_num'  ,`c_sum`= '$s_in_money'  "
                     ."  where  item_id='$item_id'     " ;
             $result = $xoopsDB->queryF($sql)   ;
         } catch (Exception $e) {
-            $chk_error=  $e->getMessage() ;
+            $chk_error =  $e->getMessage() ;
         }
 
 
