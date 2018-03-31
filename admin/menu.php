@@ -36,9 +36,15 @@ $adminmenu[$i]['desc'] = '合併其他部份無單位名冊的學生扣款資料
 $adminmenu[$i]['icon'] = 'images/admin/poster2.png' ;
 
 $i++ ;
-$adminmenu[$i]['title'] =  '扣款郵局帳號管理';
+$adminmenu[$i]['title'] =  '學生帳號管理';
 $adminmenu[$i]['link'] = "admin/poster_list.php";
 $adminmenu[$i]['desc'] = '學生扣款帳號管理' ;
+$adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
+
+$i++ ;
+$adminmenu[$i]['title'] =  '代收帳號管理';
+$adminmenu[$i]['link'] = "admin/school_account.php";
+$adminmenu[$i]['desc'] = '學校代收帳號管理' ;
 $adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
 
 $i++ ;

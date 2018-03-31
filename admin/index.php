@@ -26,8 +26,8 @@ include_once "../function.php";
 if ($_POST['act_save'] )  {
 	$creater = $xoopsUser->getVar('name') ;
 	$sql = " INSERT INTO " . $xoopsDB->prefix("charge_item") .
-		" (`item_id`,  `item_type`, `item`, `start_date`, `end_date`, `bank_date`, `comment`, `creater` ,`p_rec_num` ,`p_sum` ,`c_rec_num` ,`c_sum` )  " .
-		"VALUES ('0','{$_POST['item_type']}'     ,'{$_POST['item']}'   , '{$_POST['start_date']}'  , '{$_POST['end_date']}'   ,  '{$_POST['bank_date']}'   , '{$_POST['comment']}'  , '$creater' ,0,0,0,0   )" ;
+		" (`item_id`,  `item_type`, `item`, `start_date`, `end_date`, `bank_date`, `comment`, `creater` ,`p_rec_num` ,`p_sum` ,`c_rec_num` ,`c_sum` , `bank_id` )  " .
+		"VALUES ('0','{$_POST['item_type']}'     ,'{$_POST['item']}'   , '{$_POST['start_date']}'  , '{$_POST['end_date']}'   ,  '{$_POST['bank_date']}'   , '{$_POST['comment']}'  , '$creater' ,0,0,0,0 , '{$_POST['bank_id']}'   )" ;
  	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
  	//快速新增細項
@@ -61,7 +61,7 @@ if ($_POST['act_save'] )  {
 //修改
 if ($_POST['act_edit'] )  {
 	$sql = " UPDATE  "  . $xoopsDB->prefix("charge_item") .
-	     	   "  SET item_type = '{$_POST['item_type']}'  ,  `item`='{$_POST['item']}'  ,   `start_date`='{$_POST['start_date']}' , `end_date` ='{$_POST['end_date']}',   `bank_date` ='{$_POST['bank_date']}', `comment`='{$_POST['comment']}'  " .
+	     	   "  SET item_type = '{$_POST['item_type']}'  ,  `item`='{$_POST['item']}'  ,   `start_date`='{$_POST['start_date']}' , `end_date` ='{$_POST['end_date']}',   `bank_date` ='{$_POST['bank_date']}', `comment`='{$_POST['comment']}' ,`bank_id`='{$_POST['bank_id']}'  " .
 	     	   "  WHERE  `item_id` = '{$_POST['item_id']}'  " ;
  	//echo 	$sql ;
 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
@@ -99,8 +99,6 @@ if ($_GET['do']=='edit' )  {
 
 
 
-
-
 if ($_POST['btn_add'] )
   $p_data['add_fg'] = true ;
 
@@ -111,6 +109,9 @@ if ($_POST['btn_add'] )
 
  //取出常用細項
 $p_data['detail_def']= $xoopsModuleConfig['es_charge_default_detail'] ;
+
+//取出劃撥扣款帳號
+$p_data['school_account_list']= get_school_account_name() ;
 
 
 /*-----------秀出結果區--------------*/

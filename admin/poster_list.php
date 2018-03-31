@@ -62,7 +62,7 @@ function import_excel($file_up, $ver=5)
     //0年級	1班級代號	2座號	3學生姓名	4繳費 	5轉帳戶名	6轉帳戶身份證編號	7存款別(P/G)	8立帳局號	9存簿帳號	10劃撥帳號
     // 一次讀取一列
     for ($row = 2; $row <= $highestRow; $row++) {
-        $v="";
+        unset($v);
 
         //讀取一列中的每一格
         for ($col = 0; $col <= 15; $col++) {

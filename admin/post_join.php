@@ -24,8 +24,16 @@ $xoopsDB->queryF($sql)   ;
 
 // 郵局傳檔
 if ($_POST["do_key"] =='export') {
+    //更換這次的扣款帳號相關資料
+    change_account($_POST['item_id']) ;
+
     export_poster_data($_POST['item_id']) ;
     exit() ;
+}
+// 傳真封面檔
+if ($_POST["do_key"] =='paper') {
+  show_poster_paper($_POST['item_id']) ;
+  exit() ;
 }
 
 // 資料轉 EXCEL 這次撽費清單
@@ -143,7 +151,7 @@ function import_excel($item_id, $file_up, $ver=5)
 
     // 一次讀取一列
     for ($row = 2; $row <= $highestRow; $row++) {
-        $v="";
+        unset($v);
 
         //讀取一列中的每一格
         $this_line_data_fg  = false   ;
@@ -255,6 +263,11 @@ function clear_poster_data($item_id)
 function result_data($item_id)
 {
     global   $xoopsDB ,$DEF  , $chk_error ;
+
+    //這次的帳號
+    change_account($item_id) ;
+
+
     if ($_FILES['result_data']['name']) {
         $file_up = XOOPS_ROOT_PATH."/uploads/es_charge/" . date('Ymd-'). $_FILES['result_data']['name'] ;
         copy($_FILES['result_data']['tmp_name'], $file_up);
@@ -400,6 +413,9 @@ $data['item_list']=get_item_list('all') ;
  $data['select_item'] = $item_id  ;
 
 if ($item_id) {
+  //更換這次的扣款帳號相關資料
+  change_account($item_id) ;
+
     //取得各項統計資料
     $data['total'] = get_poster_stud_num($item_id) ;
     //

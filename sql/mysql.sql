@@ -16,6 +16,7 @@ CREATE TABLE `charge_item` (
   `p_sum` int(11) NOT NULL DEFAULT '0',
   `c_rec_num` int(11) NOT NULL DEFAULT '0',
   `c_sum` int(11) NOT NULL DEFAULT '0',
+  `bank_id` int(11) NOT NULL  ,
   PRIMARY KEY (`item_id`)
 ) ENGINE=MyISAM   ;
 
@@ -95,4 +96,16 @@ CREATE TABLE  `charge_poster_data` (
     `cash` int(11) NOT NULL DEFAULT '0',
     `pay_fail` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`item_id`,`t_id`)
+) ENGINE=MyISAM  ;
+
+CREATE TABLE  `charge_bank_account` (
+    `b_id` int(11) NOT NULL AUTO_INCREMENT,
+    `account_name` varchar(80)  NOT NULL,
+    `account1`  varchar(80)  NOT NULL,
+    `account2`  varchar(80)  NOT NULL,
+    `account_id`  varchar(10)  NOT NULL,
+    `account_block_id`  varchar(10)  NOT NULL,
+    `account_pay`  int(11) NOT NULL DEFAULT '0',
+    `paper`  TEXT NOT NULL ,
+    PRIMARY KEY (`b_id` )
 ) ENGINE=MyISAM  ;

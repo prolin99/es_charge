@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] = '學生收費管理';                    //模組名稱
-$modversion['version'] = '2.3';                        //模組版次
+$modversion['version'] = '2.4';                        //模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';        //模組作者
 $modversion['description'] = '收費管理，需配合學生名單模組';    //模組說明
 $modversion['credits'] = 'prolin';                        //模組授權者
@@ -36,6 +36,7 @@ $modversion['tables'][3] = 'charge_record';
 $modversion['tables'][4] = 'charge_decrease';
 $modversion['tables'][5] = 'charge_account';
 $modversion['tables'][6] = 'charge_poster_data';
+$modversion['tables'][7] = 'charge_bank_account';
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;
 $modversion['adminindex'] = 'admin/index.php';
@@ -105,6 +106,9 @@ $modversion['templates'][$i]['description'] = 'es_sum.tpl';
 $modversion['templates'][$i]['file'] = 'es_decrease_table.tpl';
 $modversion['templates'][$i]['description'] = 'es_decrease_table.tpl';
 
+++$i;
+$modversion['templates'][$i]['file'] = 'es_admin_sch_acc_tpl.html';
+$modversion['templates'][$i]['description'] = 'es_admin_sch_acc_tpl';
 
 $i = 0;
 //偏好設定

@@ -1187,3 +1187,68 @@ function export_poster_data($item_id){
 
 	echo $data .$total_str;
 }
+
+
+
+
+function get_school_account( ) {
+	//取得全部代收帳號
+	global  $xoopsDB ;
+	$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("charge_bank_account") . "   " ;
+
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+		$data[$row['b_id']]=$row ;
+	}
+	return $data ;
+}
+function get_school_account_name( ) {
+	//取得全部代收帳號的名稱
+	global  $xoopsDB ;
+	$sql =  "  SELECT  *  FROM " . $xoopsDB->prefix("charge_bank_account") . "   " ;
+
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+		$data[$row['b_id']]=$row['account_name'] ;
+	}
+	return $data ;
+}
+
+
+function change_account($item_id){
+  global  $xoopsDB , $DEF;
+	$sql =  "  SELECT  B.*  FROM " . $xoopsDB->prefix("charge_bank_account") . " B , " . $xoopsDB->prefix("charge_item") . " I  where I.item_id='$item_id' and  B.b_id= I.bank_id ";
+
+	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+		$DEF['fee'] = $row['account_pay'] ;
+    //學校帳號 8 碼
+    $DEF['school_accont'] = $row['account1'] ;
+    //學校帳號--扣手續費帳號 8 碼
+    $DEF['school_accont2'] = $row['account2'] ;
+    //學校代號 3 碼
+    $DEF['school_id'] = $row['account_id'] ;
+    //郵局區處站所代號 4 碼
+    $DEF['poster_block'] = $row['account_block_id'] ;
+
+	}
+}
+
+function show_poster_paper($item_id){
+  global  $xoopsDB  ;
+	$sql =  "  SELECT  I.* , B.paper  FROM " . $xoopsDB->prefix("charge_bank_account") . " B , " . $xoopsDB->prefix("charge_item") . " I  where  I.item_id='$item_id' and  B.b_id= I.bank_id     " ;
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+    $paper= $row['paper'] ;
+    $patterns = array();
+    $patterns[0] = '/{{pay_date}}/';
+    $patterns[1] = '/{{pay_count}}/';
+    $patterns[2] = '/{{pay_money}}/';
+    $replacements = array();
+    $replacements[2] = $row['bank_date'];
+    $replacements[1] = $row['p_rec_num'];
+    $replacements[0] = $row['p_sum'];
+    echo preg_replace($patterns, $replacements, $paper);
+
+	}
+}

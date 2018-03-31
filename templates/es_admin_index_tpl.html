@@ -16,6 +16,7 @@
 	 <tr>
 	 <{/if}>
 	      <td><{$list.item_id}></td>
+        <td><{$p_data.school_account_list[$list.bank_id]}></td>
 	      <td><{$list.item_type}></td>
 	      <td><{$list.item}></td>
 	      <td><{$list.creater}></td>
@@ -36,6 +37,7 @@
      <form  action="index.php" method="post" >
     <fieldset>
        <legend>收費單</legend>
+  <label>選擇扣款單位帳號</label><{html_options name=bank_id options=$p_data.school_account_list   selected=$p_data.edit_list.bank_id  }>
 	<label>類別：</label><input type='text' name='item_type' class='span10' value="<{$p_data.edit_list.item_type}>">
 	<label>名稱：</label><input type='text' name='item' class='span10'  value="<{$p_data.edit_list.item}>">
 	<label>管理備註：</label><input type='text' name='comment' class='span10'  value="<{$p_data.edit_list.comment}>">
@@ -262,6 +264,8 @@ function ajax_add(form_id , div_id) {
      <form  action="index.php" method="post">
     <fieldset>
         <legend>新增收費單</legend>
+  <label>選擇扣款單位帳號</label><{html_options name=bank_id options=$p_data.school_account_list   class="span4" }>
+
 	<label>類別：(例:註冊費、托育費、學習輔導、才藝研習)</label><input type='text' name='item_type' class='span4' >
 	<label>名稱：(例:開學註冊等費用)</label><input type='text' name='item' class='span4'  >
 	<label>管理備註：</label><input type='text' name='comment' class='span4'   >

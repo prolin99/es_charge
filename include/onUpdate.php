@@ -27,6 +27,18 @@ function xoops_module_update_es_charge(&$module, $old_version)
     if (!chk_add_poster_data()) {
         go_update_add_poster_data();
     }
+
+
+    //多個扣款帳號
+    if (!chk_add_bank_account()) {
+        go_update_add_bank_account();
+    }
+
+    //多個扣款帳號
+    if (!chk_add_item_bank_id()) {
+        go_update_add_bank_id();
+    }
+
     mk_dir(XOOPS_ROOT_PATH."/uploads/es_charge");
 
     return true;
@@ -42,6 +54,65 @@ function mk_dir($dir=""){
         //若建立失敗秀出警告訊息
         mkdir($dir, 0777);
     }
+}
+//  ---- 收費表多加扣款帳號 id
+
+function chk_add_item_bank_id() {
+  global $xoopsDB;
+  $sql = ' select bank_id  from '.$xoopsDB->prefix('charge_item');
+  $result = $xoopsDB->queryF($sql);
+
+  if (empty($result)) {
+      return false;
+  }
+
+  return true;
+}
+
+function go_update_add_bank_id() {
+
+    global $xoopsDB;
+
+    $sql = '  ALTER TABLE   '.$xoopsDB->prefix('charge_item').'
+     ADD `bank_id` int(11) NOT NULL    ;
+     ';
+ 
+    $xoopsDB->queryF($sql);
+}
+
+
+// ------- 增加多個扣款帳號
+function chk_add_bank_account()
+{
+    global $xoopsDB;
+
+  $sql = 'select count(*) from '.$xoopsDB->prefix('charge_bank_account');
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update_add_bank_account()
+{
+    global $xoopsDB;
+
+    $sql = ' CREATE TABLE  '.$xoopsDB->prefix('charge_bank_account')
+      .' （
+       `b_id` int(11) NOT NULL AUTO_INCREMENT,
+      `account_name` varchar(80)  NOT NULL,
+      `account1`  varchar(80)  NOT NULL,
+      `account2`  varchar(80)  NOT NULL,
+      `account_id`  varchar(10)  NOT NULL,
+      `account_block_id`  varchar(10)  NOT NULL,
+      `account_pay`  int(11) NOT NULL DEFAULT 0  ,
+      `paper`  TEXT NOT NULL ,
+      PRIMARY KEY (`b_id`)
+  ) ENGINE=MyISAM   ';
+
+    $xoopsDB->queryF($sql);
 }
 
 //----- 增加 charge_account 資料表 ------------------------------

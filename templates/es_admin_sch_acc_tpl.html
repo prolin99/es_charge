@@ -1,0 +1,99 @@
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+<script language='javascript' type='text/javascript' src='<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js'></script>
+
+    <form action="school_account.php" method="post" >
+    <fieldset>
+    <legend>代收帳號列表</legend>
+    <button type="submit" name='btn_add'  value='新增'  class="btn btn-primary">新增</button>
+
+    <table class="table">
+      <tr>
+        <th>帳號名稱</th>
+        <th>劃撥帳號(8碼)</th>
+        <th>扣款手續費帳帳號</th>
+        <th>事業單位代號(3碼)</th>
+        <th>區處站所代號(4碼，空白)</th>
+        <th>手續費</th>
+        <th>動作</th>
+      </tr>
+	 <{foreach  key=key item=list   from= $account_list }>
+	 <tr>
+	      <td><{$list.account_name}></td>
+	      <td><{$list.account1}></td>
+	      <td><{$list.account2}></td>
+	      <td><{$list.account_id}></td>
+	      <td><{$list.account_block_id}></td>
+        <td><{$list.account_pay}>元</td>
+	      <td><a href="?do=edit&b_id=<{$list.b_id}>">修改</a></td>
+	 </tr>
+	 <{/foreach }>
+     </table>
+    </fieldset>
+    </form>
+
+  <{ if  ($edit_fg) }>
+    <!--       編修畫面                -->
+
+     <form  action="school_account.php" method="post" >
+      <fieldset>
+      <div class="row-fluid">
+      <div class="span6">
+           <legend>代收帳號</legend>
+    	<label>帳號名稱</label><input type='text' name='account_name' class='span10' value="<{$account_list[$now_id].account_name}>">
+    	<label>劃撥帳號（8碼）</label><input type='text' name='account1' class='span10'  value="<{$account_list[$now_id].account1}>">
+    	<label>扣款手續費帳帳號（8碼應同上）</label><input type='text' name='account2' class='span10'  value="<{$account_list[$now_id].account2}>">
+    	<label>事業單位代號（3碼）</label>
+      <input type='text' name='account_id' class='span10'  value="<{$account_list[$now_id].account_id}>">
+      <label>區處站所代號（4碼，目前未使用，應為空白）</label>
+      <input type='text' name='account_block_id' class='span10'  value="<{$account_list[$now_id].account_block_id}>">
+      <label>手續費</label>
+      <input type='text' name='account_pay' class='span10'  value="<{$account_list[$now_id].account_pay}>">
+      <input type='hidden' name='b_id' value="<{$account_list[$now_id].b_id}>">
+    </div>
+    <div class="span6">
+      傳真封面資料修改：<span class="alert alert-danger"> 大括號部份勿更動 </span>
+      <{$editor}>
+    </div>
+    </div>
+      </fieldset>
+
+      <button type="submit" name='act_edit'  value='edit_it'  class="btn btn-primary" onclick='return confirm("確定要更改?")' >修改</button>
+    	<button type="submit" name='act_del'  value='del_it'  class="btn btn-danger" onclick='return confirm("真的要刪除?\n\nPS.按[確定]會刪除這個帳號")' >刪除</button>
+
+    </form>
+
+    </div>
+  <{ /if }>
+
+
+  <{ if  ($add_fg) }>
+    <!--       新增畫面                -->
+    <div class="row-fluid">
+     <form  action="school_account.php" method="post" >
+      <fieldset>
+        <div class="row-fluid">
+        <div class="span6">
+           <legend>代收帳號</legend>
+    	<label>帳號名稱</label><input type='text' name='account_name' class='span10'  >
+    	<label>劃撥帳號（8碼）</label><input type='text' name='account1' class='span10'   >
+    	<label>扣款手續費帳帳號（8碼應同上）</label><input type='text' name='account2' class='span10'  >
+    	<label>事業單位代號（3碼）</label>
+      <input type='text' name='account_id' class='span10'   >
+      <label>區處站所代號（4碼，目前未使用，應為空白）</label>
+      <input type='text' name='account_block_id' class='span10'   >
+      <label>手續費</label>
+      <input type='text' name='account_pay' class='span10'  value="5">
+    </div>
+    <div class="span6">
+      傳真封面資料修改：<span class="alert alert-danger"> 大括號部份勿更動 </span>
+      <{$editor}>
+    </div>
+    </div>
+      </fieldset>
+      <button type="submit" name='act_add'  value='add_it'  class="btn btn-primary" onclick='return confirm("確定要新增?")' >新增代扣帳號</button>
+      </form>
+
+    </div>
+  <{ /if }>
