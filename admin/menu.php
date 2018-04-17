@@ -45,7 +45,7 @@ $i++ ;
 $adminmenu[$i]['title'] =  '代收帳號管理';
 $adminmenu[$i]['link'] = "admin/school_account.php";
 $adminmenu[$i]['desc'] = '學校代收帳號管理' ;
-$adminmenu[$i]['icon'] = 'images/admin/poster.png' ;
+$adminmenu[$i]['icon'] = 'images/admin/poster_s.png' ;
 
 $i++ ;
 $adminmenu[$i]['title'] = "關於";

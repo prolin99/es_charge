@@ -76,7 +76,7 @@ function go_update_add_bank_id() {
     $sql = '  ALTER TABLE   '.$xoopsDB->prefix('charge_item').'
      ADD `bank_id` int(11) NOT NULL    ;
      ';
- 
+
     $xoopsDB->queryF($sql);
 }
 
@@ -100,7 +100,7 @@ function go_update_add_bank_account()
     global $xoopsDB;
 
     $sql = ' CREATE TABLE  '.$xoopsDB->prefix('charge_bank_account')
-      .' （
+      .' (
        `b_id` int(11) NOT NULL AUTO_INCREMENT,
       `account_name` varchar(80)  NOT NULL,
       `account1`  varchar(80)  NOT NULL,
@@ -110,7 +110,8 @@ function go_update_add_bank_account()
       `account_pay`  int(11) NOT NULL DEFAULT 0  ,
       `paper`  TEXT NOT NULL ,
       PRIMARY KEY (`b_id`)
-  ) ENGINE=MyISAM   ';
+      ) ENGINE=MyISAM   ';
+
 
     $xoopsDB->queryF($sql);
 }

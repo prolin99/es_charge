@@ -29,13 +29,13 @@ if ($_POST['act_edit']) {
             `account_pay`= '{$_POST['account_pay']}' ,
             `paper`= '{$_POST['paper']}'
             where b_id = '{$_POST['b_id']}' " ;
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+  $result = $xoopsDB->query($sql) ;//or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 if ($_POST['act_del']) {
   $sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_bank_account") .
      	   	   "  WHERE  `b_id` = '{$_POST['b_id']}' " ;
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+  $result = $xoopsDB->query($sql) ;//or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 //封面頁樣版
@@ -92,7 +92,7 @@ if ($_POST['act_add']) {
   $sql = ' INSERT INTO ' . $xoopsDB->prefix("charge_bank_account") .
   " (`b_id`,  `account_name`, `account1`, `account2`, `account_id`, `account_block_id`, `account_pay` , `paper`)  " .
   "VALUES ('0','{$_POST['account_name']}'    ,'{$_POST['account1']}'   , '{$_POST['account2']}'  ,'{$_POST['account_id']}'   ,  '{$_POST['account_block_id']}' , '{$_POST['account_pay']}' ,'{$_POST['paper']}'  )" ;
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+  $result = $xoopsDB->query($sql) ;//or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 $account_list = get_school_account() ;
@@ -100,17 +100,17 @@ $account_list = get_school_account() ;
 
 
 if (count($account_list)==0 and $DEF['school_accont'] ) {
-  //第一次更新，由原在偏好中的設定值 移入到資料表中 
+  //第一次更新，由原在偏好中的設定值 移入到資料表中
   $sql = ' INSERT INTO ' . $xoopsDB->prefix("charge_bank_account") .
   " (`b_id`,  `account_name`, `account1`, `account2`, `account_id`, `account_block_id`, `account_pay`  , `paper` )  " .
-  "VALUES ('0','學校'     ,'{$DEF['school_accont']}'   , '{$DEF['school_accont2']}'  , '{$DEF['school_id']}'   ,  '{$DEF['poster_block']}'  , '{$DEF['fee']}'  ,$def_data  )" ;
-  $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+  "VALUES ('0','學校'     ,'{$DEF['school_accont']}'   , '{$DEF['school_accont2']}'  , '{$DEF['school_id']}'   ,  '{$DEF['poster_block']}'  , '{$DEF['fee']}'  , '$def_data'  )" ;
+  $result = $xoopsDB->queryF($sql) ; //or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 
   $account_list = get_school_account() ;
 
   //把偏好清空
   $sql=  "update   " . $xoopsDB->prefix("config") ." set conf_value='' where conf_name='es_c_school_accont' "  ;
-	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	$result = $xoopsDB->queryF($sql) ;// or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 }
 
 
