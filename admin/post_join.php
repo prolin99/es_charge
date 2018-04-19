@@ -10,6 +10,7 @@ $xoopsOption['template_main'] = "es_a_post_join_tpl.html";
 include_once "header.php";
 
 include_once "../function.php";
+
 /*
 if (!$DEF['bank_account_use']) {
     echo '未使用郵局扣款！' ;
@@ -415,6 +416,8 @@ $data['item_list']=get_item_list('all') ;
 if ($item_id) {
   //更換這次的扣款帳號相關資料
   change_account($item_id) ;
+  if ($DEF['school_accont']=='')
+    $DEF['bank_account_use']=0 ;
 
     //取得各項統計資料
     $data['total'] = get_poster_stud_num($item_id) ;
