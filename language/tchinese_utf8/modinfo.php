@@ -18,7 +18,7 @@ define("_MI_ESCHARGE_CONFIG_TITLE4","減免身份");
 define("_MI_ESCHARGE_CONFIG_DESC4","減免身份設定，第一項請設為無。");
 
 define("_MI_ESCHARGE_CONFIG_TITLE5","(不再使用)金融扣款手續費");
-define("_MI_ESCHARGE_CONFIG_DESC5","郵局5元");
+define("_MI_ESCHARGE_CONFIG_DESC5","郵局5元(改在代收帳號管理中設定)");
 
 define("_MI_ESCHARGE_CONFIG_TITLE6","(不再使用)學校的劃撥帳號");
 define("_MI_ESCHARGE_CONFIG_DESC6","（請進入代收帳號管理）學校撥款劃撥的帳號(8碼)");
@@ -27,13 +27,13 @@ define("_MI_ESCHARGE_CONFIG_DESC11","應該和上面的學校撥款劃撥帳號�
 
 
 define("_MI_ESCHARGE_CONFIG_TITLE7","(不再使用)事業單位代號");
-define("_MI_ESCHARGE_CONFIG_DESC7","由郵局儲匯處編給(3碼)");
+define("_MI_ESCHARGE_CONFIG_DESC7","由郵局儲匯處編給(3碼)(改在代收帳號管理中設定)");
 
 define("_MI_ESCHARGE_CONFIG_TITLE8","(不再使用)區處站所代號");
 define("_MI_ESCHARGE_CONFIG_DESC8","郵局提供，目前為空白(4碼)");
 
-define("_MI_ESCHARGE_CONFIG_TITLE9","已有建立郵局帳號");
-define("_MI_ESCHARGE_CONFIG_DESC9","有學生扣款帳號資料，才能進行相關功能");
+define("_MI_ESCHARGE_CONFIG_TITLE9","使用郵局帳號代收扣款");
+define("_MI_ESCHARGE_CONFIG_DESC9","有學生扣款帳號資料，才能進行郵局扣款作業功能");
 
 
 define("_MI_ESCHARGE_CONFIG_TITLE12","外加的年級、班級名稱轉換數字");

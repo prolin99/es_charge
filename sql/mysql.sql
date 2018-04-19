@@ -16,7 +16,7 @@ CREATE TABLE `charge_item` (
   `p_sum` int(11) NOT NULL DEFAULT '0',
   `c_rec_num` int(11) NOT NULL DEFAULT '0',
   `c_sum` int(11) NOT NULL DEFAULT '0',
-  `bank_id` int(11) NOT NULL  ,
+  `bank_id` int(11) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`item_id`)
 ) ENGINE=MyISAM   ;
 

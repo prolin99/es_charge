@@ -84,7 +84,7 @@ if ($_POST['act_clear'] )  {
 //編修模式
 if ($_GET['do']=='edit' )  {
 	$creater = $xoopsUser->getVar('name') ;
-  	$p_data['edit_fg'] = true ;
+  //$p_data['edit_fg'] = true ;
 	$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " where item_id = '{$_GET['item_id']}'  and  creater='$creater'  " ;
 
 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
@@ -92,6 +92,10 @@ if ($_GET['do']=='edit' )  {
 	while($date_list=$xoopsDB->fetchArray($result)){
  	 	$p_data['edit_list']= $date_list ;
 	}
+	//非該項建立都無法修改
+	if ($date_list)
+		$p_data['edit_fg'] = true ;
+
 	//取得細項
 	$p_data['item_list'] = get_item_detail_list($_GET['item_id']) ;
 }
@@ -104,8 +108,8 @@ if ($_POST['btn_add'] )
 
 
 //取得所有收費表
- 	$p_data['list'] =get_item_all_list() ;
- 	$p_data['today']= date("Y-m-d" ) ;
+$p_data['list'] =get_item_all_list() ;
+$p_data['today']= date("Y-m-d" ) ;
 
  //取出常用細項
 $p_data['detail_def']= $xoopsModuleConfig['es_charge_default_detail'] ;
