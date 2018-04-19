@@ -74,7 +74,7 @@ function go_update_add_bank_id() {
     global $xoopsDB;
 
     $sql = '  ALTER TABLE   '.$xoopsDB->prefix('charge_item').'
-     ADD `bank_id` int(11) NOT NULL    ;
+     ADD `bank_id` int(11) NOT NULL  DEFAULT 1  ;
      ';
 
     $xoopsDB->queryF($sql);
