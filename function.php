@@ -1285,7 +1285,7 @@ function chk_post_list(){
       //echo $k .' '. $v .'---' . $second[$k] ;
       if ($v <> $second[$k]) {
         //echo $k .' '. $v .'---' . $second[$k] ;
-        $err.= '帳號：' .$k .' 身份証號：'. $v .'<br />' ;
+        $err.= '帳號：' .$k .' 身份証號：'. $v  .' <br />' ;
       }
     }
   }
