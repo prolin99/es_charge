@@ -320,9 +320,10 @@ function result_data($item_id)
                         $acc_bid= substr($line, 19, 7);
                         $id= substr($line, 26, 7);
                         //echo "$person_id $acc_bid $id ---  $no_pay <br />" ;
-                        //只以身份證做判別
+                        //不同身份證做判別，只使用帳號
                         $sql =  " UPDATE  " . $xoopsDB->prefix("charge_poster_data") . " SET  pay_fail =  '$no_pay'
-                        where  acc_personid  = '$person_id'  and  acc_b_id='$acc_bid'  and acc_id='$id'   and   item_id = '$item_id'    ; " ;
+                          where     acc_b_id='$acc_bid'  and acc_id='$id'   and   item_id = '$item_id'    ; " ;
+                        // where  acc_personid  = '$person_id'  and  acc_b_id='$acc_bid'  and acc_id='$id'   and   item_id = '$item_id'    ; " ;
                         $xoopsDB->queryF($sql)     ;
                     } else {
                         $pay_ok_num ++ ;

@@ -33,6 +33,9 @@
 
 
 <{ if ($bank_account_use) }>
+<{if $chk_message }>
+<span class="alert alert-danger"><{$chk_message}></span>
+<{/if}>
 <div class="alert alert-success"><{$infomessage}></div>
 
 <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >

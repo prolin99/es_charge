@@ -1255,3 +1255,42 @@ function show_poster_paper($item_id){
 
 	}
 }
+
+
+function chk_post_list(){
+  //檢查學生帳號是否身份証、帳號是相同的
+  global  $xoopsDB  ;
+  //帳號相同
+  $sql =  "  SELECT   count(*) as cc , acc_person_id, acc_mode , acc_b_id ,acc_id , acc_g_id FROM " . $xoopsDB->prefix("charge_account")  . " group by acc_mode, acc_b_id , acc_id , acc_g_id  having cc>1   " ;
+
+  //echo $sql .'<br>';
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+    $ind = $row['acc_mode'].' '. $row['acc_b_id'] .' '.$row['acc_id'] .' '.$row['acc_g_id'];
+    $first[$ind] = $row['acc_person_id'] ;
+
+  }
+
+  $sql =  "  SELECT   count(*) as cc , acc_person_id, acc_mode , acc_b_id ,acc_id , acc_g_id FROM " . $xoopsDB->prefix("charge_account")  . " group by acc_person_id , acc_mode, acc_b_id , acc_id , acc_g_id  having cc>1 " ;
+  //echo $sql .'<br>';
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+    $ind = $row['acc_mode'].' '.$row['acc_b_id'] .' '.$row['acc_id'] .' '.$row['acc_g_id'];
+    $second[$ind] = $row['acc_person_id'] ;
+  }
+
+  if (count($first) <>count($second) ){
+    $err.='帳號和身份証不相符:(請檢查帳號比對檔，搜尋帳號會有多筆，檢查各筆的身份証號是否都相同。)<br/>' ;
+    foreach ($first as $k => $v )  {
+      //echo $k .' '. $v .'---' . $second[$k] ;
+      if ($v <> $second[$k]) {
+        //echo $k .' '. $v .'---' . $second[$k] ;
+        $err.= '帳號：' .$k .' 身份証號：'. $v .'<br />' ;
+      }
+    }
+  }
+  return $err ;
+
+
+
+}

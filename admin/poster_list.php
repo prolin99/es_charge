@@ -199,6 +199,9 @@ if ($_POST['do']== 'input') {
 /*----------取得資料區--------------*/
 //有使用郵局帳號才做
 if ($DEF['bank_account_use']) {
+
+    $chk_message = chk_post_list() ;
+
     //目前已有扣款帳號
     $sql = " SELECT count(*)  as ss FROM  ". $xoopsDB->prefix("e_student")     ;
     $result = $xoopsDB->query($sql)   ;
@@ -215,6 +218,7 @@ if ($DEF['bank_account_use']) {
     while ($row=$xoopsDB->fetchArray($result)) {
         $no_account = $row['ss'] ;
         $infomessage.= "全校學生數總數： $stud_num   , 有扣款帳號學生數：" . ($stud_num-$no_account) ."  , 無扣款帳號學生數： $no_account  <br/>" ;
+
     }
 
     //如果未匯入就視為不使用
@@ -237,6 +241,8 @@ if ($DEF['bank_account_use']) {
 $xoopsTpl->assign("data", $data) ;
 $xoopsTpl->assign("message", $message) ;
 $xoopsTpl->assign("infomessage", $infomessage) ;
+$xoopsTpl->assign("chk_message", $chk_message) ;
+
 $xoopsTpl->assign("class_sit_message", $class_sit_message) ;
 
 $xoopsTpl->assign("bank_account_use", $DEF['bank_account_use']) ;
