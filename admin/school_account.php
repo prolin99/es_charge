@@ -4,6 +4,7 @@
 // 製作日期：2018-03-30
 // $Id:$
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\CkEditor;
 
 /*-----------引入檔案區--------------*/
 
@@ -82,8 +83,7 @@ if ($_POST['btn_add']) {
   $add_fg = true;
 
 
-  include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
-  $ck = new CKEditor("editor_paper", "paper", $def_data);
+  $ck = new CkEditor("editor_paper", "paper", $def_data);
   $ck->setHeight(350);
   $editor = $ck->render();
 }
@@ -119,8 +119,8 @@ if (count($account_list)==0 and $DEF['school_accont'] ) {
 if ($_GET['do']=='edit'){
   $edit_fg = true;
   $now_id = $_GET['b_id']+0 ;
-  include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
-  $ck = new CKEditor("editor_paper", "paper", $account_list[$now_id]['paper']);
+
+  $ck = new CkEditor("editor_paper", "paper", $account_list[$now_id]['paper']);
   $ck->setHeight(350);
   $editor = $ck->render();
 }

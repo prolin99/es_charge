@@ -5,10 +5,11 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\Utility;
 
 //$xoopsOption['template_main'] = "es_sum_tpl.html";
 include_once "header.php";
-$xoopsOption['template_main'] = set_bootstrap("es_sum.tpl");
+$xoopsOption['template_main'] = "es_sum.tpl";
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
@@ -77,7 +78,7 @@ foreach ($charge_array as $detail_id =>$v)  {
 $data['class_source_pay']['end_sum'] = $data['class_source_pay']['all']  - $data['class_decrease']['all_sum']  ;
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
+$xoopsTpl->assign( "toolbar" , Utility::toolbar_bootstrap($interface_menu)) ;
 
 $xoopsTpl->assign( "data" , $data ) ;
 

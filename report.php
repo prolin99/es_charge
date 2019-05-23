@@ -5,10 +5,11 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\Utility;
 
 //$xoopsOption['template_main'] = "es_report_tpl.html";
 include_once "header.php";
-$xoopsOption['template_main'] = set_bootstrap('es_report.tpl');
+$xoopsOption['template_main'] = 'es_report.tpl';
 include_once XOOPS_ROOT_PATH."/header.php";
 
 /*-----------function區--------------*/
@@ -103,8 +104,8 @@ if  ( $item_id ) {
 $data['out_student']= chk_student_out($item_id , $class_id , 'class' ) ;
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
- 
+$xoopsTpl->assign( "toolbar" , Utility::toolbar_bootstrap($interface_menu)) ;
+
 $xoopsTpl->assign( "data" , $data ) ;
 $xoopsTpl->assign( "DEF" , $DEF ) ;
 

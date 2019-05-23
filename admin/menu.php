@@ -5,8 +5,14 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 $i=0 ;
-$adminmenu[$i]['title'] = '建立收費表';
+$adminmenu[$i]['title'] = '首頁';
 $adminmenu[$i]['link'] = "admin/index.php";
+$adminmenu[$i]['desc'] = '首頁' ;
+$adminmenu[$i]['icon'] = 'images/admin/home.png' ;
+
+$i++ ;
+$adminmenu[$i]['title'] = '建立收費表';
+$adminmenu[$i]['link'] = "admin/main.php";
 $adminmenu[$i]['desc'] = '建立收費名稱' ;
 $adminmenu[$i]['icon'] = 'images/admin/home.png' ;
 
