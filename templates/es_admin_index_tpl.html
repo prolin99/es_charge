@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
 <script language='javascript' type='text/javascript' src='<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js'></script>
 
-    <form action="index.php" method="post" >
+    <form action="main.php" method="post" >
     <fieldset>
     <legend>收費項目列表</legend>
     <button type="submit" name='btn_add'  value='新增'  class="btn btn-primary">新增</button>
@@ -34,7 +34,7 @@
 <!--       編修畫面                -->
 <div class="row-fluid">
 <div class="span6">
-     <form  action="index.php" method="post" >
+     <form  action="main.php" method="post" >
     <fieldset>
        <legend>收費單</legend>
   <label>選擇扣款單位帳號</label><{html_options name=bank_id options=$p_data.school_account_list   selected=$p_data.edit_list.bank_id  }>

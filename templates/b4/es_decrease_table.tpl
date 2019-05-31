@@ -47,29 +47,29 @@
 
   <table class="table table-bordered table-hover" >
   <tr>
-      <th class='col-1'>姓名</th>
-      <th class='col-2'>主身份別</th>
+      <th scope='col'>姓名</th>
+      <th scope='col'>主身份別</th>
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
        <{*       如年段的該項目無收費 則不出現                       *}>
        <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
-        <th  ><i class="fa fa-ban"    set="detailid_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='全班先減免此項' ></i>
+        <th scope='col' ><i class="fa fa-ban"    set="detailid_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='全班先減免此項' ></i>
         <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)
         </th>
        <{/if}>
       <{/foreach}>
-       <th class='col-2'>備註</th>
+       <th scope='col'>備註</th>
     </tr>
 
   <{foreach  key=key item=stud   from= $data.students }>
     <{if ($data.selected[$stud.stud_id].selected) }>
-    <tr>
-     <td >
+    <tr >
+     <th >
       (<{$stud.class_sit_num}>)<{$stud.name}>
       <{assign var="stud_id" value=$stud.stud_id}>
-     </td>
-      <td class='col-2'>
+     </th>
+     <td >
            <{html_options name='cause_id'   class='form-control '    options=$decrease_cause   selected=$data.selected[$stud_id].cause_id   id="cause_$stud_id"   onchange="cause_check($(this));"   }>
-       </td>
+      </td>
 
           <!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
@@ -78,35 +78,33 @@
         <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
         <td  >
            <div class="row money_div"  id='box_<{$stud.stud_id}>_<{$detail_key}>'  >
-
-
               <span class="col-1">
                 <span class="fa fa-forward"    set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  ></span>
               </span>
               <{*   -----  金額  ------------------     *}>
-              <span >
+              <span class="col-8">
                 <input   class='form-control money detailid_<{$detail_key}>'  name='dollars[<{$stud.stud_id}>_<{$detail_key}>]' type='text' id='dollars_<{$stud.stud_id}>_<{$detail_key}>'  sit_num = '<{$stud.class_sit_num}>'   title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  value='<{$data.decase_list[$stud_id].dollar[$detail_key] }>'   onchange="check_input($(this),<{$data.detail_dollar.pay[$detail_key]}>);" />
               </span>
 
                       <{*   -----  補助  ------------------     *}>
                       <{ if !($data.dent_support[$detail_key]) }>
-                        <span  class="col-10 user_<{$stud_id}>" id = "need_<{$stud.stud_id}>_<{$detail_key}>"
+                        <span  class="col-12 user_<{$stud_id}>" id = "need_<{$stud.stud_id}>_<{$detail_key}>"
                           <{if ($data.selected[$stud_id].cause_id ==0) }>
                           style="display:none"
                            <{/if}>
                           >
                         <div class='row'>
-                        <span class='col-4'>
+                        <span class='col-5'>
                         <input type='checkbox'   id="ineed_<{$stud.stud_id}>_<{$detail_key}>"  value='1'   class='need_chk'
                           <{if ($data.decase_list[$stud_id].cause_chk[$detail_key])}>checked <{/if}>  <{*  有申請補助  *}>
-                          title="申請補助">
+                          title="申請補助">補
                         </span>
 
-                        <span class='col-4'>
+                        <span class='col-5'>
                            <{ if ($data.decase_list[$stud_id].other[$detail_key] ) }>
-                           <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  style="background-color: green"     title="第二種身份--<{$data.decase_list[$stud_id].other_cause_str[$detail_key]}> ">
+                           <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  style="background-color: green"     title="第二種身份--<{$data.decase_list[$stud_id].other_cause_str[$detail_key]}> ">身
                            <{else}>
-                            <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  title="設定第二種身份">
+                            <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  title="設定第二種身份">身
                            <{/if}>
                          </span>
                          </span>
@@ -127,7 +125,7 @@
 
 
       <{/foreach}>
-      <td class='col-2'>
+      <td  >
           <input   name='ps[<{$stud.stud_id}>]' type='text' id='ps_<{$stud.stud_id}>'  class='form-control' title='(<{$stud.class_sit_num}>)<{$stud.name}>'  value='<{$data.selected[$stud_id].ps}>'   onchange="ps_save($(this));" />
       </td>
 

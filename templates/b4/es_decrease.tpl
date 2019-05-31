@@ -19,26 +19,25 @@
         <table class="table table-bordered table-hover" >
 	<!--      表格標題                                   -->
     <tr>
-      <div class="row" >
-      <td class='col-1'>座號</td>
-      <td class='col-1'>姓名</td>
+
+      <th scope='col'>座號</th>
+      <th scope='col'>姓名</th>
 
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <td ><{$detail_val|truncate:9}><span class="label"><{$data.detail_dollar.pay[$detail_key]}></span></td>
+        <th scope='col'><{$detail_val|truncate:9}><span class="label"><{$data.detail_dollar.pay[$detail_key]}></span></th>
       <{/foreach}>
 
-      <td class='col-2'>減免原因</td>
+      <th scope='col'>減免原因</th>
 
-      </div>
   </tr>
       <!--      表格內容                                   -->
 
     <{foreach  key=key item=stud   from= $data.decase_list }>
 
     <tr>
-      <div class="row" id="div_<{$data.seletc_item}>_<{$key}>">
-      <td><div class='col-1'  id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><{$data.students[$key].class_sit_num}></div></td>
-      <td class='col-1' id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></td>
+      <div  id="div_<{$data.seletc_item}>_<{$key}>">
+      <th scope='col'><div    id="sit_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].class_sit_num}>'  ><{$data.students[$key].class_sit_num}></div></td>
+      <td  id="name_<{$data.seletc_item}>_<{$key}>" data='<{$data.students[$key].name}>' ><{$data.students[$key].name}></td>
 
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
         <{*    dollar_item_stud_sn_detail_id                金額  checked 補助                   *}>
@@ -52,11 +51,11 @@
           <{/if}>
 
         <{else}>
-        <td class='col-1' id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></td>
+        <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need=''  ><{$data.decase_list[$key].dollar[$detail_key]}></td>
         <{/if}>
       <{/foreach}>
 
-      <td class='col-2' id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="fa fa-trash" title='刪除減免記錄'></i></span><{$data.selected[$key].cause|truncate:18}>
+      <td  id='cause_<{$data.seletc_item}>_<{$key}>' data='<{$data.selected[$key].cause|truncate:18}>'><span class="del"><i class="fa fa-trash" title='刪除減免記錄'></i></span><{$data.selected[$key].cause|truncate:18}>
           <{if ($data.selected[$key].ps) }>
             <span class="fa fa-info-circle" title="連絡內容：<{$data.selected[$key].ps}>"></span>
           <{/if}>

@@ -41,11 +41,11 @@
 
 	<table class="table table-bordered" >
  	<tr>
-      <th class='col-2'>姓名</th>
+      <th scope='col'>姓名</th>
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <th  ><{$detail_val}></th>
+        <th scope='col' ><{$detail_val}></th>
       <{/foreach}>
-      <th  >小計</th>
+      <th scope='col' >小計</th>
     </tr>
 
   <{foreach  key=key item=stud   from= $data.students }>
@@ -56,7 +56,7 @@
     <tr >
     <{/if}>
       <{if ($data.selected[$stud.stud_id].in_bank) }>
-      <td ><span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><span class=" fa fa-shopping-cart" title="銀行扣款"></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></td>
+      <th ><span class="in_bank" id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='1'><span class=" fa fa-shopping-cart" title="銀行扣款"></span></span>(<{$stud.class_sit_num}>)<{$stud.name}></th>
       <{else}>
       <td ><span class="in_bank"  id='icon_<{$stud.stud_id}>_<{$data.seletc_item}>' data='0'>
           <span class='badge badge-danger'>
