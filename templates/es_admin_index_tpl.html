@@ -261,7 +261,7 @@ function ajax_add(form_id , div_id) {
 
 <{if ($p_data.add_fg)}>
 	<!--       新增畫面                 -->
-     <form  action="index.php" method="post">
+     <form  action="main.php" method="post">
     <fieldset>
         <legend>新增收費單</legend>
   <label>選擇扣款單位帳號</label><{html_options name=bank_id options=$p_data.school_account_list   class="span4" }>
