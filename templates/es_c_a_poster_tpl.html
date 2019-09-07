@@ -5,6 +5,19 @@
 
 
 <div id='frm' class="row-fluid"  >
+<div class="alert alert-info">
+<h4>說明：</h4>
+    1.此為學生郵局扣款時的帳號管理。<br />
+    2.已有資料，請先 <strong>匯出帳號 Excel 備份</strong> ，並以此檔做修改藍本。<br />
+    3.新建立時，使用 EXCEL ，依範例檔欄位填放資料，存款別預設為 P (存簿帳號)。再做匯入。 <br />
+    4.匯入時以班級、座號、姓名欄位和學生資料庫比對，如果無法匹配則出現找不到學生的錯誤。 <br />
+    5.當有錯誤時，請修改 EXCEL 內容，再次匯入。<br />
+    6.匯入時可分年級、分班級多次匯入。也可以只匯入部份更改、新增的 Excel 檔案。<br />
+    7.新學年時，升年級、改座號，不會影響學生扣款帳號的取得，只需補上無扣款學生帳號資料。但建議 <strong>匯出帳號 Excel 備份</strong> ，就能得到新的班級、座號，並排除非學籍的學生資料。<br />
+    8.完成後請保管好 <strong>匯出帳號 Excel 備份</strong> 下載的檔案。<br />
+    9.新學年時，已畢業學生或轉出的學生資料還在，基本上不影響到資料的取得。如果想清除非學籍學生資料，可 <strong>清除全部帳號資料</strong> ，再匯回剛備份的下載檔案。<br />
+</div>
+
   郵局帳號 EXCEL 格式範例：
   <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載 EXCEL 格式檔</a><br/>
   <table  class="table table-bordered">
@@ -18,10 +31,12 @@
   <{ if ($bank_account_use) }>
   <{if $chk_message }>
   <div class="alert alert-danger">
-      <h4>目前資料有錯誤請修正，扣款帳號相同，但扣款人身份證不同的資料：</h4>
+      <h4>目前資料有錯誤請修正並再匯入，扣款帳號相同，但扣款人身份證不同的資料：</h4>
       <{$chk_message}>
   </div>
   <{/if}>
+  <h3>統計</h3>
+  <div  ><{$infomessage}></div>
   <{/if}>
 
   <h3>做修改前請先備份：</h3>
@@ -51,20 +66,12 @@
 
    </form>
 </div>
-<div class="alert alert-info">
-<strong>相關說明：</strong>
 
-<div>使用 EXCEL 格式匯入，請依範例檔欄位填放資料，不使用的欄位也要保留。</div>
-<div>比對以班級、座號、姓名和學生資料庫比對。</div>
-<div>帳號做更新時，建議先匯出帳號 EXCEL 檔，修改後再匯入。</div>
-
-
-</div>
 
 
 <{ if ($bank_account_use) }>
-<div class="alert alert-success"><{$infomessage}></div>
 
+<h3>尚無扣款帳號學生</h3>
 <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
     <button type='submit'  name='do' value='input' class='btn btn-primary'>寫入</button>
     <span class="alert alert-info">可以多欄貼入(空白、逗號、換行，但欄位內容要有資料)</span>
