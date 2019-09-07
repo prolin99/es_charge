@@ -812,6 +812,7 @@ function  get_grade_source_pay_sum($item_id ,$class_id  , $my_class_charge_array
 function get_class_no_account($class_id ='all') {
     global  $xoopsDB ;
     //all or 班級無扣款帳號的資料，傳回學生 stud_id
+
     if ($class_id =='all')
         $sql = " SELECT a.class_id, a.class_sit_num ,a.name, a.stud_id , b.* FROM  ". $xoopsDB->prefix("e_student")
             . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account")
@@ -822,6 +823,16 @@ function get_class_no_account($class_id ='all') {
             . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account")
             . " as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  and a.class_id = '$class_id'   "
             . "  order by  a.class_id, a.class_sit_num  "  ;
+
+    /*
+    SELECT customers.Name, orders.Order_No
+    FROM customers
+    LEFT JOIN orders
+    ON customers.C_Id=orders.C_Id;
+    */
+
+
+
 
     $result = $xoopsDB->query($sql)   ;
 
@@ -1257,16 +1268,39 @@ function chk_post_list(){
   //檢查學生帳號是否身份証、帳號是相同的
   global  $xoopsDB  ;
   //帳號相同
-  $sql =  "  SELECT   count(*) as cc , acc_person_id, acc_mode , acc_b_id ,acc_id , acc_g_id FROM " . $xoopsDB->prefix("charge_account")  . " group by acc_mode, acc_b_id , acc_id , acc_g_id  having cc>1   " ;
+  $sql =  "  SELECT   count(*) as cc , acc_mode , acc_b_id ,acc_id , acc_g_id FROM "
+  . $xoopsDB->prefix("charge_account")  . " group by acc_mode, acc_b_id , acc_id , acc_g_id
+  having cc>1   " ;
 
   //echo $sql .'<br>';
+
   $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 	while($row=$xoopsDB->fetchArray($result)){
     $ind = $row['acc_mode'].' '. $row['acc_b_id'] .' '.$row['acc_id'] .' '.$row['acc_g_id'];
-    $first[$ind] = $row['acc_person_id'] ;
-
+    $first[$ind]['cc'] = $row['cc'] ;
   }
 
+  //帳號相同，身份証號也相同
+  $sql =  "  SELECT   count(*) as cc , acc_person_id , acc_mode , acc_b_id ,acc_id , acc_g_id FROM "
+  . $xoopsDB->prefix("charge_account")  . " group by acc_person_id, acc_mode, acc_b_id , acc_id , acc_g_id
+  " ;
+
+  //echo $sql .'<br>';
+
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+	while($row=$xoopsDB->fetchArray($result)){
+    $ind = $row['acc_mode'].' '. $row['acc_b_id'] .' '.$row['acc_id'] .' '.$row['acc_g_id'];
+    $sec[$ind]['cc'] = $row['cc'] ;
+    $sec[$ind]['acc_person_id'] .=  $row['acc_person_id'] .' , '  ;
+  }
+
+  if ( count($first)<>count($sec) )
+    foreach ($first as $key => $value) {
+        if ($value['cc']<>$sec[$key]['cc'] )
+            //echo  $key . $sec[$key]['acc_person_id'] ."</br>";
+            $err.= '帳號同為：' . $key .' 但身份証號有數組：'. $sec[$key]['acc_person_id'] .' <br />' ;
+    }
+/*
   $sql =  "  SELECT   count(*) as cc , acc_person_id, acc_mode , acc_b_id ,acc_id , acc_g_id FROM " . $xoopsDB->prefix("charge_account")  . " group by acc_person_id , acc_mode, acc_b_id , acc_id , acc_g_id  having cc>1 " ;
   //echo $sql .'<br>';
   $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
@@ -1285,6 +1319,7 @@ function chk_post_list(){
       }
     }
   }
+*/
   return $err ;
 
 
