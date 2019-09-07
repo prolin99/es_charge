@@ -6,12 +6,25 @@
 <{if ($DEF.bank_account_use)}>
 
 <div id='frm' class="row-fluid"  >
+    <div class="alert alert-info">
+       <h4>說明：</h4>
+       1.本功能在提供轉換出郵局扣款記錄檔。<br />
+       2.已使用收費系統（各班填報）完成後，按下 <strong>單位名冊內收費學生匯入資料</strong> 準備做轉檔。<br />
+       3.單位名冊不支援（無法使用各班填報）的其他年段(如幼稚班)，使用 <strong>外部扣款學生 EXCEL</strong> 直接建立扣款帳號、費用匯入。<br />
+       4.也可以不使用收費系統（各班填報），全以 <strong>外部扣款學生 EXCEL</strong> 資料匯入。<br />
+       5.如果資料有修改過（各班填報），請 <strong>清除本次郵局轉檔資料</strong> 再重新匯入（不會影響原班填報內容）。<br />
+       6.<strong>產生郵局傳送檔</strong>後要保留資料，不可再刪除，否則下方的對帳功能將無法使用。<br />
+       7.郵局扣款作業後，會回傳扣款結果檔案，再 <strong>上傳郵局扣款結果檔</strong>，比對是否扣款成功。<br />
+       8.最後 <strong>下載扣款失敗名冊</strong> ，再對學生現金收費。
+    </div>
+
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <div  class="row-fluid"  >
         <span class='span4'><h1>郵局扣款轉檔</h1></span>
             <span class='span5'>
-            <button type='submit'  name='do_key' value='clear' class='btn btn-danger' title='如資料有修改過，先清空資料才重新再匯'  onclick='return confirm("確定要清空?")'  >清空本次資料</button>
-            <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse' title='其它要扣款的學生(如幼稚園)'>下載：扣款學生 EXCEL 範例檔</a>
+
+            <button type='submit'  name='do_key' value='clear' class='btn btn-danger' title='資料更動過，先清空資料才重作以下各項步驟。'  onclick='return confirm("確定要清空?")'>清除本次郵局轉檔資料</button>
+            <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse' title='其它不在學籍資料中，但要扣款的學生(如幼稚園)'>下載：外部扣款學生 EXCEL 範例檔</a>
             </span>
         </div>
         <span><label>繳費項目：<span class='alert alert-info'>( 記錄有時效性，歷史資料會受學籍名冊影響！)</span></label></span><{html_options name=item_id options=$data.item_list selected=$data.select_item  onchange="submit();"  class="span4" }>
@@ -83,14 +96,7 @@
     </table>
     郵局格式最後總計：<{$data.p_text}>
 </div>
-<div class="alert alert-info">
-   說明：<br />
-   本功能在提供轉換出郵局扣款記錄，支援在無學生名冊的情形下使用。<br />
-   如果有使用收費系統，先把本次收費資料匯入。再匯入其他年段(如幼稚班)的 Excel 資料。<br />
-   也可以全部不使用收費系統，全以 EXCEL 資料匯入。<br />
-   如果資料有修改過，建議全部清空後再重新匯入。<br />
-   完成後要保留資料，不可再刪除，否則下方的對帳功能將無法使用。
-</div>
+
 <div id='frm2' class="row-fluid  "  >
     <form class="form-horizontal"   action="post_join.php" method='post' enctype='multipart/form-data'  >
         <div  class="row-fluid"  >
