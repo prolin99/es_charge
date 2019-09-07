@@ -1265,7 +1265,7 @@ function show_poster_paper($item_id){
 
 
 function chk_post_list(){
-  //檢查學生帳號是否身份証、帳號是相同的
+  //檢查學生扣款帳號是否身份証、帳號是相同的
   global  $xoopsDB  ;
   //帳號相同
   $sql =  "  SELECT   count(*) as cc , acc_mode , acc_b_id ,acc_id , acc_g_id FROM "
@@ -1294,6 +1294,7 @@ function chk_post_list(){
     $sec[$ind]['acc_person_id'] .=  $row['acc_person_id'] .' , '  ;
   }
 
+  //比較是否相同
   if ( count($first)<>count($sec) )
     foreach ($first as $key => $value) {
         if ($value['cc']<>$sec[$key]['cc'] )
