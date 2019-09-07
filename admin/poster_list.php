@@ -210,6 +210,7 @@ if ($DEF['bank_account_use']) {
         $stud_num = $row['ss'] ;
     }
 
+
     //無帳號資料的學生筆數
     $sql = " SELECT count(*)  as ss FROM  ". $xoopsDB->prefix("e_student") . "  as a LEFT JOIN " . $xoopsDB->prefix("charge_account") .
             " as b on a.stud_id =b.stud_sn  WHERE acc_person_id IS NULL  order by  a.class_id, a.class_sit_num  "  ;
@@ -235,6 +236,7 @@ if ($DEF['bank_account_use']) {
             $data[$stud['stud_id']] = $stud ;
         }
     }
+
 }
 /*-----------秀出結果區--------------*/
 

@@ -5,25 +5,55 @@
 
 
 <div id='frm' class="row-fluid"  >
-  郵局帳號 EXCEL 格式順序：
-  <table  class="table table-bordered"><tr><td>年級</td><td>	班級代號</td><td>	座號</td><td>	學生姓名</td><td>繳費</td>
-    <td>	轉帳戶名</td><td>	轉帳戶身份證編號</td><td>	存款別(P/G)</td><td>		立帳局號</td><td>		存簿帳號</td><td>		劃撥帳號</td><tr></table>
+  郵局帳號 EXCEL 格式範例：
+  <a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>下載 EXCEL 格式檔</a><br/>
+  <table  class="table table-bordered">
+    <tr><td>年級</td><td>班級代號</td><td>座號</td><td>學生姓名</td><td>自行繳費</td>
+    <td>轉帳戶名</td><td>轉帳戶身份證編號</td><td>存款別(P存/G劃)</td><td>立帳局號</td><td>存簿帳號</td><td>劃撥帳號</td><tr>
+    <tr><td>1</td><td>1</td><td>5</td><td>陳小明</td><td>0</td>
+    <td>陳大富</td><td>R123456789</td><td>P</td><td>0191001</td><td>0123456</td><td>00000000000000</td><tr>
+  </table>
 
+
+  <{ if ($bank_account_use) }>
+  <{if $chk_message }>
+  <div class="alert alert-danger">
+      <h4>目前資料有錯誤請修正，扣款帳號相同，但扣款人身份證不同的資料：</h4>
+      <{$chk_message}>
+  </div>
+  <{/if}>
+  <{/if}>
+
+  <h3>做修改前請先備份：</h3>
+    <a class="btn btn-success"  href="export_account.php" title='下載備份保存，再次校對帳號是否正確'>匯出帳號 Excel 備份</a>
+    </br>
+    <div class="alert alert-info">
+    <p>此備份檔會依目前班級、座號自動調整。並移除已畢業、轉校的學生資料。</p>
+    <p>再修正此檔再上傳更新，比較正確。</p>
+    </div>
+
+  <h3>修改更新：</h3>
     <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
-        <span class='span2'>最新的郵局帳號 EXCEL 檔：</span>
-        <input type=file name=userdata>
+        <span class='span2'>上傳郵局帳號 EXCEL 檔：</span>
+        <input type=file name=userdata accept=".xlsx" >
     	<button type='submit'  name='do_key' value='add' class='btn btn-primary' title='修正 EXCEL 檔中資料，再更新資料庫'>更新帳號資料(EXCEL)</button>
         <span class="label label-warning">檔案不可有密碼保護</span>
+        <div class="alert alert-info">
+        <p>可以分年級、分班級多次上傳更新。</p>
+        </div>
 
-        <p></p><p>
-        <button type='submit'  name='do_clear' value='clear' class='btn btn-danger' onclick='return confirm("確定要刪除?")'  title='把全部資料清除可移除不在籍學生資料，建議新學年要做一次。'>清除全部帳號資料</button>
-        <a class="btn btn-success"  href="export_account.php" title='下載備份保存，再次校對帳號是否正確'>匯出帳號 Excel(備份、比對)</a>
-        </p>
+        <h3>清空</h3>
+        <button type='submit'  name='do_clear' value='clear' class='btn btn-danger' onclick='return confirm("你已先執行備份了嗎？確定要刪除?")'  title='把全部資料清除可移除不在籍學生資料，建議新學年要做一次。'>清除全部帳號資料</button>
+        <div class="alert alert-warring">
+            <p>執行這動作前，請先執行備份！</p>
+            <p>把全部資料清除可移除不在籍學生資料，建議只在新學年時才做一次。清空後再匯回原先備份檔！</p>
+        </div>
+
    </form>
 </div>
 <div class="alert alert-info">
 <strong>相關說明：</strong>
-<a href='pay_sample.xlsx' target='_blank' class='btn btn-inverse'>EXCEL 範例檔</a><br/>
+
 <div>使用 EXCEL 格式匯入，請依範例檔欄位填放資料，不使用的欄位也要保留。</div>
 <div>比對以班級、座號、姓名和學生資料庫比對。</div>
 <div>帳號做更新時，建議先匯出帳號 EXCEL 檔，修改後再匯入。</div>
@@ -33,9 +63,6 @@
 
 
 <{ if ($bank_account_use) }>
-<{if $chk_message }>
-<span class="alert alert-danger"><{$chk_message}></span>
-<{/if}>
 <div class="alert alert-success"><{$infomessage}></div>
 
 <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
