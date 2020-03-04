@@ -27,7 +27,7 @@ $interface_menu['總表減免']="decrease_table.php?item_id=$item_id";
 $interface_menu['單人減免']="decrease.php?item_id=$item_id";
 $interface_menu['報表']="report.php?item_id=$item_id";
 $interface_menu['統計']="sum.php?item_id=$item_id";
-
+$interface_menu['社團報名轉檔']="kw_club_join.php";
 
 
 

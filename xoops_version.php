@@ -8,7 +8,7 @@
 //---基本設定---//
 
 $modversion['name'] = '學生收費管理';                    //模組名稱
-$modversion['version'] = '2.61';                        //模組版次
+$modversion['version'] = '2.7';                        //模組版次
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';        //模組作者
 $modversion['description'] = '收費管理，需配合學生名單模組';    //模組說明
 $modversion['credits'] = 'prolin';                        //模組授權者
@@ -19,7 +19,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));    //模組目錄名稱
 
 //---模組狀態資訊---//
 //$modversion['status_version'] = '0.8';
-$modversion['release_date'] = '2019-01-08';
+$modversion['release_date'] = '2020-03-04';
 $modversion['module_website_url'] = 'https://github.com/prolin99/es_charge';
 $modversion['module_website_name'] = 'prolin';
 $modversion['module_status'] = 'release';
@@ -108,7 +108,13 @@ $modversion['templates'][$i]['description'] = 'es_decrease_table.tpl';
 
 ++$i;
 $modversion['templates'][$i]['file'] = 'es_admin_sch_acc_tpl.html';
-$modversion['templates'][$i]['description'] = 'es_admin_sch_acc_tpl';
+$modversion['templates'][$i]['description'] = 'es_admin_sch_acc.tpl';
+
+
+++$i;
+$modversion['templates'][$i]['file'] = 'es_kw_join.tpl';
+$modversion['templates'][$i]['description'] = 'es_kw_join.tpl';
+
 
 $i = 0;
 //偏好設定

@@ -46,7 +46,7 @@ if  ($item_id) {
  	$min_grade = $grade_list[0] ;		//最低年級
 	$row= 0  ;
 
-	$all_sum_data= '' ;
+	unset($all_sum_data) ;
 
 
 	foreach ($grade_list as $y=> $grade) {
