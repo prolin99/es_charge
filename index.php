@@ -31,7 +31,7 @@ $my_class_id =  get_my_class_id($xoopsUser->uid() ) ;
 $class_id =$my_class_id ;
 
  	if (($class_id =='') and  !$isAdmin)
-  		redirect_header(XOOPS_URL,3, "非級任，無法使用！");
+  		redirect_header("kw_club_join.php") ;
 
   	//移除本班繳費名單 ---------------------------------------------------
 	if ($_POST['act_remove']) {

@@ -119,7 +119,7 @@ function import_excel($item_id, $file_up, $ver=2007)
                 //如果繳費中已有，做加總
                 if ( $data_line[$v[5]][3] ) {
                     //echo $data_line[$v[5]][3] ;
-                    $data_line[$v[5]][4] += $v[3]+$v[4] ;
+                    $data_line[$v[5]][4] += $v[3] ;
                     $data_line[$v[5]][12] = $data_line[$v[5]][12] . ' + ' . $v[2] ;
 
                 }else {
@@ -131,7 +131,7 @@ function import_excel($item_id, $file_up, $ver=2007)
                         $data_line[$v[5]][1] = $on_stud['class_id']-floor($on_stud['class_id']/100)*100;
                         $data_line[$v[5]][2] = $on_stud['class_sit_num'];
                         $data_line[$v[5]][3] = $on_stud['name'];
-                        $data_line[$v[5]][4] = $v[3]+$v[4] ;
+                        $data_line[$v[5]][4] = $v[3] ;
                         $data_line[$v[5]][5] = $on_stud['acc_name'];
                         $data_line[$v[5]][6] = $on_stud['acc_person_id'];
                         $data_line[$v[5]][7] = $on_stud['acc_mode'];
@@ -149,7 +149,7 @@ function import_excel($item_id, $file_up, $ver=2007)
                         $data_line[$v[5]][1] = 0;
                         $data_line[$v[5]][2] = 0;
                         $data_line[$v[5]][3] = $v[6];
-                        $data_line[$v[5]][4] = $v[3]+$v[4] ;
+                        $data_line[$v[5]][4] = $v[3] ;
                         $data_line[$v[5]][5] = '';
                         $data_line[$v[5]][6] =  '';
                         $data_line[$v[5]][7] = '';

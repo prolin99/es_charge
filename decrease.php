@@ -67,9 +67,9 @@ if ($_POST['act_add'] and $_POST['stud']) {
     //取得所在班級
     $class_id = get_my_class_id($xoopsUser->uid());
 
- if (($class_id == '') and  !$isAdmin) {
-     redirect_header(XOOPS_URL, 3, '非級任，無法使用！');
- }
+     if (($class_id == '') and  !$isAdmin) {
+         redirect_header(XOOPS_URL, 3, '非級任，無法使用！');
+     }
 
         //管理者可以選取多班
         if ($isAdmin) {
