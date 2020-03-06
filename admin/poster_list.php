@@ -56,8 +56,10 @@ function import_excel($file_up, $ver=5)
 
     $PHPExcel = $reader->load($file_up); // 檔案名稱
     $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
-    $highestRow = $sheet->getHighestRow(); // 取得總列數
-
+    //$highestRow = $sheet->getHighestRow(); // 取得總列數
+    $maxCell = $PHPExcel->getActiveSheet()->getHighestRowAndColumn();
+    $highestRow = $maxCell['row'] ;
+    
     //0年級	1班級代號	2座號	3學生姓名	4性別	5學號	6純特戶	7轉帳戶名	8轉帳戶身份證編號	9存款別	10立帳局號	11存簿帳號	12劃撥帳號	13電話號碼	14地址	15身份別
     //0年級	1班級代號	2座號	3學生姓名	4繳費 	5轉帳戶名	6轉帳戶身份證編號	7存款別(P/G)	8立帳局號	9存簿帳號	10劃撥帳號
     // 一次讀取一列
