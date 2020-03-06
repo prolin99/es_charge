@@ -121,9 +121,6 @@ function import_else_data($item_id)
 
         $ext= strtoupper(array_pop($file_array)) ;
 
-        if ($ext=='XLS') {
-            import_excel($item_id, $file_up) ;
-        }
         if ($ext=='XLSX') {
             import_excel($item_id, $file_up, 2007) ;
         }
@@ -146,8 +143,12 @@ function import_excel($item_id, $file_up, $ver=5)
 
     $PHPExcel = $reader->load($file_up); // 檔案名稱
     $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
-    $highestRow = $sheet->getHighestRow(); // 取得總列數
+    //$highestRow = $sheet->getHighestRow(); // 取得總列數
 
+    $maxCell = $PHPExcel->getActiveSheet()->getHighestRowAndColumn();
+    $highestRow = $maxCell['row'] ;
+
+    //echo ( $highestRow );
     //0年級	1班級代號	2座號	3學生姓名	4繳費總額(整數)	5轉帳戶名	6轉帳戶身份證編號	7存款別(P/G)	8立帳局號	9存簿帳號	10劃撥帳號	11現金繳費(設為1)
 
     // 一次讀取一列
@@ -213,8 +214,9 @@ function import_excel($item_id, $file_up, $ver=5)
                 $v[8] = sprintf("%07d", $v[8]) ;
                 $v[9] = sprintf("%07d", $v[9]) ;
                 $v[10] = sprintf("%014d", $v[10]) ;
-
-                $stud_sn = 'E' .  sprintf("%03d", $class_id)  . sprintf("%02d", $seat_id) ;
+                //第幾個 excel 表
+                $ext_excel = $_POST['excel_num'] +0 ;
+                $stud_sn = chr( ord('E')  + $_POST['excel_num'] - 1 ) .  sprintf("%03d", $class_id)  . sprintf("%02d", $seat_id) ;
                 //自繳或無扣款資料
                 if (($v[11]) or ($v[6]=='')) {
                     $cash_fg =1 ;
@@ -226,12 +228,13 @@ function import_excel($item_id, $file_up, $ver=5)
                 $sql = " INSERT INTO " .  $xoopsDB->prefix("charge_poster_data")
                    ." (`item_id`, `t_id`, `class_id`, `sit_num`, `st_name`, `pay`, `acc_name`, `acc_personid`, `acc_mode`, `acc_b_id`, `acc_id`, `acc_g_id` , stud_else ,cash ,pay_fail  )  "
                    ."  VALUES ( '$item_id' , '$stud_sn'  , '$class_id' , '$seat_id' , '$stud_name'  , '{$v[4]}'   "
-                   ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , '1' , '$cash_fg'  ,0 ) ;   " ;
+                   ." , '{$v[5]}'   , '{$v[6]}'    , '{$v[7]}'   , '{$v[8]}'    , '{$v[9]}'    , '{$v[10]}'  , $ext_excel  , '$cash_fg'  ,0 ) ;   " ;
 
                 $result = $xoopsDB->queryF($sql) or  $err_message .= $line_str  .  $xoopsDB->error()."(應該為班級座號重覆)<br />"  ;
                 $update_ok_num ++ ;
             }
         }//此列有內容
+
     }
 
     //如果有錯誤，寫到記錄檔中
