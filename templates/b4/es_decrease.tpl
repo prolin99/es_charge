@@ -82,13 +82,22 @@
      <div  id= 'frm_add' class="row">
          <div class="col-8">
 
-       <form method='post' name='editForm' id='editForm_new' class="form-inline" >
+       <form method='post' name='editForm' id='editForm_new' class="form-horizontal" >
  		<fieldset>
 
     <{if ($data.admin) }>
     	<!-- 管理者可處理全校學生    -->
-    	 繳費班級：<{html_options class='form-control' name='admin_class_id' options=$data.class_list selected=$data.class_id   onchange="submit();"}>
-    	<span class="alert alert-danger" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
+    	 <div class="form-group row col-mb-3">
+       <label class="col-sm-3 control-label col-form-label text-md-right text-md-end">
+       繳費班級：
+       </label>
+       <div class="col-sm-4">
+       <{html_options class='form-control' name='admin_class_id' options=$data.class_list selected=$data.class_id   onchange="submit();"}>
+       </div>
+       <div class="col-sm-4">
+       <span class="alert alert-danger col-sm-2" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
+       </div>
+    	</div>
 
 	<{else}>
     	<legend>新增減免學生</legend>
