@@ -45,7 +45,8 @@ CREATE TABLE `charge_record` (
     `end_pay` int(11) NOT NULL DEFAULT '0',
     `pay_ok` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`item_id`,`record_id`),
-    KEY `item_id` (`student_sn`)
+    KEY `item_id` (`student_sn`),
+    KEY `student_sn_class_id_item_id` (`student_sn`,`class_id`,`item_id`)
 ) ENGINE=MyISAM ;
 
 
@@ -61,7 +62,8 @@ CREATE TABLE `charge_decrease` (
     `sit_num` tinyint(4) NOT NULL,
     `cause_other` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`detail_id`,`student_sn`,`curr_class_num`),
-    UNIQUE KEY `decrease_id` (`decrease_id`)
+    UNIQUE KEY `decrease_id` (`decrease_id`) ,
+    KEY `student_sn_curr_class_num_item_id_sit_num` (`student_sn`,`curr_class_num`,`item_id`,`sit_num`)
 ) ENGINE=MyISAM ;
 
 
