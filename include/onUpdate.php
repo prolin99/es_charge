@@ -40,13 +40,51 @@ function xoops_module_update_es_charge(&$module, $old_version)
         go_update_add_bank_id();
     }
 
+    //加索引加快報表
+    if (!chk_add_index()) {
+        go_update_add_index();
+    }
+
     Utility::mk_dir(XOOPS_ROOT_PATH."/uploads/es_charge");
 
     return true;
 }
 
 
-//  ---- 收費表多加扣款帳號 id
+
+//加索引 select * from x3f2_charge_account use index(stud_name)
+function chk_add_index() {
+    //select * from xx_charge_record use index( student_sn_class_id_item_id )
+    global $xoopsDB;
+    $sql = ' select student_sn	  from '.$xoopsDB->prefix('charge_record') . 'use index( student_sn_class_id_item_id ) '    ;
+    $result = $xoopsDB->queryF($sql);
+
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update_add_index() {
+
+    global $xoopsDB;
+
+    $sql = '  ALTER TABLE   '.$xoopsDB->prefix('charge_item').'
+    ADD INDEX  `student_sn_class_id_item_id` ( `student_sn`,`class_id`,`item_id` )  ;
+     ';
+
+    $xoopsDB->queryF($sql);
+
+    $sql = '  ALTER TABLE   '.$xoopsDB->prefix('charge_decrease').'
+    ADD INDEX  `student_sn_curr_class_num_item_id_sit_num` (`student_sn`,`curr_class_num`,`item_id`,`sit_num`) ;
+     ';
+
+    $xoopsDB->queryF($sql);
+}
+
+
+//  ---- 收費表多加扣款帳號 id -------------------------------------------------------
 
 function chk_add_item_bank_id() {
   global $xoopsDB;

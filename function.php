@@ -385,6 +385,14 @@ function del_item($item_id){
      	   	   "  WHERE  `item_id` = '$item_id'  " ;
 
 	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+
+	//DELETE FROM xx_charge_poster_data WHERE  `item_id` < '37'
+	$sql = " DELETE FROM  "  . $xoopsDB->prefix("charge_poster_data") .
+     	   	   "  WHERE  `item_id` = '$item_id'  " ;
+
+	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
+
+
 }
 
 
