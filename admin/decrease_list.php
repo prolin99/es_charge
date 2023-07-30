@@ -10,8 +10,8 @@
 include_once "header.php";
 include_once "../function.php";
 
-include_once "../../tadtools/PHPExcel.php";
-require_once '../../tadtools/PHPExcel/IOFactory.php';
+require_once XOOPS_ROOT_PATH . '/modules/tadtools/vendor/phpoffice/phpexcel/Classes/PHPExcel.php'; //引入 PHPExcel 物件庫
+require_once XOOPS_ROOT_PATH . '/modules/tadtools/vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php'; //引入PHPExcel_IOFactory 物件庫
 
 /*-----------function區--------------*/
 //取得中文班名
