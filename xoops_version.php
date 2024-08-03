@@ -8,7 +8,8 @@
 //---基本設定---//
 
 $modversion['name'] = '學生收費管理';                    //模組名稱
-$modversion['version'] = '2.74';                        //模組版次
+#$modversion['version'] = '2.74';                        //模組版次
+$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '2.8.0-Stable' : '2.8';
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';        //模組作者
 $modversion['description'] = '收費管理，需配合學生名單模組';    //模組說明
 $modversion['credits'] = 'prolin';                        //模組授權者
@@ -19,11 +20,11 @@ $modversion['dirname'] = basename(dirname(__FILE__));    //模組目錄名稱
 
 //---模組狀態資訊---//
 //$modversion['status_version'] = '0.8';
-$modversion['release_date'] = '2020-03-05';
+$modversion['release_date'] = '2024-08-08';
 $modversion['module_website_url'] = 'https://github.com/prolin99/es_charge';
 $modversion['module_website_name'] = 'prolin';
 $modversion['module_status'] = 'release';
-$modversion['author_website_url'] = 'http://www.syps.tn.edu.tw';
+$modversion['author_website_url'] = 'https://github.com/prolin99';
 $modversion['author_website_name'] = 'prolin';
 $modversion['min_php'] = 5.2;
 

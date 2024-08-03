@@ -31,7 +31,7 @@ if ($_POST['act_add'] and $_POST['stud']) {
     $sit_num = intval($arr[1]);
     //ps
     $myts = &MyTextSanitizer::getInstance();
-    $ps = $myts->htmlspecialchars($myts->addSlashes($_POST['ps']));
+    $ps = $myts->htmlspecialchars($xoopsDB->escape($_POST['ps']));
     //減免原因
         $sql = ' UPDATE  '.$xoopsDB->prefix('charge_record').
                     " SET  cause='{$_POST['cause_id']}'  , ps = '$ps'  WHERE student_sn = '$stud_sn'   ";

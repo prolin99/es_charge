@@ -28,7 +28,7 @@
   </table>
 
 
-  <{ if ($bank_account_use) }>
+  <{if ($bank_account_use) }>
   <{if $chk_message }>
   <div class="alert alert-danger">
       <h4>目前資料有錯誤請修正並再匯入，扣款帳號相同，但扣款人身份證不同的資料：</h4>
@@ -69,7 +69,7 @@
 
 
 
-<{ if ($bank_account_use) }>
+<{if ($bank_account_use) }>
 
 <h3>尚無扣款帳號學生</h3>
 <form class="form-horizontal"   action="poster_list.php" method='post' enctype='multipart/form-data' >
@@ -88,12 +88,12 @@
       <input name="st_name[<{$stud_sn}>]" value="<{$stud.name}>" type="hidden">
       <span class="span1" >
           <input   class='form-control'  name='acc_name[<{$stud_sn}>]' type='text' id='acc_name<{$stud_sn}>'  title='扣款帳號使用人'  tabindex='<{$stud.stud_id}>1'
-      placeholder='帳戶姓名'  value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[5]}>'    />
+      placeholder='帳戶姓名'  value='<{$class_sit_message[$stud.class_id][$stud.class_sit_num].v[5]}>'    />
 
       </span>
       <span class="span1" >
           <input   class='form-control'  name='acc_person_id[<{$stud_sn}>]' type='text' id='acc_person_id<{$stud_sn}>'  title='帳號人身份証號'  tabindex='<{$stud.stud_id}>2'
-      placeholder='身份証號'   value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[6]}>'    />
+      placeholder='身份証號'   value='<{$class_sit_message[$stud.class_id][$stud.class_sit_num].v[6]}>'    />
 
       </span>
       <span class="span1" >
@@ -103,17 +103,17 @@
       </span>
       <span class="span1" >
           <input   class='form-control'  name='acc_b_id[<{$stud_sn}>]' type='text' id='acc_b_id<{$stud_sn}>'  title='立帳局號'  tabindex='<{$stud.stud_id}>4'
-      placeholder='立帳局號'  value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[8]}>'    />
+      placeholder='立帳局號'  value='<{$class_sit_message[$stud.class_id][$stud.class_sit_num].v[8]}>'    />
 
       </span>
       <span class="span1" >
           <input   class='form-control'  name='acc_id[<{$stud_sn}>]' type='text' id='acc_id<{$stud_sn}>'  title='存簿帳號'  tabindex='<{$stud.stud_id}>5'
-      placeholder='存簿帳號' value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[9]}>'  />
+      placeholder='存簿帳號' value='<{$class_sit_message[$stud.class_id][$stud.class_sit_num].v[9]}>'  />
 
       </span>
       <span class="span2" >
           <input   class='form-control'  name='acc_g_id[<{$stud_sn}>]' type='text' id='acc_g_id<{$stud_sn}>'  title='劃撥帳號'  tabindex='<{$stud.stud_id}>6'
-      placeholder='劃撥帳號'  value='<{ $class_sit_message[$stud.class_id][$stud.class_sit_num].v[10]}>' />
+      placeholder='劃撥帳號'  value='<{$class_sit_message[$stud.class_id][$stud.class_sit_num].v[10]}>' />
 
       </span>
       </div>
@@ -121,7 +121,7 @@
         <span class="alert alert-info">
       ......(姓名比對不到，資料先放入，如果不對請清除上方格中資料！)：
 
-      <{ $class_sit_message[$stud.class_id][$stud.class_sit_num].s}>
+      <{$class_sit_message[$stud.class_id][$stud.class_sit_num].s}>
       </span>
       </div>
     <{else}>

@@ -15,7 +15,7 @@
 </div>
 <!--      減免列表                                   -->
 <{if ($data.select_item ) }>
-<{ $i++ }>
+<{$i++ }>
 <h4>全校減免學生金額列表</h4>
 
      <{if ($data.out_student)   }><{* 多餘繳費人記錄 *}>
@@ -43,7 +43,7 @@
       <!--      表格內容                                   -->
     <{foreach  key=key item=stud   from= $data.decase_list }>
       <tr  id="div_<{$data.seletc_item}>_<{$key}>">
-      <td><{ $i++ }></td>
+      <td><{$i++ }></td>
       <td ><{$data.class_list_c[$stud.curr_class_num]}></td>
       <td ><{$stud.class_sit_num}></td>
       <td ><{$stud.name}></td>
