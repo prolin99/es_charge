@@ -1,4 +1,15 @@
+<style>
+.bgsuccess {
+    background-color: #198754;
+}
+.bgwarning {
+    background-color: #FFC107;
+}
+.bginfo {
+    background-color: #0DCAF0;
+}
 
+</style>
 <{$toolbar}>
 
 <div class="container"  >
@@ -45,9 +56,9 @@
           <{*  cause_chk   *}>
           <{if ($data.decase_list[$key].other[$detail_key])}>
              <{*   other cause_chk   *}>
-            <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="badge badge-warning bg-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+            <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="bgwarning badge badge-warning bg-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
           <{else}>
-            <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="badge badge-info bg-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+            <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="bginfo badge badge-info bg-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
           <{/if}>
 
         <{else}>

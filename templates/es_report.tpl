@@ -1,3 +1,15 @@
+<style>
+.bgsuccess {
+    background-color: #198754;
+}
+.bgwarning {
+    background-color: #FFC107;
+}
+.bginfo {
+    background-color: #0DCAF0;
+}
+
+</style>
 <{$toolbar}>
 
     <form  id='frm' class="form-inline" action="report.php"  method='post' >
@@ -66,7 +78,7 @@
        		<!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
          <{if ($data.decase_list_array[$stud.stud_id].dollar[$detail_key]) }>
-         <td ><span class="badge badge-primary bg-info "><{$data.pay_list[$stud.stud_id][$detail_key]}></span></td>
+         <td ><span class="bginfo badge badge-primary bg-info "><{$data.pay_list[$stud.stud_id][$detail_key]}></span></td>
          <{else}>
         <td ><{$data.pay_list[$stud.stud_id][$detail_key]}></td>
         <{/if}>
