@@ -10,7 +10,7 @@
 </div>
 
 <{if ($data.seletc_item )  }>
-<div class="row" >
+<div class="container" >
     <form   action="index.php"  method='post'>
     <{if ($data.admin) }>
     	<!-- 管理者可處理全校學生    -->

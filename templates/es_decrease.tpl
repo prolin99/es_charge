@@ -45,7 +45,7 @@
           <{*  cause_chk   *}>
           <{if ($data.decase_list[$key].other[$detail_key])}>
              <{*   other cause_chk   *}>
-            <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="badge badge-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
+            <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="badge badge-warning bg-warning" title='申請補助,其它身份別(<{$data.decase_list[$key].other_cause_str[$detail_key]}>)'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
           <{else}>
             <td   id='dollar_<{$data.seletc_item}>_<{$key}>_<{$detail_key}>' data='<{$data.decase_list[$key].dollar[$detail_key]}>' need='checked'  ><span class="badge badge-info bg-info" title='申請補助'><{$data.decase_list[$key].dollar[$detail_key]}></span></td>
           <{/if}>
@@ -79,7 +79,7 @@
 
 	 <hr />
        <{* 新增學生        --------------------------------------------------------------------------------------                            *}>
-     <div  id= 'frm_add' class="row">
+     <div  id= 'frm_add' >
          <div class="col-8">
 
        <form method='post' name='editForm' id='editForm_new' class="form-horizontal" >
@@ -131,7 +131,7 @@
       <{if ($data.detail_dollar.pay[$key])<>0 }>
  		<tr>
         <td>
-            <div class='row'>
+            <div >
      			<span class="fill  col-8" id= "fill_dollars<{$key}>_<{$data.detail_dollar.pay[$key]}>"   title="點選填入金額或清空">
      			<span   for="dollars[<{$key}>]" ><{$detail}>(<{$data.detail_dollar.pay[$key]}>元):</span>
                 <i class="fa fa-forward"></i>

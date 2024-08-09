@@ -73,10 +73,10 @@
 
           <!--            繳費金額(有申請減免                   -->
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
-        <{assign var="detai_link" value=-"$detail_key" }>
+        <{assign var="detai_link" value="$detail_key" }>
         <{*       如年段的該項目無收費 則不出現                       *}>
         <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
-        <td  >
+        <td >
            <div class="row money_div"  id='box_<{$stud.stud_id}>_<{$detail_key}>'  >
               <span class="col-1">
                 <span class="fa fa-forward"    set="dollars_<{$stud.stud_id}>_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='(<{$stud.class_sit_num}>)<{$stud.name}> , <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)'  ></span>
@@ -102,9 +102,9 @@
 
                         <span class='col-5'>
                            <{if ($data.decase_list[$stud_id].other[$detail_key] ) }>
-                           <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  style="background-color: green"     title="第二種身份--<{$data.decase_list[$stud_id].other_cause_str[$detail_key]}> ">身
+                           <span class="fa fa-filter " id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  style="background-color: yellow"     title="第二種身份--<{$data.decase_list[$stud_id].other_cause_str[$detail_key]}> ">2身
                            <{else}>
-                            <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  title="設定第二種身份">身
+                            <span class="fa fa-filter" id="showOther_<{$stud.stud_id}>_<{$detail_key}>"  title="設定第二種身份">2身
                            <{/if}>
                          </span>
                          </span>
@@ -115,8 +115,9 @@
               </div>
                     <{* 補充說明文字 *}>
                       <{if !($data.dent_support[$detail_key]) }>
+
                      <div class="row"  id="other_div_<{$stud.stud_id}>_<{$detail_key}>" style="display:none"  >
-                         <{html_options name='other[$stud_id.$detail_key]'  class="form-control other_sel" options="$decrease_cause" id="other_$stud_id$detai_link"    selected="$data.decase_list[$stud_id].other[$detail_key]"   ref="cause_$stud_id"    title="第二種減免身份"    style="background-color:#CCCCCC" }>
+                         <{html_options name="other_$stud_id.$detail_key"  class="form-control other_sel" options=$decrease_cause id="other-$stud_id-$detai_link"    selected=$data.decase_list[$stud_id].other[$detail_key]   ref="cause_$stud_id"    title="第二種減免身份"    style="background-color:#CCCCCC" }>
                          </div>
                       <{/if}>
 
@@ -149,7 +150,8 @@ function cause_check(obj_sel) {
 
        var chk = $(obj_sel).val();
        var st_id = $(obj_sel).attr('id');
-       var splits = st_id.split('_') ;
+       //alert(st_id) ;
+       var splits = st_id.split(/[_-]/) ;
        var stud_id = splits[1] ;
        $('#need_' + splits[1] +'_'+ splits[2] ) .hide() ;
        //alert(chk) ;
@@ -167,7 +169,7 @@ function cause_check(obj_sel) {
       var ps = $(obj_input).val() ;
 
        var input_id = $(obj_input).attr("id")  ;
-       var splits = input_id.split('_') ;
+       var splits = input_id.split(/[_-]/) ;
        //alert (ps) ;
        save_cause( '99' , <{$data.seletc_item }>, <{$data.class_id}> ,splits[1] ,  ps  ) ;
     }
@@ -212,7 +214,7 @@ $(document).on("click", ".fa-ban", function(){
     var money = $(this).attr("dollar")  ;
 
     //如果有特殊身份
-    var splits = input_id.split('_') ;
+    var splits = input_id.split(/[_-]/) ;
     //alert($('#stu_' + splits[1] ) .val() ) ;
     var stud_id =  splits[1] ;
     var detail_id = splits[2] ;
@@ -236,7 +238,7 @@ $(document).on("click", ".fa-ban", function(){
 
 //取值，寫入資料
 function get_decrease_val( input_id ){
-    var splits = input_id.split('_') ;
+    var splits = input_id.split(/[_-]/) ;
 
     var stud_id =  splits[1] ;
     var detail_id = splits[2] ;
@@ -253,7 +255,7 @@ function get_decrease_val( input_id ){
        need= 0 ;
 
     //第二原因
-    var other = $('#other_' + stud_id  +'_' + detail_id).val() ;
+    var other = $('#other-' + stud_id  +'-' + detail_id).val() ;
     if  (other==undefined )
         other= 0 ;
 
@@ -300,10 +302,10 @@ function get_decrease_val( input_id ){
     })
 
 
-//出現第二身份 (color change)
+//出現第二身份 (color change) other- (非底線)
 $( ".fa-filter" ).click(function( event ) {
   var input_id = $(this).attr("id")  ;
-  var splits = input_id.split('_') ;
+  var splits = input_id.split(/[_-]/) ;
 
   var money = $('#dollars_'+ splits[1]  +'_' + splits[2] ).val()  ;
   if  (!isInteger(money) )
@@ -311,23 +313,25 @@ $( ".fa-filter" ).click(function( event ) {
 
   if ( ( $('#ineed_' + splits[1] +'_'+ splits[2] ).prop('checked') )   && (money>0)  ){
       $('#other_div_' +splits[1] + '_' + splits[2]  ).toggle() ;
-      $('#other_' +splits[1] + '_' + splits[2]  ).focus() ;
+      $('#other-' +splits[1] + '-' + splits[2]  ).focus() ;
   }
 
-   $(document).on("change", ".other_sel", function(){
+  $(document).on("change", ".other_sel", function(){
         var input_id = $(this).attr("id")  ;
-        //
+
         var other = $(this).val() ;
-        var splits = input_id.split('_') ;
+        //alert(other) ;
+        var splits = input_id.split(/[_-]/) ;
+        //alert('#showOther_' +splits[1] + '_' + splits[2] + '='  +other) ;
+
         if (other == 0) {
              $('#showOther_' +splits[1] + '_' + splits[2]  ).removeAttr("style");
              $('#showOther_' +splits[1] + '_' + splits[2]  ).attr( 'style' , "background-color: white"  ) ;
 
         }else  {
             $('#showOther_' +splits[1] + '_' + splits[2]  ).removeAttr("style");
-            $('#showOther_' +splits[1] + '_' + splits[2]  ).attr( 'style' , "background-color: green"  ) ;
+            $('#showOther_' +splits[1] + '_' + splits[2]  ).attr( 'style' , "background-color: yellow"  ) ;
         }
-
 
         get_decrease_val(input_id) ;
   })
@@ -336,7 +340,7 @@ $( ".fa-filter" ).click(function( event ) {
 /*
 $( ".money_div" ).mouseleave(function( event ) {
   var input_id = $(this).attr("id")  ;
-  var splits = input_id.split('_') ;
+  var splits = input_id.split(/[_-]/) ;
   $('#other_div_' +splits[1] + '_' + splits[2]  ).toggle() ;
 });
 
@@ -346,9 +350,9 @@ $( ".money_div" ).mouseleave(function( event ) {
         get_decrease_val(input_id) ;
   })
 */
-function isInteger(value) {
-    return (value == parseInt(value));
-}
+  function isInteger(value) {
+      return (value == parseInt(value));
+  }
 
 
    function check_input(obj_input , max_m){
