@@ -9,12 +9,18 @@
         </div>
     <{if ($data.admin) }>
       <!-- 管理者可處理全校學生    -->
-        <div class='col-12'>
-        <div class="form-group">
+        <div class='form-group row col-6'>
+
+        <div class="col-4">
         <label for="admin_class_id">繳費班級：</label>
-        <{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='col-3 form-control'  onchange="submit();"}>
-        <span class="alert alert-danger" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
         </div>
+        <div class="col-4">
+        <{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='col-3 form-control'  onchange="submit();"}>
+        </div>
+
+        <span class="alert alert-danger col-sm-4" title='可修改全校資料，無時限。'>管理員權限!!!!</span>
+
+
         </div>
     <{/if}>
    </form>

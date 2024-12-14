@@ -17,15 +17,26 @@
         <{html_options name=item_id options=$data.item_list selected=$data.seletc_item class='form-control'  onchange="submit();"}>
      <{if ($data.seletc_item ) }>
   	<{if ($data.admin) }>
-    	<br />
+
+      <div class='form-group row col-10'>
     	<!-- 管理者可處理全校學生    -->
-    	 管理繳費班級：<{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='form-control'   onchange="submit();"}>
+      <div class="col-6">
+    	 管理繳費班級：
+       <{html_options name='admin_class_id' options=$data.class_list selected=$data.class_id class='form-control'   onchange="submit();"}>
+       </div>
+       <div class="col-3">
     	 <span class="alert alert-danger" title='可修改全校資料，無時限。' >管理員權限!!!!</span>
+       </div>
+       <div class="col-3">
     	 <a class="btn btn-success"  href="report_list.php?do=excel&show=all&item_id=<{$data.seletc_item}>&class_id=<{$data.class_id}>">匯出 EXCEL</a>
+       </div>
+      </div> 
+
     	<{else}>
 
     	 <a class="btn btn-success"  href="report_list.php?do=excel&show=all&item_id=<{$data.seletc_item}>">匯出 EXCEL</a>
     	<{/if}>
+
     <{/if}>
    </form>
 <{if ($data.class_id )  }>
