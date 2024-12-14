@@ -122,6 +122,7 @@ function get_record_class_list( $item_id ) {
 
 	//取得中文班名
 	$class_list_c = es_class_name_list_c('long')  ;
+	//var_dump($class_list_c) ;
 
 		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record") . "  where item_id='$item_id'  group by class_id   " ;
 
@@ -131,6 +132,7 @@ function get_record_class_list( $item_id ) {
 			$data[$row['class_id']]=$class_list_c[$row['class_id']] ;
 
 		}
+		//var_dump($data) ;
 	return $data ;
 
 }
@@ -1304,7 +1306,7 @@ function chk_post_list(){
   }
 
   //比較是否相同
-  if ( count($first)<>count($sec) )
+  if ( count($first ?? [])<>count($sec ?? []) )
     foreach ($first as $key => $value) {
         if ($value['cc']<>$sec[$key]['cc'] )
             //echo  $key . $sec[$key]['acc_person_id'] ."</br>";

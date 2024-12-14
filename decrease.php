@@ -73,20 +73,22 @@ if ($_POST['act_add'] and $_POST['stud']) {
 
         //管理者可以選取多班
         if ($isAdmin) {
-            $data['admin'] = true;
+            if ($item_id) {
+                $data['admin'] = true;
 
-            //有收費的班級名稱
-            $data['class_list'] = get_record_class_list($item_id);
+                //有收費的班級名稱
+                $data['class_list'] = get_record_class_list($item_id);
 
-            //取得班級
-            if ($_POST['admin_class_id']) {
-                $class_id = $_POST['admin_class_id'];
-            } elseif (!$class_id) {
-                $class_id = array_shift(array_keys($data['class_list']));
+                //取得班級
+                if ($_POST['admin_class_id']) {
+                    $class_id = $_POST['admin_class_id'];
+                } elseif (!$class_id) {
+                    $class_id = array_shift(array_keys($data['class_list']));
+                }
             }
         }
 
-    if ($item_id) {
+if ($item_id) {
 
         //取得該班的資料
         if ($class_id) {
@@ -110,38 +112,41 @@ if ($_POST['act_add'] and $_POST['stud']) {
         if ($isAdmin) {
             $data['inTime'] = true;
         }
+    
+
+    //細項名稱
+    $data['detail_list'] = get_item_detail_list_name($item_id);
+    //是否可申請補助的檢查
+    $data['dent_support'] = check_deny_support($data['detail_list']);
+
+    $detail_id_array = array_keys($data['detail_list']);
+
+    //取得全部細項的收費
+    $charge_array = get_detail_charge_dollars($item_id);
+
+    //班上已填的減免資料
+    $data['decase_list'] = get_decrease_list_item_array($class_id, $item_id);
+
+    //是否有在作業期間轉出要刪除的學生
+    $data['out_student'] = chk_student_out($item_id, $class_id, 'class');
+    //本年級各項繳費金額
+    $y = ($data['class_id'] / 100) - 1;
+    foreach ($charge_array as $detail_id => $dollars) {
+        $my_class_charge_array['pay'][$detail_id] = $dollars[$y];
+        $my_class_charge_array['decease'][$detail_id] = '一半:'.$dollars[$y] / 2;
     }
+    $data['detail_dollar'] = $my_class_charge_array;
 
-//細項名稱
-$data['detail_list'] = get_item_detail_list_name($item_id);
-//是否可申請補助的檢查
-$data['dent_support'] = check_deny_support($data['detail_list']);
+    //取出說明
+    $data['ps'] = $xoopsModuleConfig['es_charge_ps'];
 
-$detail_id_array = array_keys($data['detail_list']);
-
-//取得全部細項的收費
-$charge_array = get_detail_charge_dollars($item_id);
-
-//班上已填的減免資料
-$data['decase_list'] = get_decrease_list_item_array($class_id, $item_id);
-
-//是否有在作業期間轉出要刪除的學生
-$data['out_student'] = chk_student_out($item_id, $class_id, 'class');
+}
 
 $data['seletc_detail'] = $detail_id;
 $data['seletc_item'] = $item_id;
 $data['class_id'] = $class_id;
 
-//本年級各項繳費金額
-$y = ($data['class_id'] / 100) - 1;
-foreach ($charge_array as $detail_id => $dollars) {
-    $my_class_charge_array['pay'][$detail_id] = $dollars[$y];
-    $my_class_charge_array['decease'][$detail_id] = '一半:'.$dollars[$y] / 2;
-}
-$data['detail_dollar'] = $my_class_charge_array;
 
-//取出說明
-$data['ps'] = $xoopsModuleConfig['es_charge_ps'];
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));

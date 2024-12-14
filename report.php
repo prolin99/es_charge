@@ -32,16 +32,19 @@ if (($class_id =='') and  !$isAdmin)
 	//管理者可以選取多班
 	if($isAdmin){
 
-		$data['admin'] = true ;
+		if  ( $item_id ) {
+			$data['admin'] = true ;
 
-		//有收費的班級名稱
-		$data['class_list']=get_record_class_list($item_id ) ;
+			//有收費的班級名稱
+			$data['class_list']=get_record_class_list($item_id ) ;
 
-		//取得班級
-		if ($_POST['admin_class_id'])
-			$class_id=$_POST['admin_class_id'] ;
-		elseif ( !$class_id)
-			$class_id=array_shift(array_keys($data['class_list'])  );
+			//取得班級
+			//var_dump( $data['class_list']) ;
+			if ($_POST['admin_class_id'])
+				$class_id=$_POST['admin_class_id'] ;
+			elseif ( !$class_id)
+				$class_id=array_shift(array_keys($data['class_list'])  );
+		}
 
 	}
 
@@ -92,7 +95,8 @@ if  ( $item_id ) {
 	$y= ($class_id /100) -1 ;
 	$data['detail_dollar']= $charge_array[$detail_id][$y];
 
-
+	//是否有在作業期間轉出要刪除的學生
+	$data['out_student']= chk_student_out($item_id , $class_id , 'class' ) ;
 }
 
 	//取得目前可填收費表
@@ -100,8 +104,7 @@ if  ( $item_id ) {
 	$data['seletc_item'] = $item_id ;
 	$data['class_id'] = $class_id  ;
 
-//是否有在作業期間轉出要刪除的學生
-$data['out_student']= chk_student_out($item_id , $class_id , 'class' ) ;
+
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign( "toolbar" , Utility::toolbar_bootstrap($interface_menu)) ;
