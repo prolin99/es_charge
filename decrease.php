@@ -92,7 +92,7 @@ if ($item_id) {
 
         //取得該班的資料
         if ($class_id) {
-
+            $data['class_id'] = $class_id;
             //有繳費
             $data['selected'] = get_class_students_charge($item_id, $class_id);
             $data['selected_count'] = count($data['selected']);
@@ -144,7 +144,7 @@ if ($item_id) {
 
 $data['seletc_detail'] = $detail_id;
 $data['seletc_item'] = $item_id;
-$data['class_id'] = $class_id;
+
 
 
 

@@ -1229,7 +1229,7 @@ function get_school_account_name( ) {
 	while($row=$xoopsDB->fetchArray($result)){
 		$data[$row['b_id']]=$row['account_name'] ;
 	}
-  if (count($data)==0 )
+  if (count($data??[])==0 )
     $data[1]='僅填表，不使用代收扣款' ;
 
 	return $data ;

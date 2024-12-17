@@ -151,13 +151,13 @@ $class_id =$my_class_id ;
  	//取得該班的資料
 	if  ( $class_id ) {
 		$data['students']= get_class_students($class_id ) ;
-		$data['students_count']=count($data['students']);
+		$data['students_count']=count($data['students']??[]);
 	}
 	//如果有選擇項目，檢查班上學生是否已加入
 	if  ( $item_id ) {
 		if  ($data['item_list'][$item_id]) {		//是否在報名時間內
 			$data['selected']=get_class_students_charge($item_id ,$class_id  ) ;
-			$data['selected_count']= count($data['selected']) ;
+			$data['selected_count']= count($data['selected']??[]) ;
 		}else
  			$item_id='' ;
 

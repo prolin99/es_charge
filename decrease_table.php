@@ -58,6 +58,7 @@ $data['class_list_c'] = es_class_name_list_c('long')  ;
 
 		//取得該班的資料
 		if  ( $class_id ) {
+			$data['class_id'] = $class_id ;
 
 			//有繳費
 			$data['selected']=get_class_students_charge($item_id ,$class_id ) ;
@@ -91,11 +92,11 @@ $data['class_list_c'] = es_class_name_list_c('long')  ;
 	$data['dent_support'] = check_deny_support($data['detail_list']) ;
 
 	$detail_id_array = array_keys($data['detail_list']) ;
-
+	//var_dump($detail_id_array) ;
 
 	//取得全部細項的收費 [項，年級]=金額
 	$charge_array= get_detail_charge_dollars( $item_id) ;
-
+	//var_dump($charge_array) ;
 
 	//班上已填的減免資料
 	$data['decase_list'] = get_decrease_list_item_array($class_id , $item_id ) ;
@@ -105,11 +106,14 @@ $data['class_list_c'] = es_class_name_list_c('long')  ;
 
 	//本年級各項繳費金額
 	$y= ($data['class_id'] /100) -1 ;
+
 	foreach ($charge_array as $detail_id => $dollars) {
+
 		$my_class_charge_array['pay'][$detail_id] = $dollars[$y] ;
 		$my_class_charge_array['decease'][$detail_id] = '一半:' .  $dollars[$y] /2   ;
 	}
 	$data['detail_dollar']= $my_class_charge_array;
+	//var_dump($my_class_charge_array) ;
 
 
 	//取出說明
@@ -118,7 +122,7 @@ $data['class_list_c'] = es_class_name_list_c('long')  ;
 
 $data['seletc_detail']= $detail_id ;
 $data['seletc_item'] = $item_id ;
-$data['class_id'] = $class_id ;
+
 
 
 
