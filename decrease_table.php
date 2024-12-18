@@ -62,10 +62,10 @@ $data['class_list_c'] = es_class_name_list_c('long')  ;
 
 			//有繳費
 			$data['selected']=get_class_students_charge($item_id ,$class_id ) ;
-			$data['selected_count']= count($data['selected']) ;
+			$data['selected_count']= count($data['selected']??[]) ;
 			//學生名冊
 			$data['students']= get_class_students($class_id ) ;
-			$data['students_count']=count($data['students']);
+			$data['students_count']=count($data['students'] ?? []);
 			//取得舊項有特殊身份者
 			$data['spec_list'] = get_class_spec_old_item($item_id,$class_id ) ;
 		}

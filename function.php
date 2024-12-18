@@ -1321,7 +1321,7 @@ function chk_post_list(){
     $second[$ind] = $row['acc_person_id'] ;
   }
 
-  if (count($first) <>count($second) ){
+  if (count($first ??[]) <>count($second ??[]) ){
     $err.='帳號和身份証不相符:(請檢查帳號比對檔，搜尋帳號會有多筆，檢查各筆的身份証號是否都相同。)<br/>' ;
     foreach ($first as $k => $v )  {
       //echo $k .' '. $v .'---' . $second[$k] ;

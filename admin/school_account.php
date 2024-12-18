@@ -99,7 +99,7 @@ $account_list = get_school_account() ;
 
 
 
-if (count($account_list)==0 and $DEF['school_accont'] ) {
+if (count($account_list ??[])==0 and $DEF['school_accont'] ) {
   //第一次更新，由原在偏好中的設定值 移入到資料表中
   $sql = ' INSERT INTO ' . $xoopsDB->prefix("charge_bank_account") .
   " (`b_id`,  `account_name`, `account1`, `account2`, `account_id`, `account_block_id`, `account_pay`  , `paper` )  " .

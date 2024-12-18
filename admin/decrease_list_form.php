@@ -99,7 +99,7 @@ if  ($item_id) {
 
          	//減免
          	//$col = 'K' ;
-         	$col = chr(ord( 'E')  + count($decrease_cause) -1);
+         	$col = chr(ord( 'E')  + count($decrease_cause ??[]) -1);
 		foreach   (  $data['detail_list'] as $detail_id => $detail ) {
 			$col++ ;
 			$col_str = $col .$row ;

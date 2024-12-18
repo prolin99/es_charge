@@ -53,10 +53,10 @@ if  ( $item_id and $class_id) {
 	if  ( $class_id  and $item_id) {
 		//有參加扣款
 		$data['selected']=get_class_students_charge($item_id ,$class_id ) ;
-		$data['selected_count']= count($data['selected']) ;
+		$data['selected_count']= count($data['selected'] ??[]) ;
 		//全班名單
 		$data['students']= get_class_students($class_id ) ;
-		$data['students_count']=count($data['students']);
+		$data['students_count']=count($data['students'] ??[]);
 	}
 
 	//取得本班級要繳的各項費用

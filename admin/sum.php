@@ -77,7 +77,7 @@ while($data_row=$xoopsDB->fetchArray($result)){
 
 }
 
-$data['all_class_count']  = count($data['record']) ;
+$data['all_class_count']  = count($data['record'] ?? []) ;
 
 
 
