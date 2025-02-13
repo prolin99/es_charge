@@ -9,7 +9,7 @@
 
 $modversion['name'] = '學生收費管理';                    //模組名稱
 #$modversion['version'] = '2.74';                        //模組版次
-$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '2.9.0-Stable' : '2.9';
+$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '3.0.0-Stable' : '3.0';
 $modversion['author'] = 'prolin(prolin@tn.edu.tw)';        //模組作者
 $modversion['description'] = '收費管理，需配合學生名單模組';    //模組說明
 $modversion['credits'] = 'prolin';                        //模組授權者
