@@ -57,7 +57,7 @@
       <th scope='col'>主身份別</th>
       <{foreach  key=detail_key item=detail_val   from= $data.detail_list }>
        <{*       如年段的該項目無收費 則不出現                       *}>
-       <{$detail_key}>
+
        <{if ($data.detail_dollar.pay[$detail_key])<>0 }>
         <th scope='col' ><i class="fa fa-ban"    set="detailid_<{$detail_key}>"  dollar="<{$data.detail_dollar.pay[$detail_key]}>"  title='全班先減免此項' ></i>
         <{$detail_val}>(<{$data.detail_dollar.pay[$detail_key]}>元)

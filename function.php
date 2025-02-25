@@ -124,7 +124,7 @@ function get_record_class_list( $item_id ) {
 	$class_list_c = es_class_name_list_c('long')  ;
 	//var_dump($class_list_c) ;
 
-		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record") . "  where item_id='$item_id'  group by class_id   " ;
+		$sql =  "  SELECT  class_id  FROM " . $xoopsDB->prefix("charge_record") . "  where item_id='$item_id'  group by class_id  order by class_id " ;
 
 		$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
 		while($row=$xoopsDB->fetchArray($result)){
@@ -179,7 +179,7 @@ function get_item_list($mode='action'){
 		//可填報
 		$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " where ( start_date<= NOW()   and  end_date >= (NOW() - INTERVAL 1 DAY ) )order by item_id     " ;
 	else
-		$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 6   " ;
+		$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 10   " ;
 
  	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
@@ -199,7 +199,7 @@ function get_item_all_list(){
 	//取得所有收費表
 
 	global  $xoopsDB ;
-	$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 6  " ;
+	$sql =  "  SELECT *  FROM " . $xoopsDB->prefix("charge_item") .  " order by item_id  desc   LIMIT 0 , 10  " ;
 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
 
 	while($date_list=$xoopsDB->fetchArray($result)){
@@ -536,7 +536,7 @@ function get_class_id_list( $item_id) {
 	//取得班級列表
 	global  $xoopsDB ;
 	$sql =  "  SELECT  class_id   FROM " . $xoopsDB->prefix("charge_record")  .
-			" where  item_id = '$item_id'     group by   class_id  " ;
+			" where  item_id = '$item_id'     group by   class_id  order by  class_id " ;
 
 
 	$result = $xoopsDB->query($sql) or die($sql."<br>". $xoopsDB->error());
