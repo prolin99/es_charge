@@ -160,11 +160,9 @@ function import_excel($item_id, $file_up, $ver=5)
         $this_line_data_fg  = false   ;
         for ($col = 0; $col <= 11; $col++) {
             $val =  $sheet->getCellByColumnAndRow($col, $row)->getCalculatedValue();
-            if (!get_magic_quotes_runtime()) {
-                $v[$col]=strtoupper(trim(addSlashes($val)));
-            } else {
-                $v[$col]= strtoupper(trim($val)) ;
-            }
+
+            $v[$col]= strtoupper(trim($val)) ;
+
             if ($v[$col]) {         //有內容要做動作
                 $this_line_data_fg  = true  ;
             }
@@ -448,7 +446,7 @@ if ($item_id) {
 //如果有錯誤，就不可以再進行下一步
 $file = XOOPS_ROOT_PATH."/uploads/es_charge/" . $item_id .'-err.log' ;
 if (file_exists($file)) {
-    $has_error = ture ;
+    $has_error = true ;
     $err_log = file_get_contents($file);
 }
 
