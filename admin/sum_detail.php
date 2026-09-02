@@ -54,12 +54,14 @@ if  ($item_id) {
 	}
 
 
-
+	while (ob_get_level() > 0) {
+		ob_end_clean();
+	}
 	//header('Content-Type: application/vnd.ms-excel');
 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=class_detail_'.date("mdHi").'.xlsx' );
 	header('Cache-Control: max-age=0');
-	ob_clean();
+
 
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');

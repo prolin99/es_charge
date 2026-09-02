@@ -1012,7 +1012,9 @@ function export_fail($item_id){
 
 	}
 
-    ob_clean();
+	while (ob_get_level() > 0) {
+		ob_end_clean();
+	}
     //header('Content-Type: application/vnd.ms-excel');
 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=fail'.date("mdHi").'.xlsx' );
@@ -1086,7 +1088,9 @@ function export_poster_data_excel($item_id){
 
 	}
 
-    ob_clean();
+	while (ob_get_level() > 0) {
+		ob_end_clean();
+	}
     //header('Content-Type: application/vnd.ms-excel');
 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	header('Content-Disposition: attachment;filename=paylist'.date("mdHi").'.xlsx' );
@@ -1201,7 +1205,9 @@ function export_poster_data($item_id){
 	header('Content-Type: text/plain');
 	header('Content-Disposition: attachment;filename=post001.dat.txt' );
 	header('Cache-Control: max-age=0');
-    ob_clean();
+	while (ob_get_level() > 0) {
+		ob_end_clean();
+	}
 
 	echo $data .$total_str;
 }

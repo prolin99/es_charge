@@ -132,11 +132,14 @@ function export_data($item_id){
 		. space_chr(15);
 
 
+	while (ob_get_level() > 0) {
+		ob_end_clean();
+	}
 	header('Content-Type: text/plain');
 	header('Content-Disposition: attachment;filename=post001.dat.txt' );
 	header('Cache-Control: max-age=0');
 
-	ob_clean();
+
 	echo $data .$total_str;
 
 }
